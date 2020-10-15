@@ -26,7 +26,7 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
 
     fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNamePolymorphicAdapterFactory<T> {
         if (keyPropertyNames.contains(keyPropertyName)) {
-            throw IllegalArgumentException("Keys must be unique.")
+            throw IllegalArgumentException("Key property name must be unique")
         }
         if (subTypes.contains(subType)) {
             throw IllegalArgumentException("Duplicate subtypes are not allowed")
@@ -40,13 +40,13 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
 
     fun withSubTypes(subTypes: List<Type>, keyPropertyNames: List<String>): PropertyNamePolymorphicAdapterFactory<T> {
         if (keyPropertyNames.size != keyPropertyNames.distinct().size) {
-            throw IllegalArgumentException("Keys must be unique.")
+            throw IllegalArgumentException("Key property name must be unique")
         }
         if (subTypes.size != subTypes.distinct().size) {
             throw IllegalArgumentException("Duplicate subtypes are not allowed")
         }
         if (keyPropertyNames.size != subTypes.size) {
-            throw IllegalArgumentException("Keys and subtypes must have same length")
+            throw IllegalArgumentException("The number of Key property names is different from subtypes")
         }
         return PropertyNamePolymorphicAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
     }
@@ -75,7 +75,7 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
                 if (fallbackAdapter != null) {
                     fallbackAdapter.fromJson(reader)
                 } else {
-                    throw JsonDataException("No property name matches for keys")
+                    throw JsonDataException("No matching property names for keys")
                 }
             } else {
                 jsonAdapters[keyIndex]
