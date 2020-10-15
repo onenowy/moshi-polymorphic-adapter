@@ -14,7 +14,7 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
             return null
         }
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
-        return PropertyNamePolymorphicAdapter(subTypes, keyPropertyNames, jsonAdapters, fallbackAdapter)
+        return PropertyNamePolymorphicAdapter(subTypes, keyPropertyNames, jsonAdapters, fallbackAdapter).nullSafe()
     }
 
     companion object {
