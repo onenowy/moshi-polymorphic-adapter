@@ -15,28 +15,9 @@ kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin.version"
 deps.kotlin = kotlin
 
 deps.test = [:]
-def androidx_test = [:]
-androidx_test.version = "1.3.0"
-androidx_test.core = "androidx.test:core:$androidx_test.version"
-androidx_test.runner = "androidx.test:runner:$androidx_test.version"
-androidx_test.rules = "androidx.test:rules:$androidx_test.version"
-androidx_test.ext_truth = "androidx.test.ext:truth:$androidx_test.version"
-androidx_test.ext_junit = "androidx.test.ext:junit:1.1.1"
-androidx_test.arch = "androidx.arch.core:core-testing:2.1.0"
-deps.test.androidx_test=androidx_test
-
 deps.test.junit = "junit:junit:4.13"
 deps.test.truth = "com.google.truth:truth:1.0.1"
-deps.test.roboletric = "org.robolectric:robolectric:4.3.1"
 
-
-def espresso = [:]
-espresso.version = "3.2.0"
-espresso.core = "androidx.test.espresso:espresso-core:$espresso.version"
-espresso.contrib = "androidx.test.espresso:espresso-contrib:$espresso.version"
-espresso.intent = "androidx.test.espresso:espresso-intents:$espresso.version"
-espresso.idling_resource = "androidx.test.espresso:espresso-idling-resource:$espresso.version"
-deps.test.espresso = espresso
 
 def moshi = [:]
 moshi.version = "1.10.0"
@@ -44,6 +25,7 @@ moshi.moshi = "com.squareup.moshi:moshi:$moshi.version"
 moshi.codegen = "com.squareup.moshi:moshi-kotlin-codegen:$moshi.version"
 moshi.adapter = "com.squareup.moshi:moshi-adapters:$moshi.version"
 deps.moshi = moshi
+
 
 deps.gradle_plugin = "com.android.tools.build:gradle:4.0.2"
 ext.deps = deps
