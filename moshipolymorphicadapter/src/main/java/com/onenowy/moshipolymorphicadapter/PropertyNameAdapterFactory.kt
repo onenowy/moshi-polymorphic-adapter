@@ -1,10 +1,9 @@
-package com.example.moshipolymorphicadapter
+package com.onenowy.moshipolymorphicadapter
 
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
-
-class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
+class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
     private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
 ) : JsonAdapter.Factory {
@@ -14,17 +13,17 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
             return null
         }
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
-        return PropertyNamePolymorphicAdapter(subTypes, keyPropertyNames, jsonAdapters, fallbackAdapter).nullSafe()
+        return PropertyNameAdapter(subTypes, keyPropertyNames, jsonAdapters, fallbackAdapter).nullSafe()
     }
 
     companion object {
         @JvmStatic
-        fun <T> of(baseType: Class<T>): PropertyNamePolymorphicAdapterFactory<T> {
-            return PropertyNamePolymorphicAdapterFactory(baseType)
+        fun <T> of(baseType: Class<T>): PropertyNameAdapterFactory<T> {
+            return PropertyNameAdapterFactory(baseType)
         }
     }
 
-    fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNamePolymorphicAdapterFactory<T> {
+    fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNameAdapterFactory<T> {
         if (keyPropertyNames.contains(keyPropertyName)) {
             throw IllegalArgumentException("Key property name must be unique")
         }
@@ -35,10 +34,10 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         newSubTypes.add(subType)
         val newKeyPropertyNames = keyPropertyNames.toMutableList()
         newKeyPropertyNames.add(keyPropertyName)
-        return PropertyNamePolymorphicAdapterFactory(baseType, newSubTypes, newKeyPropertyNames, fallbackAdapter)
+        return PropertyNameAdapterFactory(baseType, newSubTypes, newKeyPropertyNames, fallbackAdapter)
     }
 
-    fun withSubTypes(subTypes: List<Type>, keyPropertyNames: List<String>): PropertyNamePolymorphicAdapterFactory<T> {
+    fun withSubTypes(subTypes: List<Type>, keyPropertyNames: List<String>): PropertyNameAdapterFactory<T> {
         if (keyPropertyNames.size != keyPropertyNames.distinct().size) {
             throw IllegalArgumentException("Key property name must be unique")
         }
@@ -48,15 +47,32 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         if (keyPropertyNames.size != subTypes.size) {
             throw IllegalArgumentException("The number of Key property names is different from subtypes")
         }
-        return PropertyNamePolymorphicAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
+        return PropertyNameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
     }
 
-    fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyNamePolymorphicAdapterFactory<T> {
-        return PropertyNamePolymorphicAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackJsonAdapter)
+    fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyNameAdapterFactory<T> {
+        return PropertyNameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackJsonAdapter)
     }
 
+    fun withDefaultValue(defaultValue: T?): PropertyNameAdapterFactory<T> {
+        return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
+    }
 
-    class PropertyNamePolymorphicAdapter @JvmOverloads constructor(
+    private fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
+        return object : JsonAdapter<Any>() {
+            override fun fromJson(reader: JsonReader): Any? {
+                reader.skipValue()
+                return defaultValue
+            }
+
+            override fun toJson(writer: JsonWriter, value: Any?) {
+                throw IllegalArgumentException("Expected one of $subTypes but found $value , a ${value?.javaClass}  Register this subtype.")
+            }
+
+        }
+    }
+
+    class PropertyNameAdapter @JvmOverloads constructor(
         private val subTypes: List<Type>,
         private val keyPropertyNames: List<String>,
         private val jsonAdapters: List<JsonAdapter<Any>>,
@@ -78,7 +94,7 @@ class PropertyNamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
                     throw JsonDataException("No matching property names for keys")
                 }
             } else {
-                jsonAdapters[keyIndex]
+                jsonAdapters[keyIndex].fromJson(reader)
             }
         }
 
