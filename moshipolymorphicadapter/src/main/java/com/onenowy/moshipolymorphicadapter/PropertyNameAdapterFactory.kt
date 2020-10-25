@@ -4,14 +4,15 @@ import com.squareup.moshi.*
 import java.lang.reflect.Type
 
 class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
-    private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
-    private val fallbackAdapter: JsonAdapter<Any>? = null
-) : JsonAdapter.Factory {
+    baseType: Class<T>, subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
+    fallbackAdapter: JsonAdapter<Any>? = null
+) : JsonAdapter.Factory, MoshiPolyMorphicAdapterFactory<T>(baseType, subTypes, fallbackAdapter) {
 
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
             return null
         }
+
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
         return PropertyNameAdapter(subTypes, keyPropertyNames, jsonAdapters, fallbackAdapter).nullSafe()
     }
@@ -27,9 +28,6 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         if (keyPropertyNames.contains(keyPropertyName)) {
             throw IllegalArgumentException("Key property name must be unique")
         }
-        if (subTypes.contains(subType)) {
-            throw IllegalArgumentException("Duplicate subtypes are not allowed")
-        }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newKeyPropertyNames = keyPropertyNames.toMutableList()
@@ -40,9 +38,6 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
     fun withSubTypes(subTypes: List<Type>, keyPropertyNames: List<String>): PropertyNameAdapterFactory<T> {
         if (keyPropertyNames.size != keyPropertyNames.distinct().size) {
             throw IllegalArgumentException("Key property name must be unique")
-        }
-        if (subTypes.size != subTypes.distinct().size) {
-            throw IllegalArgumentException("Duplicate subtypes are not allowed")
         }
         if (keyPropertyNames.size != subTypes.size) {
             throw IllegalArgumentException("The number of Key property names is different from subtypes")
@@ -58,19 +53,6 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 
-    private fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
-        return object : JsonAdapter<Any>() {
-            override fun fromJson(reader: JsonReader): Any? {
-                reader.skipValue()
-                return defaultValue
-            }
-
-            override fun toJson(writer: JsonWriter, value: Any?) {
-                throw IllegalArgumentException("Expected one of $subTypes but found $value , a ${value?.javaClass}  Register this subtype.")
-            }
-
-        }
-    }
 
     class PropertyNameAdapter @JvmOverloads constructor(
         private val subTypes: List<Type>,
