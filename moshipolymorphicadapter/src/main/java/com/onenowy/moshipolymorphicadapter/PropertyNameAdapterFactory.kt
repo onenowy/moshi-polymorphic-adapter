@@ -25,6 +25,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
     }
 
     fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNameAdapterFactory<T> {
+
         if (keyPropertyNames.contains(keyPropertyName)) {
             throw IllegalArgumentException("Key property name must be unique")
         }
@@ -59,16 +60,13 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         private val keyPropertyNames: List<String>,
         private val jsonAdapters: List<JsonAdapter<Any>>,
         private val fallbackAdapter: JsonAdapter<Any>?,
-        private val keyOptions: JsonReader.Options = JsonReader.Options.of(*keyPropertyNames.toTypedArray())
+        private val propertyNameOptions: JsonReader.Options = JsonReader.Options.of(*keyPropertyNames.toTypedArray())
     ) : JsonAdapter<Any>() {
 
         override fun fromJson(reader: JsonReader): Any? {
             val peeked = reader.peekJson()
             peeked.setFailOnUnknown(false)
-            @Suppress("NAME_SHADOWING")
-            val keyIndex = peeked.use { peeked ->
-                keyIndex(peeked)
-            }
+            val keyIndex = keyIndex(peeked)
             return if (keyIndex == -1) {
                 if (fallbackAdapter != null) {
                     fallbackAdapter.fromJson(reader)
@@ -83,7 +81,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         private fun keyIndex(reader: JsonReader): Int {
             reader.beginObject()
             while (reader.hasNext()) {
-                val index = reader.selectName(keyOptions)
+                val index = reader.selectName(propertyNameOptions)
                 if (index == -1) {
                     reader.skipName()
                     reader.skipValue()
@@ -103,9 +101,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
             }
 
             val adapter = if (typeIndex == -1) {
-                if (fallbackAdapter == null) {
-                    throw IllegalArgumentException("Expected one of $subTypes but found $value, a ${value?.javaClass}. Register this subtype.")
-                }
+                require(fallbackAdapter != null) { "Expected one of $subTypes but found $value, a ${value?.javaClass}. Register this subtype." }
                 fallbackAdapter
             } else {
                 jsonAdapters[typeIndex]
