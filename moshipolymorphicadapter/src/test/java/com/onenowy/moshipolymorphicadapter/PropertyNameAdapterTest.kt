@@ -42,6 +42,5 @@ class PropertyNameAdapterTest {
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
         assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
-
     }
 }
