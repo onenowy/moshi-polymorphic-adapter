@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonWriter
 import java.lang.reflect.Type
 
 abstract class MoshiPolyMorphicAdapterFactory<T>(
-    internal val baseType: Class<T>,
-    internal val subTypes: List<Type> = emptyList(),
-    internal val fallbackAdapter: JsonAdapter<Any>? = null
+    protected val baseType: Class<T>,
+    protected val subTypes: List<Type> = emptyList(),
+    protected val fallbackAdapter: JsonAdapter<Any>? = null
 ) {
 
     internal fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
@@ -19,7 +19,7 @@ abstract class MoshiPolyMorphicAdapterFactory<T>(
             }
 
             override fun toJson(writer: JsonWriter, value: Any?) {
-                throw IllegalArgumentException("Expected one of $subTypes but found $value , a ${value?.javaClass}  Register this subtype.")
+                throw IllegalArgumentException("Expected one of $subTypes but found $value, a ${value?.javaClass}. Register this subtype.")
             }
 
         }
