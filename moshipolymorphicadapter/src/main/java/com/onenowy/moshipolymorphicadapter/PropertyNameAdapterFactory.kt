@@ -25,7 +25,6 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
     }
 
     fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNameAdapterFactory<T> {
-
         if (keyPropertyNames.contains(keyPropertyName)) {
             throw IllegalArgumentException("Key property name must be unique")
         }
@@ -36,7 +35,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         return PropertyNameAdapterFactory(baseType, newSubTypes, newKeyPropertyNames, fallbackAdapter)
     }
 
-    fun withSubTypes(subTypes: List<Type>, keyPropertyNames: List<String>): PropertyNameAdapterFactory<T> {
+    fun withSubTypes(subTypes: List<Class<out T>>, keyPropertyNames: List<String>): PropertyNameAdapterFactory<T> {
         if (keyPropertyNames.size != keyPropertyNames.distinct().size) {
             throw IllegalArgumentException("Key property name must be unique")
         }
