@@ -5,43 +5,38 @@ import java.lang.reflect.Type
 
 class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
     baseType: Class<T>,
-    private val labelType: Class<K>,
     private val labelKey: String,
     subTypes: List<Type> = emptyList(),
     private val labels: List<K> = emptyList(),
     fallbackAdapter: JsonAdapter<Any>? = null
 ) : JsonAdapter.Factory, MoshiPolyMorphicAdapterFactory<T>(baseType, subTypes, fallbackAdapter) {
 
-
     companion object {
         @JvmStatic
         fun <T, K : Any> of(baseType: Class<T>, labelKey: String, labelType: Class<K>): PropertyValueAdapterFactory<T, K> {
-            require(labelType.isAssignableFrom(Number::class.java) || labelType == Boolean::class.java || labelType == String::class.java) {
-                "Expected Boolean or Subclasses of Number, But found ${labelType.simpleName}"
-            }
-            return PropertyValueAdapterFactory(baseType, labelType, labelKey)
+            require((labelType.isPrimitive && labelType != Char::class.java) || Number::class.java.isAssignableFrom(labelType) || labelType == Boolean::class.javaObjectType || labelType == String::class.java)
+            { "Expected Boolean, Subclasses of Number or String, But found ${labelType.simpleName}" }
+            return PropertyValueAdapterFactory(baseType, labelKey)
         }
     }
 
-    fun withSubType(subType: Class<T>, label: K): PropertyValueAdapterFactory<T, K> {
-        require(labelType.isInstance(label)) { "The label type must be ${labelType.simpleName}" }
+    fun withSubType(subType: Class<out T>, label: K): PropertyValueAdapterFactory<T, K> {
         require(!labels.contains(label)) { "Labels must be  unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newLabels = labels.toMutableList()
         newLabels.add(label)
-        return PropertyValueAdapterFactory(baseType, labelType, labelKey, newSubTypes, newLabels)
+        return PropertyValueAdapterFactory(baseType, labelKey, newSubTypes, newLabels)
     }
 
-    fun withSubTypes(subTypes: List<Type>, labels: List<K>): PropertyValueAdapterFactory<T, K> {
-        require(labels.isEmpty() || labelType.isInstance(labels.last())) { "The label type must be ${labelType.simpleName}" }
+    fun withSubTypes(subTypes: List<Class<out T>>, labels: List<K>): PropertyValueAdapterFactory<T, K> {
         require(labels.size == labels.distinct().size) { "Key property name must be unique" }
         require(labels.size == subTypes.size) { "The number of Key property names is different from subtypes" }
-        return PropertyValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackAdapter)
+        return PropertyValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackAdapter)
     }
 
     fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyValueAdapterFactory<T, K> {
-        return PropertyValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackJsonAdapter)
+        return PropertyValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackJsonAdapter)
     }
 
     fun withDefaultValue(defaultValue: T?): PropertyValueAdapterFactory<T, K> {
@@ -88,11 +83,32 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                     reader.skipValue()
                     continue
                 }
-                val labelValue = reader.nextNull<K>()
+                val token = reader.peek()
+                val labelValue = when (val labelType = labels.lastOrNull()) {
+                    is Boolean -> if (token == JsonReader.Token.BOOLEAN) reader.nextBoolean() else null
+                    is String -> if (token == JsonReader.Token.STRING) reader.nextString() else null
+                    is Number -> if (token == JsonReader.Token.NUMBER) getNumber(reader, labelType) else null
+                    else -> null
+                }
                 return labels.indexOf(labelValue)
             }
             throw JsonDataException("Missing label for $labelKey")
         }
+
+        private fun getNumber(reader: JsonReader, labelType: K?): Number? {
+            val stringNumber = reader.nextString()
+
+            return when (labelType) {
+                is Byte -> stringNumber.toByte()
+                is Short -> stringNumber.toShort()
+                is Int -> stringNumber.toInt()
+                is Long -> stringNumber.toLong()
+                is Float -> stringNumber.toFloat()
+                is Double -> stringNumber.toDouble()
+                else -> null
+            }
+        }
+
 
         override fun toJson(writer: JsonWriter, value: Any?) {
             val type = value?.javaClass
@@ -109,7 +125,7 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
             }
             writer.beginObject()
             if (adapter != fallbackAdapter) {
-                writeValue(writer, labels[typeIndex])
+                writeValue(writer.name(labelKey), labels[typeIndex])
             }
             val flattenToken = writer.beginFlatten()
             adapter.toJson(writer, value)
