@@ -15,7 +15,7 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         @JvmStatic
         fun <T, K : Any> of(baseType: Class<T>, labelKey: String, labelType: Class<K>): PropertyValueAdapterFactory<T, K> {
             require((labelType.isPrimitive && labelType != Char::class.java) || Number::class.java.isAssignableFrom(labelType) || labelType == Boolean::class.javaObjectType || labelType == String::class.java)
-            { "Expected Boolean, Subclasses of Number or String, But found ${labelType.simpleName}" }
+            { "Expected Boolean, a subclass of Number or String, But found ${labelType.simpleName}" }
             return PropertyValueAdapterFactory(baseType, labelKey)
         }
     }
@@ -64,11 +64,7 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
             peeked.setFailOnUnknown(false)
             val keyIndex = keyIndex(peeked)
             return if (keyIndex == -1) {
-                if (fallbackAdapter != null) {
-                    fallbackAdapter.fromJson(reader)
-                } else {
-                    throw JsonDataException("Expected one of $labels for key '$labelKey' but found '${reader.nextString()}'. Register a subtype for this label.")
-                }
+                fallbackAdapter!!.fromJson(reader)
             } else {
                 jsonAdapters[keyIndex].fromJson(reader)
             }
@@ -90,7 +86,13 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                     is Number -> if (token == JsonReader.Token.NUMBER) getNumber(reader, labelType) else null
                     else -> null
                 }
-                return labels.indexOf(labelValue)
+                val index = labels.indexOf(labelValue)
+                if (index == -1) {
+                    if (fallbackAdapter == null) {
+                        throw JsonDataException("Expected one of $labels for key '$labelKey' but found '${labelValue}'. Register a subtype for this label.")
+                    }
+                }
+                return index
             }
             throw JsonDataException("Missing label for $labelKey")
         }
@@ -99,12 +101,12 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
             val stringNumber = reader.nextString()
 
             return when (labelType) {
-                is Byte -> stringNumber.toByte()
-                is Short -> stringNumber.toShort()
-                is Int -> stringNumber.toInt()
-                is Long -> stringNumber.toLong()
-                is Float -> stringNumber.toFloat()
-                is Double -> stringNumber.toDouble()
+                is Byte -> stringNumber.toByteOrNull()
+                is Short -> stringNumber.toShortOrNull()
+                is Int -> stringNumber.toIntOrNull()
+                is Long -> stringNumber.toLongOrNull()
+                is Float -> stringNumber.toFloatOrNull()
+                is Double -> stringNumber.toDoubleOrNull()
                 else -> null
             }
         }
