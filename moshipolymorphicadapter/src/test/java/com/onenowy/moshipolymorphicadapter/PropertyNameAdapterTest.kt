@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter
+ package com.onenowy.moshipolymorphicadapter
 
 import com.google.common.truth.Truth.assertThat
 import com.onenowy.moshipolymorphicadapter.util.Computer
