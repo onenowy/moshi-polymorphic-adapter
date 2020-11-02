@@ -12,7 +12,7 @@ sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, va
     }
 
     enum class ComTypeDouble(val value: Double) {
-        Monitor(1.0), Mouse(10000.1), Keyboard(Double.MAX_VALUE)
+        Monitor(5.0), Mouse(10000.1), Keyboard(Double.MAX_VALUE)
     }
 
     enum class ComTypeLong(val value: Long) {

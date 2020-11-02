@@ -1,38 +1,34 @@
 package com.onenowy.moshipolymorphicadapter
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.onenowy.moshipolymorphicadapter.util.Computer
 import com.onenowy.moshipolymorphicadapter.util.Keyboard
 import com.onenowy.moshipolymorphicadapter.util.Monitor
 import com.onenowy.moshipolymorphicadapter.util.Mouse
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import org.junit.Test
 
 class PropertyValueAdapterTest {
-    private val moshiInt = Moshi.Builder().add(
-        PropertyValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
-            .withSubType(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
-            .withSubType(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
-    ).build()
-    private val moshiString = Moshi.Builder().add(
-        PropertyValueAdapterFactory.of(Computer::class.java, "typeString", String::class.java)
-            .withSubType(Monitor::class.java, Computer.ComTypeString.Monitor.value)
-            .withSubType(Keyboard::class.java, Computer.ComTypeString.Keyboard.value)
-            .withSubType(Mouse::class.java, Computer.ComTypeString.Mouse.value)
-    ).build()
 
-    private val moshiDouble = Moshi.Builder().add(
-        PropertyValueAdapterFactory.of(Computer::class.java, "typeDouble", Double::class.java)
-            .withSubType(Monitor::class.java, Computer.ComTypeDouble.Monitor.value)
-            .withSubType(Keyboard::class.java, Computer.ComTypeDouble.Keyboard.value)
-            .withSubType(Mouse::class.java, Computer.ComTypeDouble.Mouse.value)
-    ).build()
+    val intFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+        .withSubType(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
+        .withSubType(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
 
-    private val moshiLong = Moshi.Builder().add(
-        PropertyValueAdapterFactory.of(Computer::class.java, "typeLong", Long::class.java)
-            .withSubType(Monitor::class.java, Computer.ComTypeLong.Monitor.value)
-            .withSubType(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
-    ).build()
+    val stringFacgtory = PropertyValueAdapterFactory.of(Computer::class.java, "typeString", String::class.java)
+        .withSubType(Monitor::class.java, Computer.ComTypeString.Monitor.value)
+        .withSubType(Keyboard::class.java, Computer.ComTypeString.Keyboard.value)
+        .withSubType(Mouse::class.java, Computer.ComTypeString.Mouse.value)
+
+    val doubleFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeDouble", Double::class.java)
+        .withSubType(Monitor::class.java, Computer.ComTypeDouble.Monitor.value)
+        .withSubType(Keyboard::class.java, Computer.ComTypeDouble.Keyboard.value)
+        .withSubType(Mouse::class.java, Computer.ComTypeDouble.Mouse.value)
+
+    val longFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeLong", Long::class.java)
+        .withSubType(Monitor::class.java, Computer.ComTypeLong.Monitor.value)
+        .withSubType(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
 
 
     private val monitor = Monitor(1)
@@ -40,49 +36,121 @@ class PropertyValueAdapterTest {
     private val keyboard = Keyboard(true)
 
     private val monitorJson =
-        "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":1.0,\"typeLong\":${Long.MAX_VALUE - 2},\"monitorUnique\":1}"
+        "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":${Long.MAX_VALUE - 2},\"monitorUnique\":1}"
     private val mouseJson = "{\"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":${Long.MAX_VALUE - 1}," +
             "\"mouseUnique\":\"mouse\"}"
     private val keyboardJson =
         "{\"typeInt\":3,\"typeString\":\"3\",\"typeDouble\":${Double.MAX_VALUE},\"typeLong\":${Long.MAX_VALUE},\"keyboardUnique\":true}"
 
+    private fun getComputerAdapter(factory: JsonAdapter.Factory) = Moshi.Builder().add(factory).build().adapter(Computer::class.java)
+
+
     @Test
     fun toJson() {
-        var adapter = moshiInt.adapter(Computer::class.java)
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeInt\":1")
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeInt\":2")
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeInt\":3")
-        adapter = moshiString.adapter(Computer::class.java)
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeString\":\"1\"")
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeString\":\"2\"")
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeString\":\"3\"")
-        adapter = moshiDouble.adapter(Computer::class.java)
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeDouble\":1.0")
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeDouble\":10000.1")
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeDouble\":${Double.MAX_VALUE}")
-        adapter = moshiLong.adapter(Computer::class.java)
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeLong\":${Long.MAX_VALUE - 2}")
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeLong\":${Long.MAX_VALUE - 1}")
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeLong\":${Long.MAX_VALUE}")
+        var adapter = getComputerAdapter(intFactory)
+        assertThat(adapter.toJson(monitor)).contains("\"typeInt\":1")
+        assertThat(adapter.toJson(mouse)).contains("\"typeInt\":2")
+        assertThat(adapter.toJson(keyboard)).contains("\"typeInt\":3")
+        adapter = getComputerAdapter(stringFacgtory)
+        assertThat(adapter.toJson(monitor)).contains("\"typeString\":\"1\"")
+        assertThat(adapter.toJson(mouse)).contains("\"typeString\":\"2\"")
+        assertThat(adapter.toJson(keyboard)).contains("\"typeString\":\"3\"")
+        adapter = getComputerAdapter(doubleFactory)
+        assertThat(adapter.toJson(monitor)).contains("\"typeDouble\":5.0")
+        assertThat(adapter.toJson(mouse)).contains("\"typeDouble\":10000.1")
+        assertThat(adapter.toJson(keyboard)).contains("\"typeDouble\":${Double.MAX_VALUE}")
+        adapter = getComputerAdapter(longFactory)
+        assertThat(adapter.toJson(monitor)).contains("\"typeLong\":${Long.MAX_VALUE - 2}")
+        assertThat(adapter.toJson(mouse)).contains("\"typeLong\":${Long.MAX_VALUE - 1}")
+        assertThat(adapter.toJson(keyboard)).contains("\"typeLong\":${Long.MAX_VALUE}")
     }
 
     @Test
     fun fromJson() {
-        var adapter = moshiInt.adapter(Computer::class.java)
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
-        adapter = moshiString.adapter(Computer::class.java)
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
-        adapter = moshiDouble.adapter(Computer::class.java)
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
-        adapter = moshiLong.adapter(Computer::class.java)
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
+        var adapter = getComputerAdapter(intFactory)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
+        adapter = getComputerAdapter(stringFacgtory)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
+        adapter = getComputerAdapter(doubleFactory)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
+        adapter = getComputerAdapter(longFactory)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
+    }
+
+    @Test
+    fun unregisteredSubtype() {
+        val propertyValueAdapterFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+        var adapter = getComputerAdapter(propertyValueAdapterFactory)
+
+        try {
+            adapter.toJson(monitor)
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat().isEqualTo("Expected one of [] but found $monitor, a ${monitor.javaClass}. Register this subtype.")
+        }
+
+        try {
+            adapter.fromJson(monitorJson)
+        } catch (e: JsonDataException) {
+            assertThat(e).hasMessageThat().isEqualTo("Expected one of [] for key 'typeInt' but found 'null'. Register a subtype for this label.")
+        }
+
+        adapter = getComputerAdapter(propertyValueAdapterFactory.withSubType(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value))
+        try {
+            adapter.toJson(monitor)
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat().isEqualTo(
+                "Expected one of ${listOf(Keyboard::class.java)} but found $monitor, a ${monitor.javaClass}. Register " +
+                        "this subtype."
+            )
+        }
+
+        try {
+            adapter.fromJson(monitorJson)
+        } catch (e: JsonDataException) {
+            assertThat(e).hasMessageThat().isEqualTo(
+                "Expected one of ${listOf(Computer.ComTypeInt.Keyboard.value)} for key 'typeInt' but found '1'. " +
+                        "Register a " +
+                        "subtype for this label."
+            )
+        }
+    }
+
+    @Test
+    fun unresigsterdLableKey() {
+        val propertyValueAdapterFactory = PropertyValueAdapterFactory.of(Computer::class.java, "wrongKey", Int::class.java)
+            .withSubType(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
+            .withSubType(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
+        val adapter = getComputerAdapter(propertyValueAdapterFactory)
+        assertThat(adapter.toJson(monitor)).contains("\"wrongKey\":1")
+        assertThat(adapter.toJson(mouse)).contains("\"wrongKey\":2")
+        assertThat(adapter.toJson(keyboard)).contains("\"wrongKey\":3")
+        try {
+            adapter.fromJson(monitorJson)
+        } catch (e: JsonDataException) {
+            assertThat(e).hasMessageThat().isEqualTo("Missing label for wrongKey")
+        }
+
+    }
+
+    @Test
+    fun defaultValue() {
+        val propertyValueAdapterFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java).withDefaultValue(monitor)
+        val adapter = getComputerAdapter(propertyValueAdapterFactory)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor)
+        try {
+            adapter.toJson(keyboard)
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat().isEqualTo("Expected one of [] but found $keyboard, a ${keyboard.javaClass}. Register this subtype.")
+        }
     }
 }
