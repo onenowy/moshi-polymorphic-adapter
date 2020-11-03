@@ -24,6 +24,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         }
     }
 
+    @Throws(IllegalArgumentException::class)
     fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNameAdapterFactory<T> {
         if (keyPropertyNames.contains(keyPropertyName)) {
             throw IllegalArgumentException("Key property name must be unique")
@@ -35,6 +36,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         return PropertyNameAdapterFactory(baseType, newSubTypes, newKeyPropertyNames, fallbackAdapter)
     }
 
+    @Throws(IllegalArgumentException::class)
     fun withSubTypes(subTypes: List<Class<out T>>, keyPropertyNames: List<String>): PropertyNameAdapterFactory<T> {
         if (keyPropertyNames.size != keyPropertyNames.distinct().size) {
             throw IllegalArgumentException("Key property name must be unique")
@@ -62,6 +64,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         private val propertyNameOptions: JsonReader.Options = JsonReader.Options.of(*keyPropertyNames.toTypedArray())
     ) : JsonAdapter<Any>() {
 
+        @Throws(JsonDataException::class)
         override fun fromJson(reader: JsonReader): Any? {
             val peeked = reader.peekJson()
             peeked.setFailOnUnknown(false)
@@ -91,6 +94,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
             return -1
         }
 
+        @Throws(IllegalArgumentException::class)
         override fun toJson(writer: JsonWriter, value: Any?) {
             val type = value?.javaClass
             val typeIndex = if (type != null) {
