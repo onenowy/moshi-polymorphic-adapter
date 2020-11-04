@@ -18,7 +18,6 @@ abstract class MoshiPolyMorphicAdapterFactory<T>(
                 return defaultValue
             }
 
-            @Throws(IllegalArgumentException::class)
             override fun toJson(writer: JsonWriter, value: Any?) {
                 throw IllegalArgumentException("Expected one of $subTypes but found $value, a ${value?.javaClass}. Register this subtype.")
             }

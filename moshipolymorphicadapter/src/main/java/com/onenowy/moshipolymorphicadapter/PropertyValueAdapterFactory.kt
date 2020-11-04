@@ -13,7 +13,6 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
 
     companion object {
         @JvmStatic
-        @Throws(IllegalArgumentException::class)
         fun <T, K : Any> of(baseType: Class<T>, labelKey: String, labelType: Class<K>): PropertyValueAdapterFactory<T, K> {
             require((labelType.isPrimitive && labelType != Char::class.java) || Number::class.java.isAssignableFrom(labelType) || labelType == Boolean::class.javaObjectType || labelType == String::class.java)
             { "Expected Boolean, a subclass of Number or String, But found ${labelType.simpleName}" }
@@ -21,7 +20,6 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         }
     }
 
-    @Throws(IllegalArgumentException::class)
     fun withSubType(subType: Class<out T>, label: K): PropertyValueAdapterFactory<T, K> {
         require(!labels.contains(label)) { "Labels must be  unique" }
         val newSubTypes = subTypes.toMutableList()
@@ -31,7 +29,6 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         return PropertyValueAdapterFactory(baseType, labelKey, newSubTypes, newLabels)
     }
 
-    @Throws(IllegalArgumentException::class)
     fun withSubTypes(subTypes: List<Class<out T>>, labels: List<K>): PropertyValueAdapterFactory<T, K> {
         require(labels.size == labels.distinct().size) { "Key property name must be unique" }
         require(labels.size == subTypes.size) { "The number of Key property names is different from subtypes" }
@@ -63,7 +60,6 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         private val keyOption: JsonReader.Options = JsonReader.Options.of(labelKey)
     ) : JsonAdapter<Any>() {
 
-        @Throws(NullPointerException::class)
         override fun fromJson(reader: JsonReader): Any? {
             val peeked = reader.peekJson()
             peeked.setFailOnUnknown(false)
@@ -76,7 +72,6 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
 
         }
 
-        @Throws(JsonDataException::class)
         private fun keyIndex(reader: JsonReader): Int {
             reader.beginObject()
             while (reader.hasNext()) {
@@ -118,7 +113,6 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         }
 
 
-        @Throws(IllegalArgumentException::class)
         override fun toJson(writer: JsonWriter, value: Any?) {
             val type = value?.javaClass
             val typeIndex = if (type != null) {
