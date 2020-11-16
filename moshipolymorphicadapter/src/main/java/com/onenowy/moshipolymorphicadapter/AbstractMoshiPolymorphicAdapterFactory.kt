@@ -5,11 +5,11 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import java.lang.reflect.Type
 
-abstract class MoshiPolyMorphicAdapterFactory<T>(
+abstract class AbstractMoshiPolymorphicAdapterFactory<T>(
     protected val baseType: Class<T>,
     protected val subTypes: List<Type> = emptyList(),
     protected val fallbackAdapter: JsonAdapter<Any>? = null
-) {
+) : JsonAdapter.Factory {
 
     internal fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
         return object : JsonAdapter<Any>() {

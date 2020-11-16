@@ -5,7 +5,7 @@ apply plugin: "kotlin-kapt"
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation deps.kotlin.stdlib
-    implementation deps.moshi.moshi
+    api deps.moshi.moshi
     kaptTest deps.moshi.codegen
     testImplementation deps.test.junit
     testImplementation deps.test.truth
