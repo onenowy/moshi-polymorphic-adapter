@@ -9,7 +9,7 @@ ext.build_versions = build_versions
 def deps = [:]
 
 def kotlin = [:]
-kotlin.version = "1.4.10"
+kotlin.version = '1.4.21'
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin.version"
 kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin.version"
 deps.kotlin = kotlin
