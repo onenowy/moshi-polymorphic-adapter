@@ -10,3 +10,16 @@ dependencies {
     testImplementation deps.test.junit
     testImplementation deps.test.truth
 }
+
+task deleteObjectJar(type: Delete){
+    delete 'release/MoshiPolymorphicAdapter.jarr'
+}
+
+task exportJar(type: Copy){
+    from('build/intermediates/packaged-classes/release/')
+    into('release/')
+    include('classes.jar')
+    rename('classes.jar', 'MoshiPolymorphicAdapter.jar')
+}
+
+exportJar.dependsOn(deleteObjectJar, build)

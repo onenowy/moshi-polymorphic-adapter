@@ -138,7 +138,7 @@
     </codeStyleSettings>
     <codeStyleSettings language="kotlin">
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
-      <option name="RIGHT_MARGIN" value="150" />
+      <option name="RIGHT_MARGIN" value="170" />
     </codeStyleSettings>
   </code_scheme>
 </component>

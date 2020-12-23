@@ -6,7 +6,7 @@ import java.lang.reflect.Type
 class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
     baseType: Class<T>, subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
     fallbackAdapter: JsonAdapter<Any>? = null
-) : AbstractMoshiPolymorphicAdapterFactory<T>(baseType, subTypes, fallbackAdapter) {
+) : AbstractMoshiPolymorphicAdapterFactory<PropertyNameAdapterFactory<T>, T>(baseType, subTypes, fallbackAdapter) {
 
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
@@ -46,11 +46,11 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
         return PropertyNameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
     }
 
-    fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyNameAdapterFactory<T> {
+    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyNameAdapterFactory<T> {
         return PropertyNameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackJsonAdapter)
     }
 
-    fun withDefaultValue(defaultValue: T?): PropertyNameAdapterFactory<T> {
+    override fun withDefaultValue(defaultValue: T?): PropertyNameAdapterFactory<T> {
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 

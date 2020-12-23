@@ -155,7 +155,8 @@ public class PropertyNameAdapterJavaTest {
 
     @Test
     public final void defaultValue() throws IOException {
-        JsonAdapter adapter = this.getComputerAdapter(this.propertyNameAdapterFactory.withDefaultValue(this.monitor));
+        JsonAdapter adapter =
+                this.getComputerAdapter(this.propertyNameAdapterFactory.withDefaultValue(this.monitor));
         Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.monitor);

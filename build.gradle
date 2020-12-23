@@ -1,5 +1,5 @@
 buildscript {
-    apply from: "versions.gradle"
+    apply from: "depends.gradle"
     ext.kotlin_version = "$deps.kotlin.version"
     repositories {
         google()

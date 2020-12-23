@@ -165,7 +165,8 @@ public class PropertValueAdapterJavaTest {
 
     @Test
     public final void defaultValue() throws IOException {
-        PropertyValueAdapterFactory propertyValueAdapterFactory = PropertyValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withDefaultValue(this.monitor);
+        PropertyValueAdapterFactory propertyValueAdapterFactory =
+                PropertyValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withDefaultValue(this.monitor);
         JsonAdapter adapter = this.getComputerAdapter(propertyValueAdapterFactory);
         Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
