@@ -4,9 +4,9 @@ import com.squareup.moshi.*
 import java.lang.reflect.Type
 
 class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
-    baseType: Class<T>, subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
-    fallbackAdapter: JsonAdapter<Any>? = null
-) : AbstractMoshiPolymorphicAdapterFactory<PropertyNameAdapterFactory<T>, T>(baseType, subTypes, fallbackAdapter) {
+    private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
+    private val fallbackAdapter: JsonAdapter<Any>? = null
+) : AbstractMoshiPolymorphicAdapterFactory<PropertyNameAdapterFactory<T>, T> {
 
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {

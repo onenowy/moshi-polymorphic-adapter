@@ -3,13 +3,13 @@ package com.onenowy.moshipolymorphicadapter
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
-class PropertyValueAdapterFactory<T, S : Any> @JvmOverloads constructor(
-    baseType: Class<T>,
+class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
+    private val baseType: Class<T>,
     private val labelKey: String,
-    subTypes: List<Type> = emptyList(),
-    private val labels: List<S> = emptyList(),
-    fallbackAdapter: JsonAdapter<Any>? = null
-) : AbstractMoshiPolymorphicAdapterFactory<PropertyValueAdapterFactory<T, S>, T>(baseType, subTypes, fallbackAdapter) {
+    private val subTypes: List<Type> = emptyList(),
+    private val labels: List<K> = emptyList(),
+    private val fallbackAdapter: JsonAdapter<Any>? = null
+) : AbstractMoshiPolymorphicAdapterFactory<PropertyValueAdapterFactory<T, K>, T> {
 
     companion object {
         @JvmStatic
@@ -20,7 +20,7 @@ class PropertyValueAdapterFactory<T, S : Any> @JvmOverloads constructor(
         }
     }
 
-    fun withSubType(subType: Class<out T>, label: S): PropertyValueAdapterFactory<T, S> {
+    fun withSubType(subType: Class<out T>, label: K): PropertyValueAdapterFactory<T, K> {
         require(!labels.contains(label)) { "Labels must be  unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
@@ -29,17 +29,17 @@ class PropertyValueAdapterFactory<T, S : Any> @JvmOverloads constructor(
         return PropertyValueAdapterFactory(baseType, labelKey, newSubTypes, newLabels)
     }
 
-    fun withSubTypes(subTypes: List<Class<out T>>, labels: List<S>): PropertyValueAdapterFactory<T, S> {
+    fun withSubTypes(subTypes: List<Class<out T>>, labels: List<K>): PropertyValueAdapterFactory<T, K> {
         require(labels.size == labels.distinct().size) { "Key property name must be unique" }
         require(labels.size == subTypes.size) { "The number of Key property names is different from subtypes" }
         return PropertyValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackAdapter)
     }
 
-    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyValueAdapterFactory<T, S> {
+    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyValueAdapterFactory<T, K> {
         return PropertyValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackJsonAdapter)
     }
 
-    override fun withDefaultValue(defaultValue: T?): PropertyValueAdapterFactory<T, S> {
+    override fun withDefaultValue(defaultValue: T?): PropertyValueAdapterFactory<T, K> {
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 

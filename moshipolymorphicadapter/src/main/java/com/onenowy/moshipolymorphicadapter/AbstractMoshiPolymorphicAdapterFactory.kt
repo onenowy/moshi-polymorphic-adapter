@@ -3,15 +3,10 @@ package com.onenowy.moshipolymorphicadapter
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import java.lang.reflect.Type
 
-abstract class AbstractMoshiPolymorphicAdapterFactory<S, T>(
-    protected val baseType: Class<T>,
-    protected val subTypes: List<Type> = emptyList(),
-    protected val fallbackAdapter: JsonAdapter<Any>? = null
-) : JsonAdapter.Factory {
+interface AbstractMoshiPolymorphicAdapterFactory<S, T> : JsonAdapter.Factory {
 
-    internal fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
+    fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
         return object : JsonAdapter<Any>() {
             override fun fromJson(reader: JsonReader): Any? {
                 reader.skipValue()
@@ -19,12 +14,12 @@ abstract class AbstractMoshiPolymorphicAdapterFactory<S, T>(
             }
 
             override fun toJson(writer: JsonWriter, value: Any?) {
-                throw IllegalArgumentException("Expected one of $subTypes but found $value, a ${value?.javaClass}. Register this subtype.")
+                throw IllegalArgumentException("FallbackJsonAdapter with defaultValue cannot make Json")
             }
         }
     }
 
-    abstract fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): S
+    fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): S
 
-    abstract fun withDefaultValue(defaultValue: T?): S
+    fun withDefaultValue(defaultValue: T?): S
 }
