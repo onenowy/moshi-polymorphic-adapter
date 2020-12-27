@@ -14,7 +14,7 @@ interface AbstractMoshiPolymorphicAdapterFactory<S, T> : JsonAdapter.Factory {
             }
 
             override fun toJson(writer: JsonWriter, value: Any?) {
-                throw IllegalArgumentException("FallbackJsonAdapter with defaultValue cannot make Json")
+                throw IllegalArgumentException("FallbackJsonAdapter with defaultValue cannot make Json Object")
             }
         }
     }

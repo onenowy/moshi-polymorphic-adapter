@@ -22,6 +22,12 @@ moshi.codegen = "com.squareup.moshi:moshi-kotlin-codegen:$moshi.version"
 moshi.adapter = "com.squareup.moshi:moshi-adapters:$moshi.version"
 deps.moshi = moshi
 
+def autoservice_version = "1.0-rc7"
+deps.autoservice = "com.google.auto.service:auto-service:$autoservice_version"
+
 def gradle_version="4.1.0"
 deps.gradle_plugin = "com.android.tools.build:gradle:$gradle_version"
+
+def kotlinpoet_version="1.7.2"
+deps.kotlinpoet = "com.squareup:kotlinpoet:$kotlinpoet_version"
 ext.deps = deps
