@@ -6,7 +6,7 @@ import java.lang.reflect.Type
 class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
     private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
-) : AbstractMoshiPolymorphicAdapterFactory<PropertyNameAdapterFactory<T>, T> {
+) : MoshiPolymorphicAdapterFactory<PropertyNameAdapterFactory<T>, T> {
 
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
@@ -26,9 +26,7 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
 
 
     fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNameAdapterFactory<T> {
-        if (keyPropertyNames.contains(keyPropertyName)) {
-            throw IllegalArgumentException("Key property name must be unique")
-        }
+        require(!keyPropertyNames.contains(keyPropertyName)) { "Key property name must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newKeyPropertyNames = keyPropertyNames.toMutableList()
@@ -37,12 +35,9 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
     }
 
     fun withSubTypes(subTypes: List<Class<out T>>, keyPropertyNames: List<String>): PropertyNameAdapterFactory<T> {
-        if (keyPropertyNames.size != keyPropertyNames.distinct().size) {
-            throw IllegalArgumentException("Key property name must be unique")
-        }
-        if (keyPropertyNames.size != subTypes.size) {
-            throw IllegalArgumentException("The number of Key property names is different from subtypes")
-        }
+        require(keyPropertyNames.size == keyPropertyNames.distinct().size) { "Key property name must be unique" }
+        require(keyPropertyNames.size == subTypes.size) { "The number of Key property names is different from subtypes" }
+
         return PropertyNameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
     }
 

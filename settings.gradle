@@ -1,3 +1,2 @@
-include ':sealedclasscodegen'
 include ':moshipolymorphicadapter'
 rootProject.name = "MoshiPolymorphicAdapter"

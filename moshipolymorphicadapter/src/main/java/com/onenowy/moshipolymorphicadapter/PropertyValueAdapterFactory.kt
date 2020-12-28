@@ -9,7 +9,7 @@ class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
     private val subTypes: List<Type> = emptyList(),
     private val labels: List<K> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
-) : AbstractMoshiPolymorphicAdapterFactory<PropertyValueAdapterFactory<T, K>, T> {
+) : MoshiPolymorphicAdapterFactory<PropertyValueAdapterFactory<T, K>, T> {
 
     companion object {
         @JvmStatic
