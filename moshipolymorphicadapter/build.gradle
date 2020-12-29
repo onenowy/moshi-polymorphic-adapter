@@ -3,7 +3,8 @@ plugins {
     id 'kotlin'
     id 'kotlin-kapt'
 }
-
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation deps.kotlin.stdlib
@@ -11,17 +12,5 @@ dependencies {
     kaptTest deps.moshi.codegen
     testImplementation deps.test.junit
     testImplementation deps.test.truth
+    implementation deps.kotlin.reflect
 }
-
-task deleteObjectJar(type: Delete){
-    delete 'release/MoshiPolymorphicAdapter.jarr'
-}
-
-task exportJar(type: Copy){
-    from('build/intermediates/packaged-classes/release/')
-    into('release/')
-    include('classes.jar')
-    rename('classes.jar', 'MoshiPolymorphicAdapter.jar')
-}
-
-exportJar.dependsOn(deleteObjectJar, build)

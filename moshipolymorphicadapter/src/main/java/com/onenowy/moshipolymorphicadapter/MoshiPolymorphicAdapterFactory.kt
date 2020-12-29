@@ -4,7 +4,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 
-interface MoshiPolymorphicAdapterFactory<S, T> : JsonAdapter.Factory {
+interface MoshiPolymorphicAdapterFactory<S : MoshiPolymorphicAdapterFactory<S, T>, T> : JsonAdapter.Factory {
 
     fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
         return object : JsonAdapter<Any>() {

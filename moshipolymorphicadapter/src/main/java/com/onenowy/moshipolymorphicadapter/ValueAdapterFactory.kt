@@ -3,43 +3,43 @@ package com.onenowy.moshipolymorphicadapter
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
-class PropertyValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
+class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
     private val baseType: Class<T>,
     private val labelKey: String,
     private val subTypes: List<Type> = emptyList(),
     private val labels: List<K> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
-) : MoshiPolymorphicAdapterFactory<PropertyValueAdapterFactory<T, K>, T> {
+) : MoshiPolymorphicAdapterFactory<ValueAdapterFactory<T, K>, T> {
 
     companion object {
         @JvmStatic
-        fun <T, K : Any> of(baseType: Class<T>, labelKey: String, labelType: Class<K>): PropertyValueAdapterFactory<T, K> {
+        fun <T, K : Any> of(baseType: Class<T>, labelKey: String, labelType: Class<K>): ValueAdapterFactory<T, K> {
             require((labelType.isPrimitive && labelType != Char::class.java) || Number::class.java.isAssignableFrom(labelType) || labelType == Boolean::class.javaObjectType || labelType == String::class.java)
             { "Expected Boolean, a subclass of Number or String, But found ${labelType.simpleName}" }
-            return PropertyValueAdapterFactory(baseType, labelKey)
+            return ValueAdapterFactory(baseType, labelKey)
         }
     }
 
-    fun withSubType(subType: Class<out T>, label: K): PropertyValueAdapterFactory<T, K> {
-        require(!labels.contains(label)) { "Labels must be  unique" }
+    fun withSubType(subType: Class<out T>, label: K): ValueAdapterFactory<T, K> {
+        require(!labels.contains(label)) { "Labels must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newLabels = labels.toMutableList()
         newLabels.add(label)
-        return PropertyValueAdapterFactory(baseType, labelKey, newSubTypes, newLabels)
+        return ValueAdapterFactory(baseType, labelKey, newSubTypes, newLabels)
     }
 
-    fun withSubTypes(subTypes: List<Class<out T>>, labels: List<K>): PropertyValueAdapterFactory<T, K> {
+    fun withSubTypes(subTypes: List<Class<out T>>, labels: List<K>): ValueAdapterFactory<T, K> {
         require(labels.size == labels.distinct().size) { "Key property name must be unique" }
         require(labels.size == subTypes.size) { "The number of Key property names is different from subtypes" }
-        return PropertyValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackAdapter)
+        return ValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackAdapter)
     }
 
-    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyValueAdapterFactory<T, K> {
-        return PropertyValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackJsonAdapter)
+    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValueAdapterFactory<T, K> {
+        return ValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackJsonAdapter)
     }
 
-    override fun withDefaultValue(defaultValue: T?): PropertyValueAdapterFactory<T, K> {
+    override fun withDefaultValue(defaultValue: T?): ValueAdapterFactory<T, K> {
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 

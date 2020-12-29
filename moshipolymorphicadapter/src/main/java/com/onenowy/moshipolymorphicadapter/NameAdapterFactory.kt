@@ -3,10 +3,10 @@ package com.onenowy.moshipolymorphicadapter
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
-class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
+class NameAdapterFactory<T> @JvmOverloads constructor(
     private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
-) : MoshiPolymorphicAdapterFactory<PropertyNameAdapterFactory<T>, T> {
+) : MoshiPolymorphicAdapterFactory<NameAdapterFactory<T>, T> {
 
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
@@ -19,33 +19,33 @@ class PropertyNameAdapterFactory<T> @JvmOverloads constructor(
 
     companion object {
         @JvmStatic
-        fun <T> of(baseType: Class<T>): PropertyNameAdapterFactory<T> {
-            return PropertyNameAdapterFactory(baseType)
+        fun <T> of(baseType: Class<T>): NameAdapterFactory<T> {
+            return NameAdapterFactory(baseType)
         }
     }
 
 
-    fun withSubtype(subType: Class<out T>, keyPropertyName: String): PropertyNameAdapterFactory<T> {
+    fun withSubtype(subType: Class<out T>, keyPropertyName: String): NameAdapterFactory<T> {
         require(!keyPropertyNames.contains(keyPropertyName)) { "Key property name must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newKeyPropertyNames = keyPropertyNames.toMutableList()
         newKeyPropertyNames.add(keyPropertyName)
-        return PropertyNameAdapterFactory(baseType, newSubTypes, newKeyPropertyNames, fallbackAdapter)
+        return NameAdapterFactory(baseType, newSubTypes, newKeyPropertyNames, fallbackAdapter)
     }
 
-    fun withSubTypes(subTypes: List<Class<out T>>, keyPropertyNames: List<String>): PropertyNameAdapterFactory<T> {
+    fun withSubTypes(subTypes: List<Class<out T>>, keyPropertyNames: List<String>): NameAdapterFactory<T> {
         require(keyPropertyNames.size == keyPropertyNames.distinct().size) { "Key property name must be unique" }
         require(keyPropertyNames.size == subTypes.size) { "The number of Key property names is different from subtypes" }
 
-        return PropertyNameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
+        return NameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
     }
 
-    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): PropertyNameAdapterFactory<T> {
-        return PropertyNameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackJsonAdapter)
+    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): NameAdapterFactory<T> {
+        return NameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackJsonAdapter)
     }
 
-    override fun withDefaultValue(defaultValue: T?): PropertyNameAdapterFactory<T> {
+    override fun withDefaultValue(defaultValue: T?): NameAdapterFactory<T> {
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 
