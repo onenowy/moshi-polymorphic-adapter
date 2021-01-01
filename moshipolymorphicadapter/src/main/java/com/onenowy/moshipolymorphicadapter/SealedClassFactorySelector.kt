@@ -10,7 +10,7 @@ import kotlin.reflect.full.findAnnotation
 class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
 
     init {
-        require(baseType.isSealed) { "The basetype must be sealed class" }
+        require(baseType.isSealed) { "${baseType.simpleName} must be sealed class" }
     }
 
     fun getAdapterFactory(): MoshiPolymorphicAdapterFactory<*, T> {

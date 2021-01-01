@@ -1,3 +1,2 @@
-include ':adapterfactorycodegen'
 include ':moshipolymorphicadapter'
 rootProject.name = "MoshiPolymorphicAdapter"

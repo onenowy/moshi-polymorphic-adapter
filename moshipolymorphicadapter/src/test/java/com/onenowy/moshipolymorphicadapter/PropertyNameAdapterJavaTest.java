@@ -137,7 +137,7 @@ public class PropertyNameAdapterJavaTest {
             adapter.fromJson(this.monitorJson);
         } catch (JsonDataException var5) {
             System.out.println(var5);
-            Truth.assertThat(var5).hasMessageThat().isEqualTo("No matching property names for keys");
+            Truth.assertThat(var5).hasMessageThat().isEqualTo("No matching property names for []");
         }
 
         adapter = this.getComputerAdapter(this.nameAdapterFactory.withSubtype(Monitor.class, "test"));
@@ -148,7 +148,8 @@ public class PropertyNameAdapterJavaTest {
         } catch (JsonDataException var4) {
             boolean var3 = false;
             System.out.println(var4);
-            Truth.assertThat(var4).hasMessageThat().isEqualTo("No matching property names for keys");
+            Truth.assertThat(var4).hasMessageThat().isEqualTo("No matching property names for " +
+                    "[test]");
         }
 
     }
@@ -165,7 +166,7 @@ public class PropertyNameAdapterJavaTest {
             adapter.toJson(this.monitor);
         } catch (IllegalArgumentException var3) {
             System.out.println(var3);
-            Truth.assertThat(var3).hasMessageThat().isEqualTo("FallbackJsonAdapter with defaultValue cannot make Json Object");
+            Truth.assertThat(var3).hasMessageThat().isEqualTo("FallbackJsonAdapter with "+monitor+" cannot make Json Object");
         }
     }
 }

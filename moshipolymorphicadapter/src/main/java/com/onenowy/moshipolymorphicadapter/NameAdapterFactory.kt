@@ -26,7 +26,7 @@ class NameAdapterFactory<T> @JvmOverloads constructor(
 
 
     fun withSubtype(subType: Class<out T>, keyPropertyName: String): NameAdapterFactory<T> {
-        require(!keyPropertyNames.contains(keyPropertyName)) { "Key property name must be unique" }
+        require(!keyPropertyNames.contains(keyPropertyName)) { "$keyPropertyName must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newKeyPropertyNames = keyPropertyNames.toMutableList()
@@ -35,8 +35,8 @@ class NameAdapterFactory<T> @JvmOverloads constructor(
     }
 
     fun withSubTypes(subTypes: List<Class<out T>>, keyPropertyNames: List<String>): NameAdapterFactory<T> {
-        require(keyPropertyNames.size == keyPropertyNames.distinct().size) { "Key property name must be unique" }
-        require(keyPropertyNames.size == subTypes.size) { "The number of Key property names is different from subtypes" }
+        require(keyPropertyNames.size == keyPropertyNames.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
+        require(keyPropertyNames.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
 
         return NameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
     }
@@ -65,7 +65,7 @@ class NameAdapterFactory<T> @JvmOverloads constructor(
                 if (fallbackAdapter != null) {
                     fallbackAdapter.fromJson(reader)
                 } else {
-                    throw JsonDataException("No matching property names for keys")
+                    throw JsonDataException("No matching property names for $keyPropertyNames")
                 }
             } else {
                 jsonAdapters[keyIndex].fromJson(reader)

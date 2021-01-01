@@ -21,7 +21,7 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
     }
 
     fun withSubType(subType: Class<out T>, label: K): ValueAdapterFactory<T, K> {
-        require(!labels.contains(label)) { "Labels must be unique" }
+        require(!labels.contains(label)) { "$label must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newLabels = labels.toMutableList()
@@ -30,8 +30,8 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
     }
 
     fun withSubTypes(subTypes: List<Class<out T>>, labels: List<K>): ValueAdapterFactory<T, K> {
-        require(labels.size == labels.distinct().size) { "Key property name must be unique" }
-        require(labels.size == subTypes.size) { "The number of Key property names is different from subtypes" }
+        require(labels.size == labels.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
+        require(labels.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
         return ValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackAdapter)
     }
 
@@ -145,7 +145,7 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                 is Number -> writer.value(value)
                 is Boolean -> writer.value(value)
                 is String -> writer.value(value)
-                else -> throw IllegalArgumentException("${value.javaClass.canonicalName} is not supported")
+                else -> throw IllegalArgumentException("${value.javaClass.simpleName} is not supported")
             }
         }
     }

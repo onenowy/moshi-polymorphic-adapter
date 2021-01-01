@@ -176,7 +176,7 @@ public class PropertValueAdapterJavaTest {
             adapter.toJson(this.keyboard);
         } catch (IllegalArgumentException var4) {
             System.out.println(var4);
-            Truth.assertThat(var4).hasMessageThat().isEqualTo("FallbackJsonAdapter with defaultValue cannot make Json Object");
+            Truth.assertThat(var4).hasMessageThat().isEqualTo("FallbackJsonAdapter with "+monitor+" cannot make Json Object");
         }
 
     }

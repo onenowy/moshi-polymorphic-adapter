@@ -57,7 +57,7 @@ class SealClassAdapterFactoryTest {
         try {
             computerAdapter.fromJson(monitorValueJson)
         } catch (e: JsonDataException) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo("No matching property names for keys")
+            Truth.assertThat(e).hasMessageThat().isEqualTo("No matching property names for [monitorUnique, mouseUnique, keyboardUnique]")
         }
     }
 

@@ -150,7 +150,7 @@ class PropertyValueAdapterTest {
         try {
             adapter.toJson(keyboard)
         } catch (e: IllegalArgumentException) {
-            assertThat(e).hasMessageThat().isEqualTo("FallbackJsonAdapter with defaultValue cannot make Json Object")
+            assertThat(e).hasMessageThat().isEqualTo("FallbackJsonAdapter with $monitor cannot make Json Object")
         }
     }
 }
