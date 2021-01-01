@@ -95,7 +95,11 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                 }
                 return index
             }
-            throw JsonDataException("Missing label for $labelKey")
+            if (fallbackAdapter == null) {
+                throw JsonDataException("Missing label for $labelKey")
+            } else {
+                return -1
+            }
         }
 
         private fun getNumber(reader: JsonReader, labelType: K?): Number? {

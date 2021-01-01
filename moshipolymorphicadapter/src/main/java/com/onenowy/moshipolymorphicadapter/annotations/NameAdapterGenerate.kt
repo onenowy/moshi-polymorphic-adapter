@@ -1,5 +1,5 @@
 package com.onenowy.moshipolymorphicadapter.annotations
 
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
 annotation class NameAdapterGenerate

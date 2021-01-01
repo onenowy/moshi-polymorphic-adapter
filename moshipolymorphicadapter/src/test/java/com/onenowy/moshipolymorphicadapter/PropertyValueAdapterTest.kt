@@ -12,21 +12,21 @@ import org.junit.Test
 
 class PropertyValueAdapterTest {
 
-    val intFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+    val intFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
         .withSubType(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
 
-    val stringFacgtory = PropertyValueAdapterFactory.of(Computer::class.java, "typeString", String::class.java)
+    val stringFacgtory = ValueAdapterFactory.of(Computer::class.java, "typeString", String::class.java)
         .withSubType(Monitor::class.java, Computer.ComTypeString.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeString.Keyboard.value)
         .withSubType(Mouse::class.java, Computer.ComTypeString.Mouse.value)
 
-    val doubleFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeDouble", Double::class.java)
+    val doubleFactory = ValueAdapterFactory.of(Computer::class.java, "typeDouble", Double::class.java)
         .withSubType(Monitor::class.java, Computer.ComTypeDouble.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeDouble.Keyboard.value)
         .withSubType(Mouse::class.java, Computer.ComTypeDouble.Mouse.value)
 
-    val longFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeLong", Long::class.java)
+    val longFactory = ValueAdapterFactory.of(Computer::class.java, "typeLong", Long::class.java)
         .withSubType(Monitor::class.java, Computer.ComTypeLong.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
 
@@ -87,7 +87,7 @@ class PropertyValueAdapterTest {
 
     @Test
     fun unregisteredSubtype() {
-        val propertyValueAdapterFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
         var adapter = getComputerAdapter(propertyValueAdapterFactory)
 
         try {
@@ -125,7 +125,7 @@ class PropertyValueAdapterTest {
 
     @Test
     fun unresigsterdLableKey() {
-        val propertyValueAdapterFactory = PropertyValueAdapterFactory.of(Computer::class.java, "wrongKey", Int::class.java)
+        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "wrongKey", Int::class.java)
             .withSubType(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
             .withSubType(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
         val adapter = getComputerAdapter(propertyValueAdapterFactory)
@@ -142,7 +142,7 @@ class PropertyValueAdapterTest {
 
     @Test
     fun defaultValue() {
-        val propertyValueAdapterFactory = PropertyValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java).withDefaultValue(monitor)
+        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java).withDefaultValue(monitor)
         val adapter = getComputerAdapter(propertyValueAdapterFactory)
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor)
@@ -150,7 +150,7 @@ class PropertyValueAdapterTest {
         try {
             adapter.toJson(keyboard)
         } catch (e: IllegalArgumentException) {
-            assertThat(e).hasMessageThat().isEqualTo("Expected one of [] but found $keyboard, a ${keyboard.javaClass}. Register this subtype.")
+            assertThat(e).hasMessageThat().isEqualTo("FallbackJsonAdapter with defaultValue cannot make Json Object")
         }
     }
 }

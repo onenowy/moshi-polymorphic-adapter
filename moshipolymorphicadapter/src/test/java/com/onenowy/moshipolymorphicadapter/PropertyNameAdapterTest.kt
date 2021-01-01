@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter
+ package com.onenowy.moshipolymorphicadapter
 
 import com.google.common.truth.Truth.assertThat
 import com.onenowy.moshipolymorphicadapter.util.Computer
@@ -12,7 +12,7 @@ import org.junit.Test
 
 class PropertyNameAdapterTest {
 
-    val propertyNameAdapterFactory = PropertyNameAdapterFactory.of(Computer::class.java)
+    val propertyNameAdapterFactory = NameAdapterFactory.of(Computer::class.java)
     val withSubtype = propertyNameAdapterFactory.withSubtype(
         Monitor::class.java,
         "monitorUnique"
@@ -31,7 +31,7 @@ class PropertyNameAdapterTest {
     val mouseJson = "{\"mouseUnique\":\"mouse\"}"
     val keyboardJson = "{\"keyboardUnique\":true}"
 
-    private fun getComputerAdapter(factory: JsonAdapter.Factory) = Moshi.Builder().add(factory).build().adapter(Computer::class.java)
+    fun getComputerAdapter(factory: JsonAdapter.Factory) = Moshi.Builder().add(factory).build().adapter(Computer::class.java)
 
     @Test
     fun toJson() {
@@ -92,8 +92,7 @@ class PropertyNameAdapterTest {
         try {
             adapter.toJson(monitor)
         } catch (e: IllegalArgumentException) {
-            assertThat(e).hasMessageThat().isEqualTo("Expected one of [] but found $monitor, a ${monitor.javaClass}. Register this subtype.")
+            assertThat(e).hasMessageThat().isEqualTo("FallbackJsonAdapter with defaultValue cannot make Json Object")
         }
     }
-
 }

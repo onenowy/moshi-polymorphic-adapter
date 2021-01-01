@@ -6,4 +6,11 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
+  <component name="SuppressABINotification">
+    <option name="modulesWithSuppressedNotConfigured">
+      <set>
+        <option value="MoshiPolymorphicAdapter.moshipolymorphicadapter" />
+      </set>
+    </option>
+  </component>
 </project>

@@ -18,13 +18,13 @@ import kotlin.collections.CollectionsKt;
 
 public class PropertValueAdapterJavaTest {
     @NotNull
-    private final PropertyValueAdapterFactory intFactory;
+    private final ValueAdapterFactory intFactory;
     @NotNull
-    private final PropertyValueAdapterFactory stringFacgtory;
+    private final ValueAdapterFactory stringFacgtory;
     @NotNull
-    private final PropertyValueAdapterFactory doubleFactory;
+    private final ValueAdapterFactory doubleFactory;
     @NotNull
-    private final PropertyValueAdapterFactory longFactory;
+    private final ValueAdapterFactory longFactory;
     private final Monitor monitor;
     private final Mouse mouse;
     private final Keyboard keyboard;
@@ -33,10 +33,10 @@ public class PropertValueAdapterJavaTest {
     private final String keyboardJson;
 
     public PropertValueAdapterJavaTest() {
-        this.intFactory = PropertyValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withSubType(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
-        this.stringFacgtory = PropertyValueAdapterFactory.Companion.of(Computer.class, "typeString", String.class).withSubType(Monitor.class, Computer.ComTypeString.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeString.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeString.Mouse.getValue());
-        this.doubleFactory = PropertyValueAdapterFactory.Companion.of(Computer.class, "typeDouble", Double.TYPE).withSubType(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
-        this.longFactory = PropertyValueAdapterFactory.Companion.of(Computer.class, "typeLong", Long.TYPE).withSubType(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
+        this.intFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withSubType(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
+        this.stringFacgtory = ValueAdapterFactory.Companion.of(Computer.class, "typeString", String.class).withSubType(Monitor.class, Computer.ComTypeString.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeString.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeString.Mouse.getValue());
+        this.doubleFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", Double.TYPE).withSubType(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
+        this.longFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeLong", Long.TYPE).withSubType(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
         this.monitor = new Monitor(1);
         this.mouse = new Mouse("mouse");
         this.keyboard = new Keyboard(true);
@@ -46,22 +46,22 @@ public class PropertValueAdapterJavaTest {
     }
 
     @NotNull
-    public final PropertyValueAdapterFactory getIntFactory() {
+    public final ValueAdapterFactory getIntFactory() {
         return this.intFactory;
     }
 
     @NotNull
-    public final PropertyValueAdapterFactory getStringFacgtory() {
+    public final ValueAdapterFactory getStringFacgtory() {
         return this.stringFacgtory;
     }
 
     @NotNull
-    public final PropertyValueAdapterFactory getDoubleFactory() {
+    public final ValueAdapterFactory getDoubleFactory() {
         return this.doubleFactory;
     }
 
     @NotNull
-    public final PropertyValueAdapterFactory getLongFactory() {
+    public final ValueAdapterFactory getLongFactory() {
         return this.longFactory;
     }
 
@@ -111,8 +111,8 @@ public class PropertValueAdapterJavaTest {
 
     @Test
     public final void unregisteredSubtype() throws IOException {
-        PropertyValueAdapterFactory propertyValueAdapterFactory = PropertyValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE);
-        JsonAdapter adapter = this.getComputerAdapter(propertyValueAdapterFactory);
+        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE);
+        JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
 
         try {
             adapter.toJson(this.monitor);
@@ -128,7 +128,7 @@ public class PropertValueAdapterJavaTest {
             Truth.assertThat(var6).hasMessageThat().isEqualTo("Expected one of [] for key 'typeInt' but found 'null'. Register a subtype for this label.");
         }
 
-        adapter = this.getComputerAdapter(propertyValueAdapterFactory.withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()));
+        adapter = this.getComputerAdapter(valueAdapterFactory.withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()));
 
         try {
             adapter.toJson(this.monitor);
@@ -148,8 +148,8 @@ public class PropertValueAdapterJavaTest {
 
     @Test
     public final void unresigsterdLableKey() throws IOException {
-        PropertyValueAdapterFactory propertyValueAdapterFactory = PropertyValueAdapterFactory.Companion.of(Computer.class, "wrongKey", Integer.TYPE).withSubType(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
-        JsonAdapter adapter = this.getComputerAdapter(propertyValueAdapterFactory);
+        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class, "wrongKey", Integer.TYPE).withSubType(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
+        JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
         Truth.assertThat(adapter.toJson(this.monitor)).contains("\"wrongKey\":1");
         Truth.assertThat(adapter.toJson(this.mouse)).contains("\"wrongKey\":2");
         Truth.assertThat(adapter.toJson(this.keyboard)).contains("\"wrongKey\":3");
@@ -165,9 +165,9 @@ public class PropertValueAdapterJavaTest {
 
     @Test
     public final void defaultValue() throws IOException {
-        PropertyValueAdapterFactory propertyValueAdapterFactory =
-                PropertyValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withDefaultValue(this.monitor);
-        JsonAdapter adapter = this.getComputerAdapter(propertyValueAdapterFactory);
+        ValueAdapterFactory valueAdapterFactory =
+                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withDefaultValue(this.monitor);
+        JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
         Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.monitor);
@@ -176,7 +176,7 @@ public class PropertValueAdapterJavaTest {
             adapter.toJson(this.keyboard);
         } catch (IllegalArgumentException var4) {
             System.out.println(var4);
-            Truth.assertThat(var4).hasMessageThat().isEqualTo("Expected one of [] but found " + this.keyboard + ", a " + this.keyboard.getClass() + ". Register this subtype.");
+            Truth.assertThat(var4).hasMessageThat().isEqualTo("FallbackJsonAdapter with defaultValue cannot make Json Object");
         }
 
     }

@@ -19,11 +19,11 @@ import kotlin.collections.CollectionsKt;
 
 public class PropertyNameAdapterJavaTest {
     @NotNull
-    private final PropertyNameAdapterFactory propertyNameAdapterFactory;
+    private final NameAdapterFactory nameAdapterFactory;
     @NotNull
-    private final PropertyNameAdapterFactory withSubtype;
+    private final NameAdapterFactory withSubtype;
     @NotNull
-    private final PropertyNameAdapterFactory withSubtypes;
+    private final NameAdapterFactory withSubtypes;
     @NotNull
     private final Monitor monitor;
     @NotNull
@@ -38,9 +38,9 @@ public class PropertyNameAdapterJavaTest {
     private final String keyboardJson;
 
     public PropertyNameAdapterJavaTest() {
-        this.propertyNameAdapterFactory = PropertyNameAdapterFactory.Companion.of(Computer.class);
-        this.withSubtype = this.propertyNameAdapterFactory.withSubtype(Monitor.class, "monitorUnique").withSubtype(Mouse.class, "mouseUnique").withSubtype(Keyboard.class, "keyboardUnique");
-        this.withSubtypes = this.propertyNameAdapterFactory.withSubTypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
+        this.nameAdapterFactory = NameAdapterFactory.Companion.of(Computer.class);
+        this.withSubtype = this.nameAdapterFactory.withSubtype(Monitor.class, "monitorUnique").withSubtype(Mouse.class, "mouseUnique").withSubtype(Keyboard.class, "keyboardUnique");
+        this.withSubtypes = this.nameAdapterFactory.withSubTypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
         this.monitor = new Monitor(1);
         this.mouse = new Mouse("mouse");
         this.keyboard = new Keyboard(true);
@@ -50,17 +50,17 @@ public class PropertyNameAdapterJavaTest {
     }
 
     @NotNull
-    public final PropertyNameAdapterFactory getPropertyNameAdapterFactory() {
-        return this.propertyNameAdapterFactory;
+    public final NameAdapterFactory getNameAdapterFactory() {
+        return this.nameAdapterFactory;
     }
 
     @NotNull
-    public final PropertyNameAdapterFactory getWithSubtype() {
+    public final NameAdapterFactory getWithSubtype() {
         return this.withSubtype;
     }
 
     @NotNull
-    public final PropertyNameAdapterFactory getWithSubtypes() {
+    public final NameAdapterFactory getWithSubtypes() {
         return this.withSubtypes;
     }
 
@@ -124,7 +124,7 @@ public class PropertyNameAdapterJavaTest {
 
     @Test
     public final void unregisteredSubtype() throws IOException {
-        JsonAdapter adapter = this.getComputerAdapter(this.propertyNameAdapterFactory);
+        JsonAdapter adapter = this.getComputerAdapter(this.nameAdapterFactory);
 
         try {
             adapter.toJson(this.monitor);
@@ -140,7 +140,7 @@ public class PropertyNameAdapterJavaTest {
             Truth.assertThat(var5).hasMessageThat().isEqualTo("No matching property names for keys");
         }
 
-        adapter = this.getComputerAdapter(this.propertyNameAdapterFactory.withSubtype(Monitor.class, "test"));
+        adapter = this.getComputerAdapter(this.nameAdapterFactory.withSubtype(Monitor.class, "test"));
         Truth.assertThat(adapter.toJson(this.monitor)).isEqualTo(this.monitorJson);
 
         try {
@@ -156,7 +156,7 @@ public class PropertyNameAdapterJavaTest {
     @Test
     public final void defaultValue() throws IOException {
         JsonAdapter adapter =
-                this.getComputerAdapter(this.propertyNameAdapterFactory.withDefaultValue(this.monitor));
+                this.getComputerAdapter(this.nameAdapterFactory.withDefaultValue(this.monitor));
         Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.monitor);
@@ -165,7 +165,7 @@ public class PropertyNameAdapterJavaTest {
             adapter.toJson(this.monitor);
         } catch (IllegalArgumentException var3) {
             System.out.println(var3);
-            Truth.assertThat(var3).hasMessageThat().isEqualTo("Expected one of [] but found " + this.monitor + ", a " + this.monitor.getClass() + ". Register this subtype.");
+            Truth.assertThat(var3).hasMessageThat().isEqualTo("FallbackJsonAdapter with defaultValue cannot make Json Object");
         }
     }
 }

@@ -3,5 +3,5 @@ package com.onenowy.moshipolymorphicadapter.annotations
 import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 annotation class ValueAdapterGenerate(val labelType: KClass<out Any>, val labelKey: String)
