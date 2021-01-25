@@ -1,4 +1,3 @@
-apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: "kotlin-kapt"
 
@@ -17,7 +16,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation deps.kotlin.stdlib
     implementation deps.moshi.moshi
-    api project(path: ':moshipolymorphicadapter')
+    api project(':moshipolymorphicadapter')
     kaptTest deps.moshi.codegen
     testImplementation deps.test.junit
     testImplementation deps.test.truth
