@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath deps.gradle_plugin
+        classpath "com.android.tools.build:gradle:${deps.gradle_version}"
         classpath deps.kotlin.plugin
     }
 }

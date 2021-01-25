@@ -12,7 +12,7 @@ deps.kotlin = kotlin
 deps.test = [:]
 def junit_version= '4.13.1'
 deps.test.junit = "junit:junit:$junit_version"
-def truth_version= '1.1'
+def truth_version= '1.1.2'
 deps.test.truth = "com.google.truth:truth:$truth_version"
 
 
@@ -26,8 +26,7 @@ deps.moshi = moshi
 def autoservice_version = "1.0-rc7"
 deps.autoservice = "com.google.auto.service:auto-service:$autoservice_version"
 
-def gradle_version="4.1.1"
-deps.gradle_plugin = "com.android.tools.build:gradle:$gradle_version"
+deps.gradle_version = "4.1.2"
 
 def kotlinpoet_version="1.7.2"
 deps.kotlinpoet = "com.squareup:kotlinpoet:$kotlinpoet_version"

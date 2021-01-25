@@ -1,7 +1,7 @@
-package com.onenowy.moshipolymorphicadapter
+package com.onenowy.sealedclassreflect
 
 import com.google.common.truth.Truth
-import com.onenowy.moshipolymorphicadapter.util.*
+import com.onenowy.sealedclassreflect.util.*
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import org.junit.Test

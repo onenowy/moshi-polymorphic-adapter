@@ -9,7 +9,6 @@ dependencies {
     kaptTest deps.moshi.codegen
     testImplementation deps.test.junit
     testImplementation deps.test.truth
-    implementation deps.kotlin.reflect
 }
 
 compileKotlin {

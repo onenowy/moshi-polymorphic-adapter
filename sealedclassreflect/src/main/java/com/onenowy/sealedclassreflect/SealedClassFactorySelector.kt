@@ -1,9 +1,12 @@
-package com.onenowy.moshipolymorphicadapter
+package com.onenowy.sealedclassreflect
 
-import com.onenowy.moshipolymorphicadapter.annotations.LabelValue
-import com.onenowy.moshipolymorphicadapter.annotations.NameAdapterGenerate
-import com.onenowy.moshipolymorphicadapter.annotations.UniqueName
-import com.onenowy.moshipolymorphicadapter.annotations.ValueAdapterGenerate
+import com.onenowy.moshipolymorphicadapter.MoshiPolymorphicAdapterFactory
+import com.onenowy.moshipolymorphicadapter.NameAdapterFactory
+import com.onenowy.moshipolymorphicadapter.ValueAdapterFactory
+import com.onenowy.sealedclassreflect.annotations.LabelValue
+import com.onenowy.sealedclassreflect.annotations.NameFactory
+import com.onenowy.sealedclassreflect.annotations.UniqueName
+import com.onenowy.sealedclassreflect.annotations.ValueFactory
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
@@ -14,14 +17,14 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
     }
 
     fun getAdapterFactory(): MoshiPolymorphicAdapterFactory<*, T> {
-        return if (baseType.findAnnotation<NameAdapterGenerate>() != null) {
+        return if (baseType.findAnnotation<NameFactory>() != null) {
             nameAdapterFactoryGenerator(baseType)
         } else {
-            val valueAdapterGenerate = baseType.findAnnotation<ValueAdapterGenerate>()
+            val valueAdapterGenerate = baseType.findAnnotation<ValueFactory>()
             if (valueAdapterGenerate != null) {
                 valueAdapterFactoryGenerator(baseType, valueAdapterGenerate.labelKey, valueAdapterGenerate.labelType)
             } else {
-                throw IllegalArgumentException("No adaptergenerate annotation found in ${baseType.simpleName}")
+                throw IllegalArgumentException("No Adapter Factory Annotations found in ${baseType.simpleName}")
             }
         }
     }
