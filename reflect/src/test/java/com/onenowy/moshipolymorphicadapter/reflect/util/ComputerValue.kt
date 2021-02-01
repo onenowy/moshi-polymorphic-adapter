@@ -1,10 +1,10 @@
-package com.onenowy.sealedclassreflect.util
+package com.onenowy.moshipolymorphicadapter.reflect.util
 
-import com.onenowy.sealedclassreflect.annotations.LabelValue
-import com.onenowy.sealedclassreflect.annotations.ValueFactory
+import com.onenowy.moshipolymorphicadapter.annotations.LabelValue
+import com.onenowy.moshipolymorphicadapter.reflect.annotations.ReflectValueAdaterFactory
 import com.squareup.moshi.JsonClass
 
-@ValueFactory(Int::class, "type")
+@ReflectValueAdaterFactory(Int::class, "type")
 sealed class ComputerValue
 
 @LabelValue(1.toString())

@@ -1,7 +1,7 @@
-package com.onenowy.sealedclassreflect
+package com.onenowy.moshipolymorphicadapter.reflect
 
 import com.google.common.truth.Truth
-import com.onenowy.sealedclassreflect.util.*
+import com.onenowy.moshipolymorphicadapter.reflect.util.*
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import org.junit.Test
@@ -38,6 +38,7 @@ class SealClassAdapterFactoryTest {
 
     @Test
     fun FromJson() {
+
         Truth.assertThat(computerAdapter.fromJson(monitorJson)).isEqualTo(monitor)
         Truth.assertThat(computerAdapter.fromJson(mouseJson)).isEqualTo(mouse)
         Truth.assertThat(computerAdapter.fromJson(keyboardJson)).isEqualTo(keyboard)
@@ -57,7 +58,7 @@ class SealClassAdapterFactoryTest {
         try {
             computerAdapter.fromJson(monitorValueJson)
         } catch (e: JsonDataException) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo("No matching property names for [monitorUnique, mouseUnique, keyboardUnique]")
+            Truth.assertThat(e).hasMessageThat().isEqualTo("No matching Field names for [monitorUnique, mouseUnique, keyboardUnique]")
         }
     }
 

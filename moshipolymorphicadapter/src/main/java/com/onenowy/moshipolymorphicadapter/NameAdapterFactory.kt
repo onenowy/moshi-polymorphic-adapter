@@ -4,7 +4,7 @@ import com.squareup.moshi.*
 import java.lang.reflect.Type
 
 class NameAdapterFactory<T> @JvmOverloads constructor(
-    private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val keyPropertyNames: List<String> = emptyList(),
+    private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val labelFieldNames: List<String> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
 ) : MoshiPolymorphicAdapterFactory<NameAdapterFactory<T>, T> {
 
@@ -14,7 +14,7 @@ class NameAdapterFactory<T> @JvmOverloads constructor(
         }
 
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
-        return PropertyNameAdapter(subTypes, keyPropertyNames, jsonAdapters, fallbackAdapter).nullSafe()
+        return FieldNameAdapter(subTypes, labelFieldNames, jsonAdapters, fallbackAdapter).nullSafe()
     }
 
     companion object {
@@ -25,57 +25,57 @@ class NameAdapterFactory<T> @JvmOverloads constructor(
     }
 
 
-    fun withSubtype(subType: Class<out T>, keyPropertyName: String): NameAdapterFactory<T> {
-        require(!keyPropertyNames.contains(keyPropertyName)) { "$keyPropertyName must be unique" }
+    fun withSubtype(subType: Class<out T>, labelFieldName: String): NameAdapterFactory<T> {
+        require(!labelFieldNames.contains(labelFieldName)) { "$labelFieldName must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
-        val newKeyPropertyNames = keyPropertyNames.toMutableList()
-        newKeyPropertyNames.add(keyPropertyName)
-        return NameAdapterFactory(baseType, newSubTypes, newKeyPropertyNames, fallbackAdapter)
+        val newLabelFieldNames = labelFieldNames.toMutableList()
+        newLabelFieldNames.add(labelFieldName)
+        return NameAdapterFactory(baseType, newSubTypes, newLabelFieldNames, fallbackAdapter)
     }
 
-    fun withSubTypes(subTypes: List<Class<out T>>, keyPropertyNames: List<String>): NameAdapterFactory<T> {
-        require(keyPropertyNames.size == keyPropertyNames.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
-        require(keyPropertyNames.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
+    fun withSubTypes(subTypes: List<Class<out T>>, labelFieldNames: List<String>): NameAdapterFactory<T> {
+        require(labelFieldNames.size == labelFieldNames.distinct().size) { "Label Field name for ${baseType.simpleName} must be unique" }
+        require(labelFieldNames.size == subTypes.size) { "The number of Label Field names for ${baseType.simpleName} is different from subtypes" }
 
-        return NameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackAdapter)
+        return NameAdapterFactory(baseType, subTypes, labelFieldNames, fallbackAdapter)
     }
 
     override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): NameAdapterFactory<T> {
-        return NameAdapterFactory(baseType, subTypes, keyPropertyNames, fallbackJsonAdapter)
+        return NameAdapterFactory(baseType, subTypes, labelFieldNames, fallbackJsonAdapter)
     }
 
     override fun withDefaultValue(defaultValue: T?): NameAdapterFactory<T> {
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 
-    class PropertyNameAdapter @JvmOverloads constructor(
+    class FieldNameAdapter @JvmOverloads constructor(
         private val subTypes: List<Type>,
-        private val keyPropertyNames: List<String>,
+        private val labelFieldNames: List<String>,
         private val jsonAdapters: List<JsonAdapter<Any>>,
         private val fallbackAdapter: JsonAdapter<Any>?,
-        private val propertyNameOptions: JsonReader.Options = JsonReader.Options.of(*keyPropertyNames.toTypedArray())
+        private val FieldNameOptions: JsonReader.Options = JsonReader.Options.of(*labelFieldNames.toTypedArray())
     ) : JsonAdapter<Any>() {
 
         override fun fromJson(reader: JsonReader): Any? {
             val peeked = reader.peekJson()
             peeked.setFailOnUnknown(false)
-            val keyIndex = keyIndex(peeked)
-            return if (keyIndex == -1) {
+            val labelIndex = labelIndex(peeked)
+            return if (labelIndex == -1) {
                 if (fallbackAdapter != null) {
                     fallbackAdapter.fromJson(reader)
                 } else {
-                    throw JsonDataException("No matching property names for $keyPropertyNames")
+                    throw JsonDataException("No matching Field names for $labelFieldNames")
                 }
             } else {
-                jsonAdapters[keyIndex].fromJson(reader)
+                jsonAdapters[labelIndex].fromJson(reader)
             }
         }
 
-        private fun keyIndex(reader: JsonReader): Int {
+        private fun labelIndex(reader: JsonReader): Int {
             reader.beginObject()
             while (reader.hasNext()) {
-                val index = reader.selectName(propertyNameOptions)
+                val index = reader.selectName(FieldNameOptions)
                 if (index == -1) {
                     reader.skipName()
                     reader.skipValue()

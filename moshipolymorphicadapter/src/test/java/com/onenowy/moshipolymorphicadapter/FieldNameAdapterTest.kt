@@ -10,14 +10,14 @@ import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import org.junit.Test
 
-class PropertyNameAdapterTest {
+class FieldNameAdapterTest {
 
-    val propertyNameAdapterFactory = NameAdapterFactory.of(Computer::class.java)
-    val withSubtype = propertyNameAdapterFactory.withSubtype(
+    val FieldNameAdapterFactory = NameAdapterFactory.of(Computer::class.java)
+    val withSubtype = FieldNameAdapterFactory.withSubtype(
         Monitor::class.java,
         "monitorUnique"
     ).withSubtype(Mouse::class.java, "mouseUnique").withSubtype(Keyboard::class.java, "keyboardUnique")
-    val withSubtypes = propertyNameAdapterFactory.withSubTypes(
+    val withSubtypes = FieldNameAdapterFactory.withSubTypes(
         listOf(Monitor::class.java, Mouse::class.java, Keyboard::class.java),
         listOf("monitorUnique", "mouseUnique", "keyboardUnique")
     )
@@ -59,7 +59,7 @@ class PropertyNameAdapterTest {
 
     @Test
     fun unregisteredSubtype() {
-        var adapter = getComputerAdapter(propertyNameAdapterFactory)
+        var adapter = getComputerAdapter(FieldNameAdapterFactory)
         try {
             adapter.toJson(monitor)
         } catch (e: IllegalArgumentException) {
@@ -69,9 +69,9 @@ class PropertyNameAdapterTest {
         try {
             adapter.fromJson(monitorJson)
         } catch (e: JsonDataException) {
-            assertThat(e).hasMessageThat().isEqualTo("No matching property names for []")
+            assertThat(e).hasMessageThat().isEqualTo("No matching Field names for []")
         }
-        adapter = getComputerAdapter(propertyNameAdapterFactory.withSubtype(Monitor::class.java, "test"))
+        adapter = getComputerAdapter(FieldNameAdapterFactory.withSubtype(Monitor::class.java, "test"))
 
         assertThat(adapter.toJson(monitor)).isEqualTo(monitorJson)
 
@@ -79,13 +79,13 @@ class PropertyNameAdapterTest {
             adapter.fromJson(monitorJson)
         } catch (e: JsonDataException) {
             println(e)
-            assertThat(e).hasMessageThat().isEqualTo("No matching property names for [test]")
+            assertThat(e).hasMessageThat().isEqualTo("No matching Field names for [test]")
         }
     }
 
     @Test
     fun defaultValue() {
-        val adapter = getComputerAdapter(propertyNameAdapterFactory.withDefaultValue(monitor))
+        val adapter = getComputerAdapter(FieldNameAdapterFactory.withDefaultValue(monitor))
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor)

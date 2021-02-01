@@ -1,10 +1,10 @@
-package com.onenowy.sealedclassreflect.util
+package com.onenowy.moshipolymorphicadapter.reflect.util
 
-import com.onenowy.sealedclassreflect.annotations.NameFactory
-import com.onenowy.sealedclassreflect.annotations.UniqueName
+import com.onenowy.moshipolymorphicadapter.annotations.LabelField
+import com.onenowy.moshipolymorphicadapter.reflect.annotations.ReflectNameAdapterFactory
 import com.squareup.moshi.JsonClass
 
-@NameFactory
+@ReflectNameAdapterFactory
 sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, val typeDouble: ComTypeDouble, val typeLong: ComTypeLong) {
     enum class ComTypeInt(val value: Int) {
         Monitor(1), Mouse(2), Keyboard(3)
@@ -24,13 +24,16 @@ sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, va
 }
 
 @JsonClass(generateAdapter = true)
-data class Monitor(@UniqueName val monitorUnique: Int?) : Computer(ComTypeInt.Monitor, ComTypeString.Monitor, ComTypeDouble.Monitor, ComTypeLong.Monitor)
+@LabelField("monitorUnique")
+data class Monitor(val monitorUnique: Int?) : Computer(ComTypeInt.Monitor, ComTypeString.Monitor, ComTypeDouble.Monitor, ComTypeLong.Monitor)
 
 @JsonClass(generateAdapter = true)
-data class Mouse(@UniqueName val mouseUnique: String?) : Computer(ComTypeInt.Mouse, ComTypeString.Mouse, ComTypeDouble.Mouse, ComTypeLong.Mouse)
+@LabelField("mouseUnique")
+data class Mouse(val mouseUnique: String?) : Computer(ComTypeInt.Mouse, ComTypeString.Mouse, ComTypeDouble.Mouse, ComTypeLong.Mouse)
 
 @JsonClass(generateAdapter = true)
-data class Keyboard(@UniqueName val keyboardUnique: Boolean?) :
+@LabelField("keyboardUnique")
+data class Keyboard(val keyboardUnique: Boolean?) :
     Computer(ComTypeInt.Keyboard, ComTypeString.Keyboard, ComTypeDouble.Keyboard, ComTypeLong.Keyboard)
 
 

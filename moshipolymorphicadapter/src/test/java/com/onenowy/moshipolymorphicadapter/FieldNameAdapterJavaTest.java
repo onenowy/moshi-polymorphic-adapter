@@ -17,7 +17,7 @@ import java.io.IOException;
 import kotlin.collections.CollectionsKt;
 
 
-public class PropertyNameAdapterJavaTest {
+public class FieldNameAdapterJavaTest {
     @NotNull
     private final NameAdapterFactory nameAdapterFactory;
     @NotNull
@@ -37,7 +37,7 @@ public class PropertyNameAdapterJavaTest {
     @NotNull
     private final String keyboardJson;
 
-    public PropertyNameAdapterJavaTest() {
+    public FieldNameAdapterJavaTest() {
         this.nameAdapterFactory = NameAdapterFactory.Companion.of(Computer.class);
         this.withSubtype = this.nameAdapterFactory.withSubtype(Monitor.class, "monitorUnique").withSubtype(Mouse.class, "mouseUnique").withSubtype(Keyboard.class, "keyboardUnique");
         this.withSubtypes = this.nameAdapterFactory.withSubTypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
@@ -137,7 +137,7 @@ public class PropertyNameAdapterJavaTest {
             adapter.fromJson(this.monitorJson);
         } catch (JsonDataException var5) {
             System.out.println(var5);
-            Truth.assertThat(var5).hasMessageThat().isEqualTo("No matching property names for []");
+            Truth.assertThat(var5).hasMessageThat().isEqualTo("No matching Field names for []");
         }
 
         adapter = this.getComputerAdapter(this.nameAdapterFactory.withSubtype(Monitor.class, "test"));
@@ -148,7 +148,7 @@ public class PropertyNameAdapterJavaTest {
         } catch (JsonDataException var4) {
             boolean var3 = false;
             System.out.println(var4);
-            Truth.assertThat(var4).hasMessageThat().isEqualTo("No matching property names for " +
+            Truth.assertThat(var4).hasMessageThat().isEqualTo("No matching Field names for " +
                     "[test]");
         }
 

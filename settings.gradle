@@ -1,3 +1,4 @@
-include ':sealedclassreflect'
+include ':codegen'
+include ':reflect'
 include ':moshipolymorphicadapter'
 rootProject.name = "MoshiPolymorphicAdapter"
