@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import kotlin.collections.CollectionsKt;
 
-public class PropertValueAdapterJavaTest {
+public class ValueAdapterJavaTest {
     @NotNull
     private final ValueAdapterFactory intFactory;
     @NotNull
@@ -32,11 +32,14 @@ public class PropertValueAdapterJavaTest {
     private final String mouseJson;
     private final String keyboardJson;
 
-    public PropertValueAdapterJavaTest() {
-        this.intFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withSubType(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
+    public ValueAdapterJavaTest() {
+        this.intFactory =
+                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", int.class).withSubType(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
         this.stringFacgtory = ValueAdapterFactory.Companion.of(Computer.class, "typeString", String.class).withSubType(Monitor.class, Computer.ComTypeString.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeString.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeString.Mouse.getValue());
-        this.doubleFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", Double.TYPE).withSubType(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
-        this.longFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeLong", Long.TYPE).withSubType(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
+        this.doubleFactory =
+                ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", double.class).withSubType(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
+        this.longFactory =
+                ValueAdapterFactory.Companion.of(Computer.class, "typeLong", long.class).withSubType(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
         this.monitor = new Monitor(1);
         this.mouse = new Mouse("mouse");
         this.keyboard = new Keyboard(true);

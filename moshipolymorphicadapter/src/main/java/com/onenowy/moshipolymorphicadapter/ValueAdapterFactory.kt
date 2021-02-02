@@ -14,8 +14,11 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
     companion object {
         @JvmStatic
         fun <T, K : Any> of(baseType: Class<T>, labelKey: String, labelType: Class<K>): ValueAdapterFactory<T, K> {
-            require((labelType.isPrimitive && labelType != Char::class.java) || Number::class.java.isAssignableFrom(labelType) || labelType == Boolean::class.javaObjectType || labelType == String::class.java)
-            { "Expected Boolean, a subclass of Number or String, But found ${labelType.simpleName}" }
+            require(
+                (labelType.isPrimitive && labelType != Char::class.java) || Number::class.java.isAssignableFrom(labelType) || labelType == Boolean::class
+                    .javaObjectType || labelType == String::class.java
+            )
+            { "Expected Boolean or a subclass of Number or String, But found ${labelType.simpleName}" }
             return ValueAdapterFactory(baseType, labelKey)
         }
     }
@@ -81,12 +84,12 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                     continue
                 }
                 val token = reader.peek()
-                val labelValue = when (val labelType = labels.lastOrNull()) {
-                    is Boolean -> if (token == JsonReader.Token.BOOLEAN) reader.nextBoolean() else null
-                    is String -> if (token == JsonReader.Token.STRING) reader.nextString() else null
-                    is Number -> if (token == JsonReader.Token.NUMBER) getNumber(reader, labelType) else null
-                    else -> null
-                }
+                val label = labels.lastOrNull()
+                val labelValue = if (label is Boolean && token == JsonReader.Token.BOOLEAN) reader.nextBoolean()
+                else if (label is String && token == JsonReader.Token.STRING) reader.nextString()
+                else if (label is Number && token == JsonReader.Token.NUMBER) getNumber(reader, label)
+                else null
+
                 val index = labels.indexOf(labelValue)
                 if (index == -1) {
                     if (fallbackAdapter == null) {
@@ -102,18 +105,9 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
             }
         }
 
-        private fun getNumber(reader: JsonReader, labelType: K?): Number? {
+        private fun getNumber(reader: JsonReader, label: K): Number? {
             val stringNumber = reader.nextString()
-
-            return when (labelType) {
-                is Byte -> stringNumber.toByteOrNull()
-                is Short -> stringNumber.toShortOrNull()
-                is Int -> stringNumber.toIntOrNull()
-                is Long -> stringNumber.toLongOrNull()
-                is Float -> stringNumber.toFloatOrNull()
-                is Double -> stringNumber.toDoubleOrNull()
-                else -> null
-            }
+            return stringNumber.toSupportedTypeOrNull(label.javaClass) as? Number
         }
 
 
@@ -125,7 +119,7 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                 -1
             }
             val adapter = if (typeIndex == -1) {
-                require(fallbackAdapter != null) { "Expected one of $subTypes but found $value, a ${value?.javaClass}. Register this subtype." }
+                require(fallbackAdapter != null) { "Expected one of $subTypes but found $value, a ${type}. Register this subtype." }
                 fallbackAdapter
             } else {
                 jsonAdapters[typeIndex]

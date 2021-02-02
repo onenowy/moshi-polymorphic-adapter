@@ -1,6 +1,6 @@
 package com.onenowy.moshipolymorphicadapter.reflect
 
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.onenowy.moshipolymorphicadapter.reflect.util.*
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
@@ -28,23 +28,22 @@ class SealClassAdapterFactoryTest {
 
     @Test
     fun toJson() {
-        Truth.assertThat(computerAdapter.toJson(monitor)).isEqualTo(monitorJson)
-        Truth.assertThat(computerAdapter.toJson(mouse)).isEqualTo(mouseJson)
-        Truth.assertThat(computerAdapter.toJson(keyboard)).isEqualTo(keyboardJson)
-        Truth.assertThat(computerValueAdapter.toJson(monitorValue)).isEqualTo(monitorValueJson)
-        Truth.assertThat(computerValueAdapter.toJson(mouseValue)).isEqualTo(mouseValueJson)
-        Truth.assertThat(computerValueAdapter.toJson(keyboardValue)).isEqualTo(keyboardValueJson)
+        assertThat(computerAdapter.toJson(monitor)).isEqualTo(monitorJson)
+        assertThat(computerAdapter.toJson(mouse)).isEqualTo(mouseJson)
+        assertThat(computerAdapter.toJson(keyboard)).isEqualTo(keyboardJson)
+        assertThat(computerValueAdapter.toJson(monitorValue)).isEqualTo(monitorValueJson)
+        assertThat(computerValueAdapter.toJson(mouseValue)).isEqualTo(mouseValueJson)
+        assertThat(computerValueAdapter.toJson(keyboardValue)).isEqualTo(keyboardValueJson)
     }
 
     @Test
     fun FromJson() {
-
-        Truth.assertThat(computerAdapter.fromJson(monitorJson)).isEqualTo(monitor)
-        Truth.assertThat(computerAdapter.fromJson(mouseJson)).isEqualTo(mouse)
-        Truth.assertThat(computerAdapter.fromJson(keyboardJson)).isEqualTo(keyboard)
-        Truth.assertThat(computerValueAdapter.fromJson(monitorValueJson)).isEqualTo(monitorValue)
-        Truth.assertThat(computerValueAdapter.fromJson(mouseValueJson)).isEqualTo(mouseValue)
-        Truth.assertThat(computerValueAdapter.fromJson(keyboardValueJson)).isEqualTo(keyboardValue)
+        assertThat(computerAdapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(computerAdapter.fromJson(mouseJson)).isEqualTo(mouse)
+        assertThat(computerAdapter.fromJson(keyboardJson)).isEqualTo(keyboard)
+        assertThat(computerValueAdapter.fromJson(monitorValueJson)).isEqualTo(monitorValue)
+        assertThat(computerValueAdapter.fromJson(mouseValueJson)).isEqualTo(mouseValue)
+        assertThat(computerValueAdapter.fromJson(keyboardValueJson)).isEqualTo(keyboardValue)
     }
 
     @Test
@@ -52,13 +51,13 @@ class SealClassAdapterFactoryTest {
         try {
             computerValueAdapter.fromJson(monitorJson)
         } catch (e: JsonDataException) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo("Missing label for type")
+            assertThat(e).hasMessageThat().isEqualTo("Missing label for type")
         }
 
         try {
             computerAdapter.fromJson(monitorValueJson)
         } catch (e: JsonDataException) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo("No matching Field names for [monitorUnique, mouseUnique, keyboardUnique]")
+            assertThat(e).hasMessageThat().isEqualTo("No matching Field names for [monitorUnique, mouseUnique, keyboardUnique]")
         }
     }
 
@@ -70,11 +69,11 @@ class SealClassAdapterFactoryTest {
             Moshi.Builder().add(SealedClassFactorySelector(ComputerValue::class).getAdapterFactory().withDefaultValue(monitorValue)).build()
                 .adapter(ComputerValue::class.java)
 
-        Truth.assertThat(computerDefaultAdapter.fromJson(monitorValueJson)).isEqualTo(monitor)
-        Truth.assertThat(computerDefaultAdapter.fromJson(mouseValueJson)).isEqualTo(monitor)
-        Truth.assertThat(computerDefaultAdapter.fromJson(keyboardValueJson)).isEqualTo(monitor)
-        Truth.assertThat(computerValueDefaultAdapter.fromJson(monitorJson)).isEqualTo(monitorValue)
-        Truth.assertThat(computerValueDefaultAdapter.fromJson(mouseJson)).isEqualTo(monitorValue)
-        Truth.assertThat(computerValueDefaultAdapter.fromJson(keyboardJson)).isEqualTo(monitorValue)
+        assertThat(computerDefaultAdapter.fromJson(monitorValueJson)).isEqualTo(monitor)
+        assertThat(computerDefaultAdapter.fromJson(mouseValueJson)).isEqualTo(monitor)
+        assertThat(computerDefaultAdapter.fromJson(keyboardValueJson)).isEqualTo(monitor)
+        assertThat(computerValueDefaultAdapter.fromJson(monitorJson)).isEqualTo(monitorValue)
+        assertThat(computerValueDefaultAdapter.fromJson(mouseJson)).isEqualTo(monitorValue)
+        assertThat(computerValueDefaultAdapter.fromJson(keyboardJson)).isEqualTo(monitorValue)
     }
 }

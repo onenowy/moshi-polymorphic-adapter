@@ -1,6 +1,5 @@
 package com.onenowy.moshipolymorphicadapter;
 
-import com.google.common.truth.Truth;
 import com.onenowy.moshipolymorphicadapter.util.Computer;
 import com.onenowy.moshipolymorphicadapter.util.Keyboard;
 import com.onenowy.moshipolymorphicadapter.util.Monitor;
@@ -16,8 +15,10 @@ import java.io.IOException;
 
 import kotlin.collections.CollectionsKt;
 
+import static com.google.common.truth.Truth.assertThat;
 
-public class FieldNameAdapterJavaTest {
+
+public class NameAdapterJavaTest {
     @NotNull
     private final NameAdapterFactory nameAdapterFactory;
     @NotNull
@@ -37,7 +38,7 @@ public class FieldNameAdapterJavaTest {
     @NotNull
     private final String keyboardJson;
 
-    public FieldNameAdapterJavaTest() {
+    public NameAdapterJavaTest() {
         this.nameAdapterFactory = NameAdapterFactory.Companion.of(Computer.class);
         this.withSubtype = this.nameAdapterFactory.withSubtype(Monitor.class, "monitorUnique").withSubtype(Mouse.class, "mouseUnique").withSubtype(Keyboard.class, "keyboardUnique");
         this.withSubtypes = this.nameAdapterFactory.withSubTypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
@@ -101,25 +102,25 @@ public class FieldNameAdapterJavaTest {
     @Test
     public final void toJson() {
         JsonAdapter adapter = this.getComputerAdapter(this.withSubtype);
-        Truth.assertThat(adapter.toJson(this.monitor)).isEqualTo(this.monitorJson);
-        Truth.assertThat(adapter.toJson(this.mouse)).isEqualTo(this.mouseJson);
-        Truth.assertThat(adapter.toJson(this.keyboard)).isEqualTo(this.keyboardJson);
+        assertThat(adapter.toJson(this.monitor)).isEqualTo(this.monitorJson);
+        assertThat(adapter.toJson(this.mouse)).isEqualTo(this.mouseJson);
+        assertThat(adapter.toJson(this.keyboard)).isEqualTo(this.keyboardJson);
         adapter = this.getComputerAdapter(this.withSubtypes);
-        Truth.assertThat(adapter.toJson(this.monitor)).isEqualTo(this.monitorJson);
-        Truth.assertThat(adapter.toJson(this.mouse)).isEqualTo(this.mouseJson);
-        Truth.assertThat(adapter.toJson(this.keyboard)).isEqualTo(this.keyboardJson);
+        assertThat(adapter.toJson(this.monitor)).isEqualTo(this.monitorJson);
+        assertThat(adapter.toJson(this.mouse)).isEqualTo(this.mouseJson);
+        assertThat(adapter.toJson(this.keyboard)).isEqualTo(this.keyboardJson);
     }
 
     @Test
     public final void fromJson() throws IOException {
         JsonAdapter adapter = this.getComputerAdapter(this.withSubtype);
-        Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
-        Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.mouse);
-        Truth.assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.keyboard);
+        assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
+        assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.mouse);
+        assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.keyboard);
         adapter = this.getComputerAdapter(this.withSubtypes);
-        Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
-        Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.mouse);
-        Truth.assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.keyboard);
+        assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
+        assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.mouse);
+        assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.keyboard);
     }
 
     @Test
@@ -130,25 +131,25 @@ public class FieldNameAdapterJavaTest {
             adapter.toJson(this.monitor);
         } catch (IllegalArgumentException var6) {
             System.out.println(var6);
-            Truth.assertThat(var6).hasMessageThat().isEqualTo("Expected one of [] but found " + this.monitor + ", a " + this.monitor.getClass() + ". Register this subtype.");
+            assertThat(var6).hasMessageThat().isEqualTo("Expected one of [] but found " + this.monitor + ", a " + this.monitor.getClass() + ". Register this subtype.");
         }
 
         try {
             adapter.fromJson(this.monitorJson);
         } catch (JsonDataException var5) {
             System.out.println(var5);
-            Truth.assertThat(var5).hasMessageThat().isEqualTo("No matching Field names for []");
+            assertThat(var5).hasMessageThat().isEqualTo("No matching Field names for []");
         }
 
         adapter = this.getComputerAdapter(this.nameAdapterFactory.withSubtype(Monitor.class, "test"));
-        Truth.assertThat(adapter.toJson(this.monitor)).isEqualTo(this.monitorJson);
+        assertThat(adapter.toJson(this.monitor)).isEqualTo(this.monitorJson);
 
         try {
             adapter.fromJson(this.monitorJson);
         } catch (JsonDataException var4) {
             boolean var3 = false;
             System.out.println(var4);
-            Truth.assertThat(var4).hasMessageThat().isEqualTo("No matching Field names for " +
+            assertThat(var4).hasMessageThat().isEqualTo("No matching Field names for " +
                     "[test]");
         }
 
@@ -158,15 +159,15 @@ public class FieldNameAdapterJavaTest {
     public final void defaultValue() throws IOException {
         JsonAdapter adapter =
                 this.getComputerAdapter(this.nameAdapterFactory.withDefaultValue(this.monitor));
-        Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
-        Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
-        Truth.assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.monitor);
+        assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
+        assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
+        assertThat(adapter.fromJson(this.keyboardJson)).isEqualTo(this.monitor);
 
         try {
             adapter.toJson(this.monitor);
         } catch (IllegalArgumentException var3) {
             System.out.println(var3);
-            Truth.assertThat(var3).hasMessageThat().isEqualTo("FallbackJsonAdapter with "+monitor+" cannot make Json Object");
+            assertThat(var3).hasMessageThat().isEqualTo("FallbackJsonAdapter with " + monitor + " cannot make Json Object");
         }
     }
 }

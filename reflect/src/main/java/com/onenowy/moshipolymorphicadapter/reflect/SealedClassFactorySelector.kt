@@ -7,6 +7,7 @@ import com.onenowy.moshipolymorphicadapter.annotations.LabelField
 import com.onenowy.moshipolymorphicadapter.annotations.LabelValue
 import com.onenowy.moshipolymorphicadapter.reflect.annotations.ReflectNameAdapterFactory
 import com.onenowy.moshipolymorphicadapter.reflect.annotations.ReflectValueAdaterFactory
+import com.onenowy.moshipolymorphicadapter.toSupportedTypeOrNull
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
@@ -51,24 +52,11 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
         baseType.sealedSubclasses.forEach { subclass ->
             val labelValue = subclass.findAnnotation<LabelValue>()
             if (labelValue != null) {
-                labels.add(getValue(labelValue.value, labelType))
+                val value = labelValue.value.toSupportedTypeOrNull(labelType.java) ?: throw IllegalArgumentException("Not Supported Type ${labelType.simpleName}")
+                labels.add(value)
                 subtypes.add(subclass.java)
             }
         }
         return valueAdapterFactory.withSubTypes(subtypes, labels)
-    }
-
-    private fun <K : Any> getValue(stringValue: String, labelType: KClass<K>): K {
-        return when (labelType) {
-            String::class -> stringValue
-            Boolean::class -> stringValue.toBoolean()
-            Byte::class -> stringValue.toByte()
-            Short::class -> stringValue.toShort()
-            Int::class -> stringValue.toInt()
-            Long::class -> stringValue.toLong()
-            Float::class -> stringValue.toFloat()
-            Double::class -> stringValue.toDouble()
-            else -> throw IllegalArgumentException("Not Supported Type ${labelType.simpleName}")
-        } as K
     }
 }

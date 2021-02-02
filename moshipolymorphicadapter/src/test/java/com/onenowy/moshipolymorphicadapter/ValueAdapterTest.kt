@@ -10,23 +10,22 @@ import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import org.junit.Test
 
-class PropertyValueAdapterTest {
-
-    val intFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+class ValueAdapterTest {
+    val intFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.javaObjectType)
         .withSubType(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
 
-    val stringFacgtory = ValueAdapterFactory.of(Computer::class.java, "typeString", String::class.java)
+    val stringFacgtory = ValueAdapterFactory.of(Computer::class.java, "typeString", String::class.javaObjectType)
         .withSubType(Monitor::class.java, Computer.ComTypeString.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeString.Keyboard.value)
         .withSubType(Mouse::class.java, Computer.ComTypeString.Mouse.value)
 
-    val doubleFactory = ValueAdapterFactory.of(Computer::class.java, "typeDouble", Double::class.java)
+    val doubleFactory = ValueAdapterFactory.of(Computer::class.java, "typeDouble", Double::class.javaObjectType)
         .withSubType(Monitor::class.java, Computer.ComTypeDouble.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeDouble.Keyboard.value)
         .withSubType(Mouse::class.java, Computer.ComTypeDouble.Mouse.value)
 
-    val longFactory = ValueAdapterFactory.of(Computer::class.java, "typeLong", Long::class.java)
+    val longFactory = ValueAdapterFactory.of(Computer::class.java, "typeLong", Long::class.javaObjectType)
         .withSubType(Monitor::class.java, Computer.ComTypeLong.Monitor.value)
         .withSubType(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value).withSubType(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
 
