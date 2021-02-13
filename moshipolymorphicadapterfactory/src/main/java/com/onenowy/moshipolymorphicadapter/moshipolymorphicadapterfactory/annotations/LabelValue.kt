@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter.annotations
+package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)

@@ -1,6 +1,6 @@
 package com.onenowy.moshipolymorphicadapter.reflect.util
 
-import com.onenowy.moshipolymorphicadapter.annotations.LabelField
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
 import com.onenowy.moshipolymorphicadapter.reflect.annotations.ReflectNameAdapterFactory
 import com.squareup.moshi.JsonClass
 

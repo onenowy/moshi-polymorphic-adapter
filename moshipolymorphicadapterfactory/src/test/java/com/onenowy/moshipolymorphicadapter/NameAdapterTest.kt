@@ -1,6 +1,7 @@
 package com.onenowy.moshipolymorphicadapter
 
 import com.google.common.truth.Truth.assertThat
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NameAdapterFactory
 import com.onenowy.moshipolymorphicadapter.util.Computer
 import com.onenowy.moshipolymorphicadapter.util.Keyboard
 import com.onenowy.moshipolymorphicadapter.util.Monitor

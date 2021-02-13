@@ -17,7 +17,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation deps.kotlin.stdlib
     implementation deps.moshi.moshi
-    api project(':moshipolymorphicadapterfactory')
+    api project(':moshipolymorphicadapter')
     kaptTest deps.moshi.codegen
     testImplementation deps.test.junit
     testImplementation deps.test.truth

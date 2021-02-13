@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter
+package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory
 
 fun <T> String.toSupportedTypeOrNull(type: Class<T>): T? {
     return this.let {

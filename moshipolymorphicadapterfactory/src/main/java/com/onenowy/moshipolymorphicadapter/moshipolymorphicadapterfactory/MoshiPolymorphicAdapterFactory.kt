@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter
+package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
