@@ -3,7 +3,7 @@ ext.deps = [:]
 def deps = [:]
 
 def kotlin = [:]
-kotlin.version = "1.4.21"
+kotlin.version = "1.4.30"
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin.version"
 kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin.version"
 kotlin.reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlin.version"

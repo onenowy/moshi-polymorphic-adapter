@@ -1,4 +1,4 @@
 include ':codegen'
 include ':reflect'
-include ':moshipolymorphicadapter'
+include ':moshipolymorphicadapterfactory'
 rootProject.name = "MoshiPolymorphicAdapter"
