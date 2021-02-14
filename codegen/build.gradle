@@ -12,12 +12,21 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
-
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation deps.kotlin.stdlib
-    implementation deps.moshi.moshi
-    api project(':moshipolymorphicadapterfactory')
+    api project(":moshipolymorphicadapterfactory")
+
+    api deps.kotlinpoet.kotlinpoet
+    api deps.kotlinpoet.metadata
+    api deps.kotlinpoet.metadataSpecs
+    api deps.kotlinpoet.elementsClassInspector
+
+    api deps.autoservice.annotations
+    kapt deps.autoservice.processor
+    api deps.incap.annotations
+    kapt deps.incap.processor
+
     kaptTest deps.moshi.codegen
     testImplementation deps.test.junit
     testImplementation deps.test.truth

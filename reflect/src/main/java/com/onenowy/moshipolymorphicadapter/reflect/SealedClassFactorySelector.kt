@@ -21,6 +21,7 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
         return if (baseType.findAnnotation<ReflectNameAdapterFactory>() != null) {
             nameAdapterFactoryGenerator(baseType)
         } else {
+            SealedClassFactorySelector::class
             val valueAdapterGenerate = baseType.findAnnotation<ReflectValueAdaterFactory>()
             if (valueAdapterGenerate != null) {
                 valueAdapterFactoryGenerator(baseType, valueAdapterGenerate.labelKey, valueAdapterGenerate.labelType)
@@ -38,7 +39,7 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
         baseType.sealedSubclasses.forEach { subclass ->
             val labelField = subclass.findAnnotation<LabelField>()
             if (labelField != null) {
-                labelFieldNames.add(labelField.FieldName)
+                labelFieldNames.add(labelField.fieldName)
                 subtypes.add(subclass.java)
             }
         }
