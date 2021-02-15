@@ -42,7 +42,7 @@ public class NameAdapterJavaTest {
     public NameAdapterJavaTest() {
         this.nameAdapterFactory = NameAdapterFactory.Companion.of(Computer.class);
         this.withSubtype = this.nameAdapterFactory.withSubtype(Monitor.class, "monitorUnique").withSubtype(Mouse.class, "mouseUnique").withSubtype(Keyboard.class, "keyboardUnique");
-        this.withSubtypes = this.nameAdapterFactory.withSubTypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
+        this.withSubtypes = this.nameAdapterFactory.withSubtypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
         this.monitor = new Monitor(1);
         this.mouse = new Mouse("mouse");
         this.keyboard = new Keyboard(true);

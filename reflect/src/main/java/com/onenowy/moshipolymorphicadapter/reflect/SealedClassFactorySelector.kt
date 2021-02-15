@@ -43,7 +43,7 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
                 subtypes.add(subclass.java)
             }
         }
-        return nameAdapterFactory.withSubTypes(subtypes, labelFieldNames)
+        return nameAdapterFactory.withSubtypes(subtypes, labelFieldNames)
     }
 
     private fun <T : Any, K : Any> valueAdapterFactoryGenerator(baseType: KClass<T>, labelKey: String, labelType: KClass<K>): ValueAdapterFactory<T, K> {
@@ -58,6 +58,6 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
                 subtypes.add(subclass.java)
             }
         }
-        return valueAdapterFactory.withSubTypes(subtypes, labels)
+        return valueAdapterFactory.withSubtypes(subtypes, labels)
     }
 }

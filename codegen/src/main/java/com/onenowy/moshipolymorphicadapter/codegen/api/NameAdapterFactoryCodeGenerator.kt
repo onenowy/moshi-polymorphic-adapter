@@ -9,12 +9,12 @@ class NameAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass) : Ab
     private val annotation = LabelField::class.java
     override fun generateCode(): CodeBlock {
         return buildCodeBlock {
-            add("var adapterFactory = %T.of(%T::Class.java)", NameAdapterFactory::class, targetSealedClass.baseType)
+            addStatement("var adapterFactory = %T.of(%T::class.java)", NameAdapterFactory::class, targetSealedClass.baseType)
             for (type in targetSealedClass.subClass) {
                 val labelField = type.getAnnotation(annotation)
-                add("adapterFactory = adapterFactory.withSubtype(%T::class.java, %S)", type, labelField.fieldName)
+                addStatement("adapterFactory = adapterFactory.withSubtype(%T::class.java, %S)", type, labelField.fieldName)
             }
-            add("return adapterFactory")
+            addStatement("return adapterFactory")
         }
     }
 }

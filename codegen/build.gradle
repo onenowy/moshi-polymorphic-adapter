@@ -26,9 +26,4 @@ dependencies {
     kapt deps.autoservice.processor
     api deps.incap.annotations
     kapt deps.incap.processor
-
-    kaptTest deps.moshi.codegen
-    testImplementation deps.test.junit
-    testImplementation deps.test.truth
-    api deps.kotlin.reflect
 }

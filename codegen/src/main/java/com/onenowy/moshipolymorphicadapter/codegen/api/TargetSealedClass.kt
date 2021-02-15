@@ -13,7 +13,7 @@ import javax.tools.Diagnostic
 data class TargetSealedClass(val baseType: TypeElement, val subClass: List<TypeElement>)
 
 @KotlinPoetMetadataPreview
-fun Element.toTargetSealedClass(messager: Messager, typeUtil: Types): TargetSealedClass? {
+fun Element.toTargetSealedClass(messager: Messager, typeUtil: Types, annotatedSubclass: Set<Element>): TargetSealedClass? {
     if (this is TypeElement) {
         val kmClass: ImmutableKmClass? = try {
             this.toImmutableKmClass()
@@ -21,7 +21,7 @@ fun Element.toTargetSealedClass(messager: Messager, typeUtil: Types): TargetSeal
             null
         }
         if (kmClass?.isSealed == true) {
-            val subclass = this.enclosedElements.filter { it is TypeElement && typeUtil.directSupertypes(it.asType()).contains(this.asType()) }.map { it as TypeElement }
+            val subclass = annotatedSubclass.filter { it is TypeElement && typeUtil.directSupertypes(it.asType()).contains(this.asType()) }.map { it as TypeElement }
             return TargetSealedClass(this, subclass)
         }
     }

@@ -7,9 +7,9 @@ import com.onenowy.moshipolymorphicadapter.codegen.api.NameAdapterFactoryCodeGen
 import com.onenowy.moshipolymorphicadapter.codegen.api.ValueAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.adapterFactoryGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.toTargetSealedClass
-import com.squareup.kotlinpoet.classinspector.elements.ElementsClassInspector
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
-import com.squareup.kotlinpoet.metadata.specs.ClassInspector
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 import javax.annotation.processing.*
@@ -27,9 +27,10 @@ class CodegenProcessor : AbstractProcessor() {
     private lateinit var elements: Elements
     private lateinit var filer: Filer
     private lateinit var messager: Messager
-    private lateinit var classInspector: ClassInspector
     private val nameAdapterFactoryAnnotation = CodegenNameAdapterFactory::class.java
     private val valueAdapterFactoryAnnotation = CodegenValueAdaterFactory::class.java
+    private val labelFieldAnnotation = LabelField::class.java
+    private val labelValueAnnotation = LabelValue::class.java
     private val postfixString = "AdapterFactory"
 
     override fun init(processingEnv: ProcessingEnvironment) {
@@ -38,7 +39,6 @@ class CodegenProcessor : AbstractProcessor() {
         elements = processingEnv.elementUtils
         filer = processingEnv.filer
         messager = processingEnv.messager
-        classInspector = ElementsClassInspector.create(elements, types)
     }
 
     override fun process(annotations: MutableSet<out TypeElement>, roundEnv: RoundEnvironment): Boolean {
@@ -46,15 +46,15 @@ class CodegenProcessor : AbstractProcessor() {
             return false
         }
         for (type in roundEnv.getElementsAnnotatedWith(nameAdapterFactoryAnnotation)) {
-            type.toTargetSealedClass(messager, types)?.run {
+            type.toTargetSealedClass(messager, types, roundEnv.getElementsAnnotatedWith(labelFieldAnnotation))?.run {
                 adapterFactoryGenerator(NameAdapterFactoryCodeGenerator(this), "Name$postfixString", elements).writeTo(filer)
             }
         }
         for (type in roundEnv.getElementsAnnotatedWith(valueAdapterFactoryAnnotation)) {
-            type.toTargetSealedClass(messager, types)?.run {
+            type.toTargetSealedClass(messager, types, roundEnv.getElementsAnnotatedWith(labelValueAnnotation))?.run {
                 adapterFactoryGenerator(
                     ValueAdapterFactoryCodeGenerator(this, type.getAnnotation(valueAdapterFactoryAnnotation)),
-                    "value$postfixString",
+                    "Value$postfixString",
                     elements
                 ).writeTo(filer)
             }

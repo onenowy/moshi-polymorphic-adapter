@@ -18,7 +18,7 @@ class NameAdapterTest {
         Monitor::class.java,
         "monitorUnique"
     ).withSubtype(Mouse::class.java, "mouseUnique").withSubtype(Keyboard::class.java, "keyboardUnique")
-    val withSubtypes = nameAdapterFactory.withSubTypes(
+    val withSubtypes = nameAdapterFactory.withSubtypes(
         listOf(Monitor::class.java, Mouse::class.java, Keyboard::class.java),
         listOf("monitorUnique", "mouseUnique", "keyboardUnique")
     )

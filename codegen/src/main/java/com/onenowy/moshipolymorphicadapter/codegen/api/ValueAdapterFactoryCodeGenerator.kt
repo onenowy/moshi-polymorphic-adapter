@@ -3,32 +3,33 @@ package com.onenowy.moshipolymorphicadapter.codegen.api
 import com.onenowy.moshipolymorphicadapter.codegen.annotations.CodegenValueAdaterFactory
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.toSupportedTypeOrNull
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.buildCodeBlock
+import javax.lang.model.type.MirroredTypeException
 
 class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, private val codegenValueAdapterFactory: CodegenValueAdaterFactory) :
     AbstractAdapterFactoryCodeGenerator
         (targetSealedClass) {
     private val annotation = LabelValue::class.java
     override fun generateCode(): CodeBlock {
+        val labelType = try {
+            codegenValueAdapterFactory.labelType
+        } catch (e: MirroredTypeException) {
+            e.typeMirror
+        }
         return buildCodeBlock {
-            add(
-                "var adapterFactory = %T.of(%T::Class.java, %S, %T::Class.java)",
+            addStatement(
+                "var adapterFactory = %T.of(%T::class.java, %S, %T::class.java)",
                 ValueAdapterFactory::class,
                 targetSealedClass.baseType,
                 codegenValueAdapterFactory.labelKey,
-                codegenValueAdapterFactory.labelType
+                labelType
             )
             for (type in targetSealedClass.subClass) {
-                val labelField = type.getAnnotation(annotation)
-                add(
-                    "adapterFactory = adapterFactory.withSubtype(%T::class.java, %L)",
-                    type,
-                    labelField.value.toSupportedTypeOrNull(codegenValueAdapterFactory.labelType.java)
-                )
+                val labelValue = type.getAnnotation(annotation)
+                addStatement("adapterFactory = adapterFactory.withSubtype(%T::class.java, %S)", type, labelValue.value)
             }
-            add("return adapterFactory")
+            addStatement("return adapterFactory")
         }
     }
 }

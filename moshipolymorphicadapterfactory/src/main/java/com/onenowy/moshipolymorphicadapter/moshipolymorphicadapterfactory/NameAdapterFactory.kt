@@ -34,7 +34,7 @@ class NameAdapterFactory<T> @JvmOverloads constructor(
         return NameAdapterFactory(baseType, newSubTypes, newLabelFieldNames, fallbackAdapter)
     }
 
-    fun withSubTypes(subTypes: List<Class<out T>>, labelFieldNames: List<String>): NameAdapterFactory<T> {
+    fun withSubtypes(subTypes: List<Class<out T>>, labelFieldNames: List<String>): NameAdapterFactory<T> {
         require(labelFieldNames.size == labelFieldNames.distinct().size) { "Label Field name for ${baseType.simpleName} must be unique" }
         require(labelFieldNames.size == subTypes.size) { "The number of Label Field names for ${baseType.simpleName} is different from subtypes" }
 

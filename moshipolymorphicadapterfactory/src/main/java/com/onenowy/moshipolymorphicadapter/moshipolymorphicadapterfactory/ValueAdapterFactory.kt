@@ -5,6 +5,7 @@ import java.lang.reflect.Type
 
 class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
     private val baseType: Class<T>,
+    private val labelType: Class<K>,
     private val labelKey: String,
     private val subTypes: List<Type> = emptyList(),
     private val labels: List<K> = emptyList(),
@@ -19,27 +20,31 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                     .javaObjectType || labelType == String::class.java
             )
             { "Expected Boolean or a subclass of Number or String, But found ${labelType.simpleName}" }
-            return ValueAdapterFactory(baseType, labelKey)
+            return ValueAdapterFactory(baseType, labelType, labelKey)
         }
     }
 
-    fun withSubType(subType: Class<out T>, label: K): ValueAdapterFactory<T, K> {
+    fun withSubtype(subType: Class<out T>, label: K): ValueAdapterFactory<T, K> {
         require(!labels.contains(label)) { "$label must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newLabels = labels.toMutableList()
         newLabels.add(label)
-        return ValueAdapterFactory(baseType, labelKey, newSubTypes, newLabels)
+        return ValueAdapterFactory(baseType, labelType, labelKey, newSubTypes, newLabels)
     }
 
-    fun withSubTypes(subTypes: List<Class<out T>>, labels: List<K>): ValueAdapterFactory<T, K> {
+    fun withSubtype(subType: Class<out T>, label: String): ValueAdapterFactory<T, K> {
+        return withSubtype(subType, label.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("$label is not supported type"))
+    }
+
+    fun withSubtypes(subTypes: List<Class<out T>>, labels: List<K>): ValueAdapterFactory<T, K> {
         require(labels.size == labels.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
         require(labels.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
-        return ValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackAdapter)
+        return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackAdapter)
     }
 
     override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValueAdapterFactory<T, K> {
-        return ValueAdapterFactory(baseType, labelKey, subTypes, labels, fallbackJsonAdapter)
+        return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackJsonAdapter)
     }
 
     override fun withDefaultValue(defaultValue: T?): ValueAdapterFactory<T, K> {

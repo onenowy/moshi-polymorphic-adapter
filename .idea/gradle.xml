@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/codegen" />
             <option value="$PROJECT_DIR$/moshipolymorphicadapterfactory" />
             <option value="$PROJECT_DIR$/reflect" />
+            <option value="$PROJECT_DIR$/tests" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
