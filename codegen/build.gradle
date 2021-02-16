@@ -17,13 +17,13 @@ dependencies {
     implementation deps.kotlin.stdlib
     api project(":moshipolymorphicadapterfactory")
 
-    api deps.kotlinpoet.kotlinpoet
-    api deps.kotlinpoet.metadata
-    api deps.kotlinpoet.metadataSpecs
-    api deps.kotlinpoet.elementsClassInspector
+    implementation deps.kotlinpoet.kotlinpoet
+    implementation deps.kotlinpoet.metadata
+    implementation deps.kotlinpoet.metadataSpecs
+    implementation deps.kotlinpoet.elementsClassInspector
 
-    api deps.autoservice.annotations
+    implementation deps.autoservice.annotations
     kapt deps.autoservice.processor
-    api deps.incap.annotations
+    implementation deps.incap.annotations
     kapt deps.incap.processor
 }
