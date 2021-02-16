@@ -1,7 +1,7 @@
 package com.onenowy.moshipolymorphicadapter.tests.util
 
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.ValueAdaterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
 import com.squareup.moshi.JsonClass
 
 @ValueAdaterFactoryCodegen(Int::class, "type")

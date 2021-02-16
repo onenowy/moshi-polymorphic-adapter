@@ -5,9 +5,9 @@ import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NameAd
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryReflection
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryReflection
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.toSupportedTypeOrNull
-import com.onenowy.moshipolymorphicadapter.reflect.annotations.ReflectNameAdapterFactory
-import com.onenowy.moshipolymorphicadapter.reflect.annotations.ReflectValueAdaterFactory
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
@@ -18,11 +18,11 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
     }
 
     fun getAdapterFactory(): MoshiPolymorphicAdapterFactory<*, T> {
-        return if (baseType.findAnnotation<ReflectNameAdapterFactory>() != null) {
+        return if (baseType.findAnnotation<NameAdapterFactoryReflection>() != null) {
             nameAdapterFactoryGenerator(baseType)
         } else {
             SealedClassFactorySelector::class
-            val valueAdapterGenerate = baseType.findAnnotation<ReflectValueAdaterFactory>()
+            val valueAdapterGenerate = baseType.findAnnotation<ValueAdaterFactoryReflection>()
             if (valueAdapterGenerate != null) {
                 valueAdapterFactoryGenerator(baseType, valueAdapterGenerate.labelKey, valueAdapterGenerate.labelType)
             } else {

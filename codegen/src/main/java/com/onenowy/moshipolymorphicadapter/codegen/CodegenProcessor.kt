@@ -1,14 +1,14 @@
 package com.onenowy.moshipolymorphicadapter.codegen
 
 import com.google.auto.service.AutoService
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.NameAdapterFactoryCodegen
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.ValueAdaterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.codegen.api.NameAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.ValueAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.adapterFactoryGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.toTargetSealedClass
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryCodegen
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType

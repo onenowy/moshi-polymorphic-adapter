@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter.codegen.annotations
+package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations
 
 import kotlin.reflect.KClass
 
