@@ -1,8 +1,8 @@
 package com.onenowy.moshipolymorphicadapter.codegen
 
 import com.google.auto.service.AutoService
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.CodegenNameAdapterFactory
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.CodegenValueAdaterFactory
+import com.onenowy.moshipolymorphicadapter.codegen.annotations.NameAdapterFactoryCodegen
+import com.onenowy.moshipolymorphicadapter.codegen.annotations.ValueAdaterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.codegen.api.NameAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.ValueAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.adapterFactoryGenerator
@@ -27,8 +27,8 @@ class CodegenProcessor : AbstractProcessor() {
     private lateinit var elements: Elements
     private lateinit var filer: Filer
     private lateinit var messager: Messager
-    private val nameAdapterFactoryAnnotation = CodegenNameAdapterFactory::class.java
-    private val valueAdapterFactoryAnnotation = CodegenValueAdaterFactory::class.java
+    private val nameAdapterFactoryAnnotation = NameAdapterFactoryCodegen::class.java
+    private val valueAdapterFactoryAnnotation = ValueAdaterFactoryCodegen::class.java
     private val labelFieldAnnotation = LabelField::class.java
     private val labelValueAnnotation = LabelValue::class.java
     private val postfixString = "AdapterFactory"

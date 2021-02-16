@@ -1,19 +1,19 @@
 package com.onenowy.moshipolymorphicadapter.codegen.api
 
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.CodegenValueAdaterFactory
+import com.onenowy.moshipolymorphicadapter.codegen.annotations.ValueAdaterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.buildCodeBlock
 import javax.lang.model.type.MirroredTypeException
 
-class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, private val codegenValueAdapterFactory: CodegenValueAdaterFactory) :
+class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, private val valueAdapterFactoryCodegen: ValueAdaterFactoryCodegen) :
     AbstractAdapterFactoryCodeGenerator
         (targetSealedClass) {
     private val annotation = LabelValue::class.java
     override fun generateCode(): CodeBlock {
         val labelType = try {
-            codegenValueAdapterFactory.labelType
+            valueAdapterFactoryCodegen.labelType
         } catch (e: MirroredTypeException) {
             e.typeMirror
         }
@@ -22,7 +22,7 @@ class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, pri
                 "var adapterFactory = %T.of(%T::class.java, %S, %T::class.java)",
                 ValueAdapterFactory::class,
                 targetSealedClass.baseType,
-                codegenValueAdapterFactory.labelKey,
+                valueAdapterFactoryCodegen.labelKey,
                 labelType
             )
             for (type in targetSealedClass.subClass) {

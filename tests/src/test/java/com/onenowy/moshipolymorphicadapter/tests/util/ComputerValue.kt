@@ -1,10 +1,10 @@
 package com.onenowy.moshipolymorphicadapter.tests.util
 
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.CodegenValueAdaterFactory
+import com.onenowy.moshipolymorphicadapter.codegen.annotations.ValueAdaterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
 import com.squareup.moshi.JsonClass
 
-@CodegenValueAdaterFactory(Int::class, "type")
+@ValueAdaterFactoryCodegen(Int::class, "type")
 sealed class ComputerValue
 
 @LabelValue(1.toString())

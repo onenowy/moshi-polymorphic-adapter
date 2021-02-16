@@ -4,4 +4,4 @@ import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class CodegenValueAdaterFactory(val labelType: KClass<out Any>, val labelKey: String)
+annotation class ValueAdaterFactoryCodegen(val labelType: KClass<out Any>, val labelKey: String)
