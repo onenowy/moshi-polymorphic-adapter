@@ -7,13 +7,10 @@ import javax.lang.model.util.Elements
 
 fun adapterFactoryGenerator(adapterFactoryCodeGenerator: AbstractAdapterFactoryCodeGenerator, postfix: String, elements: Elements): FileSpec {
     val baseType = adapterFactoryCodeGenerator.targetSealedClass.baseType
-    val typeName = "Generated${baseType.simpleName}$postfix"
+    val typeName = "${baseType.simpleName}$postfix"
     val starProjection = WildcardTypeName.producerOf(Any::class.asTypeName().copy(nullable = true))
-    val funSpec = FunSpec.builder("invoke").addModifiers(KModifier.OPERATOR).returns(
-        MoshiPolymorphicAdapterFactory::class.asClassName().parameterizedBy
-            (starProjection, baseType.asClassName())
-    )
-        .addCode(adapterFactoryCodeGenerator.generateCode()).build()
-    val typeSpec = TypeSpec.classBuilder(typeName).addFunction(funSpec).addOriginatingElement(baseType).build()
-    return FileSpec.builder(elements.getPackageOf(baseType).qualifiedName.toString(), typeName).addType(typeSpec).build()
+    val funSpec =
+        FunSpec.builder("generate$typeName").returns(MoshiPolymorphicAdapterFactory::class.asClassName().parameterizedBy(starProjection, baseType.asClassName()))
+            .addCode(adapterFactoryCodeGenerator.generateCode()).addOriginatingElement(baseType).build()
+    return FileSpec.builder(elements.getPackageOf(baseType).qualifiedName.toString(), "${typeName}Generator").addFunction(funSpec).build()
 }

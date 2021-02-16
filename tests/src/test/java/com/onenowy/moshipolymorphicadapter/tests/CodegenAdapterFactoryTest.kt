@@ -8,8 +8,8 @@ import org.junit.Test
 
 class CodegenAdapterFactoryTest {
 
-    val computerAdapter = Moshi.Builder().add(GeneratedComputerNameAdapterFactory()()).build().adapter(Computer::class.java)
-    val computerValueAdapter = Moshi.Builder().add(GeneratedComputerValueValueAdapterFactory()()).build().adapter(ComputerValue::class.java)
+    val computerAdapter = Moshi.Builder().add(generateComputerNameAdapterFactory()).build().adapter(Computer::class.java)
+    val computerValueAdapter = Moshi.Builder().add(generateComputerValueValueAdapterFactory()).build().adapter(ComputerValue::class.java)
 
     val monitor = Monitor(1)
     val mouse = Mouse("mouse")
@@ -65,9 +65,9 @@ class CodegenAdapterFactoryTest {
     @Test
     fun defaultValue() {
         val computerDefaultAdapter =
-            Moshi.Builder().add(GeneratedComputerNameAdapterFactory().invoke().withDefaultValue(monitor)).build().adapter(Computer::class.java)
+            Moshi.Builder().add(generateComputerNameAdapterFactory().withDefaultValue(monitor)).build().adapter(Computer::class.java)
         val computerValueDefaultAdapter =
-            Moshi.Builder().add(GeneratedComputerValueValueAdapterFactory().invoke().withDefaultValue(monitorValue)).build()
+            Moshi.Builder().add(generateComputerValueValueAdapterFactory().withDefaultValue(monitorValue)).build()
                 .adapter(ComputerValue::class.java)
 
         assertThat(computerDefaultAdapter.fromJson(monitorValueJson)).isEqualTo(monitor)
