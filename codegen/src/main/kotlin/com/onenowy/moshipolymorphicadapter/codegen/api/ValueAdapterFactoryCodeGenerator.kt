@@ -27,7 +27,7 @@ class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, pri
             )
             for (type in targetSealedClass.subClass) {
                 val labelValue = type.getAnnotation(annotation)
-                addStatement("adapterFactory = adapterFactory.withSubtype(%T::class.java, %S)", type, labelValue.value)
+                addStatement("adapterFactory = adapterFactory.withSubtypeForLabelString(%T::class.java, %S)", type, labelValue.value)
             }
             addStatement("return adapterFactory")
         }

@@ -33,7 +33,7 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         return ValueAdapterFactory(baseType, labelType, labelKey, newSubTypes, newLabels)
     }
 
-    fun withSubtype(subType: Class<out T>, label: String): ValueAdapterFactory<T, K> {
+    fun withSubtypeForLabelString(subType: Class<out T>, label: String): ValueAdapterFactory<T, K> {
         return withSubtype(subType, label.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("$label is not supported type"))
     }
 

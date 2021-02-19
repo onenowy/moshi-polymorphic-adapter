@@ -36,7 +36,11 @@ public class ValueAdapterJavaTest {
     public ValueAdapterJavaTest() {
         this.intFactory =
                 ValueAdapterFactory.Companion.of(Computer.class, "typeInt", int.class).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
-        this.stringFacgtory = ValueAdapterFactory.Companion.of(Computer.class, "typeString", String.class).withSubType(Monitor.class, Computer.ComTypeString.Monitor.getValue()).withSubType(Keyboard.class, Computer.ComTypeString.Keyboard.getValue()).withSubType(Mouse.class, Computer.ComTypeString.Mouse.getValue());
+        this.stringFacgtory = ValueAdapterFactory.Companion.of(Computer.class, "typeString",
+                String.class).withSubtype(Monitor.class,
+                Computer.ComTypeString.Monitor.getValue()).withSubtype(Keyboard.class,
+                Computer.ComTypeString.Keyboard.getValue()).withSubtype(Mouse.class,
+                Computer.ComTypeString.Mouse.getValue());
         this.doubleFactory =
                 ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", double.class).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
         this.longFactory =
