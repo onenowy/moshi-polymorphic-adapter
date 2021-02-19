@@ -14,6 +14,7 @@ data class TargetSealedClass(val baseType: TypeElement, val subClass: List<TypeE
 
 @KotlinPoetMetadataPreview
 fun Element.toTargetSealedClass(messager: Messager, typeUtil: Types, annotatedSubclass: Set<Element>): TargetSealedClass? {
+
     if (this is TypeElement) {
         val kmClass: ImmutableKmClass? = try {
             this.toImmutableKmClass()
