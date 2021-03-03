@@ -93,3 +93,9 @@
 /buildSrc/build/kotlin/compileKotlin/caches-jvm/inputs/source-to-output.tab_i.len
 /buildSrc/build/reports/plugin-development/validation-report.txt
 /projectFilesBackup/.idea/workspace.xml
+/buildSrc/build/classes/kotlin/main/Dependencies$AutoService.class
+/buildSrc/build/classes/kotlin/main/Dependencies$KotlinPoet.class
+/buildSrc/build/classes/kotlin/main/Dependencies$Shadow.class
+/buildSrc/build/classes/kotlin/main/Dependencies$VersionPlugin.class
+/buildSrc/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i
+/buildSrc/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i.len

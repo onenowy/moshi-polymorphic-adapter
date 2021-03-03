@@ -9,7 +9,6 @@ import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annota
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 import javax.annotation.processing.*
@@ -20,7 +19,7 @@ import javax.lang.model.util.Types
 
 @AutoService(Processor::class)
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
-@KotlinPoetMetadataPreview
+
 class CodegenProcessor : AbstractProcessor() {
 
     private lateinit var types: Types

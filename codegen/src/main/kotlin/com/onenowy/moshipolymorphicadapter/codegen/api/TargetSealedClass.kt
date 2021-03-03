@@ -1,7 +1,6 @@
 package com.onenowy.moshipolymorphicadapter.codegen.api
 
 import com.squareup.kotlinpoet.metadata.ImmutableKmClass
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import com.squareup.kotlinpoet.metadata.isSealed
 import com.squareup.kotlinpoet.metadata.toImmutableKmClass
 import javax.annotation.processing.Messager
@@ -12,7 +11,6 @@ import javax.tools.Diagnostic
 
 data class TargetSealedClass(val baseType: TypeElement, val subClass: List<TypeElement>)
 
-@KotlinPoetMetadataPreview
 fun Element.toTargetSealedClass(messager: Messager, typeUtil: Types, annotatedSubclass: Set<Element>): TargetSealedClass? {
 
     if (this is TypeElement) {
