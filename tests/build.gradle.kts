@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     kotlin("kapt")
+    id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
 }
 
 java {

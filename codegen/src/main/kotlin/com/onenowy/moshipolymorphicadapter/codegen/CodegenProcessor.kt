@@ -19,7 +19,6 @@ import javax.lang.model.util.Types
 
 @AutoService(Processor::class)
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
-
 class CodegenProcessor : AbstractProcessor() {
 
     private lateinit var types: Types

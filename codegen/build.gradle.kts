@@ -16,34 +16,25 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
         )
     }
 }
-val shade: Configuration = configurations.maybeCreate("compileShaded")
-configurations.getByName("compileOnly").extendsFrom(shade)
+val shade: Configuration = configurations.maybeCreate("implementationShaded")
+configurations.getByName("implementation").extendsFrom(shade)
 dependencies {
-    api(project(":moshipolymorphicadapterfactory"))
+    implementation(project(":moshipolymorphicadapterfactory"))
 
-    api(Dependencies.KotlinPoet.kotlinpoet)
+    implementation(Dependencies.KotlinPoet.kotlinpoet)
     shade(Dependencies.KotlinPoet.metadata) {
         exclude(group = "org.jetbrains.kotlin")
         exclude(group = "com.squareup", module = "kotlinpoet")
     }
-    shade(Dependencies.KotlinPoet.metadataSpecs) {
-        exclude(group = "org.jetbrains.kotlin")
-        exclude(group = "com.squareup", module = "kotlinpoet")
-    }
-
-    api(Dependencies.AutoService.annotations)
+    compileOnly(Dependencies.AutoService.annotations)
     kapt(Dependencies.AutoService.processor)
-    api(Dependencies.Incap.annotations)
+    compileOnly(Dependencies.Incap.annotations)
     kapt(Dependencies.Incap.processor)
-}
-val relocateShadowJar = tasks.register<com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation>("relocateShadowJar") {
-    target = tasks.shadowJar.get()
 }
 val shadowJar = tasks.shadowJar.apply {
     configure {
-        dependsOn(relocateShadowJar)
-        archiveClassifier.set("shade")
         configurations = listOf(shade)
+        archiveClassifier.set("shade")
         transformers.add(com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer())
     }
 }

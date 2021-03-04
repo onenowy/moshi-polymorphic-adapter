@@ -38,7 +38,7 @@ object Dependencies {
     object KotlinPoet {
         private const val version = "1.7.2"
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
-        const val metadata = "com.squareup:kotlinpoet-metadata-specs:$version"
+        const val metadata = "com.squareup:kotlinpoet-metadata:$version"
         const val metadataSpecs = "com.squareup:kotlinpoet-metadata-specs:$version"
         const val elementsClassInspector = "com.squareup:kotlinpoet-classinspector-elements:$version"
     }
@@ -49,7 +49,7 @@ object Dependencies {
     }
 
     object VersionPlugin {
-        const val version = "0.36.0"
+        const val version = "0.38.0"
         const val versionPlugin = "com.github.ben-manes.versions"
     }
 
