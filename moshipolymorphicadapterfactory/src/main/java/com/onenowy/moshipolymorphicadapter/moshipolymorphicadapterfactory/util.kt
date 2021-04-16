@@ -14,7 +14,6 @@ fun String.toSupportedTypeOrNull(type: SupportValueType): Any? {
             SupportValueType.LONG -> toLongOrNull()
             SupportValueType.FLOAT -> toFloatOrNull()
             SupportValueType.DOUBLE -> toDoubleOrNull()
-            else -> null
         }
     }
 }
