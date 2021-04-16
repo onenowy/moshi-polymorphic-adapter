@@ -1,14 +1,14 @@
 package com.onenowy.moshipolymorphicadapter.codegen
 
 import com.google.auto.service.AutoService
+import com.onenowy.moshipolymorphicadapter.codegen.annotations.NameAdapterFactoryCodegen
+import com.onenowy.moshipolymorphicadapter.codegen.annotations.ValueAdaterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.codegen.api.NameAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.ValueAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.adapterFactoryGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.toTargetSealedClass
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryCodegen
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 import javax.annotation.processing.*
@@ -43,13 +43,15 @@ class CodegenProcessor : AbstractProcessor() {
         if (roundEnv.errorRaised()) {
             return false
         }
+        val labelFieldElements = roundEnv.getElementsAnnotatedWith(labelFieldAnnotation)
+        val labelValueElements = roundEnv.getElementsAnnotatedWith(labelValueAnnotation)
         for (type in roundEnv.getElementsAnnotatedWith(nameAdapterFactoryAnnotation)) {
-            type.toTargetSealedClass(messager, types, roundEnv.getElementsAnnotatedWith(labelFieldAnnotation))?.run {
+            type.toTargetSealedClass(messager, types, labelFieldElements)?.run {
                 adapterFactoryGenerator(NameAdapterFactoryCodeGenerator(this), "Name$postfixString", elements).writeTo(filer)
             }
         }
         for (type in roundEnv.getElementsAnnotatedWith(valueAdapterFactoryAnnotation)) {
-            type.toTargetSealedClass(messager, types, roundEnv.getElementsAnnotatedWith(labelValueAnnotation))?.run {
+            type.toTargetSealedClass(messager, types, labelValueElements)?.run {
                 adapterFactoryGenerator(
                     ValueAdapterFactoryCodeGenerator(this, type.getAnnotation(valueAdapterFactoryAnnotation)),
                     "Value$postfixString",

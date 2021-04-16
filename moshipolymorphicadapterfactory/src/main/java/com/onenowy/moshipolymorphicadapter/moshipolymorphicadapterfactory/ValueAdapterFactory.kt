@@ -3,28 +3,24 @@ package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
-class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
+class ValueAdapterFactory<T> @JvmOverloads constructor(
     private val baseType: Class<T>,
-    private val labelType: Class<K>,
+    private val labelType: SupportValueType,
     private val labelKey: String,
     private val subTypes: List<Type> = emptyList(),
-    private val labels: List<K> = emptyList(),
+    private val labels: List<Any> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
-) : MoshiPolymorphicAdapterFactory<ValueAdapterFactory<T, K>, T> {
+) : MoshiPolymorphicAdapterFactory<ValueAdapterFactory<T>, T> {
 
     companion object {
         @JvmStatic
-        fun <T, K : Any> of(baseType: Class<T>, labelKey: String, labelType: Class<K>): ValueAdapterFactory<T, K> {
-            require(
-                (labelType.isPrimitive && labelType != Char::class.java) || Number::class.java.isAssignableFrom(labelType) || labelType == Boolean::class
-                    .javaObjectType || labelType == String::class.java
-            )
-            { "Expected Boolean or a subclass of Number or String, But found ${labelType.simpleName}" }
+        fun <T> of(baseType: Class<T>, labelKey: String, labelType: SupportValueType): ValueAdapterFactory<T> {
             return ValueAdapterFactory(baseType, labelType, labelKey)
         }
     }
 
-    fun withSubtype(subType: Class<out T>, label: K): ValueAdapterFactory<T, K> {
+    fun withSubtype(subType: Class<out T>, label: Any): ValueAdapterFactory<T> {
+        require(label.typeCheck(labelType)) { "the type of $label is not ${labelType.name}" }
         require(!labels.contains(label)) { "$label must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
@@ -33,21 +29,21 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         return ValueAdapterFactory(baseType, labelType, labelKey, newSubTypes, newLabels)
     }
 
-    fun withSubtypeForLabelString(subType: Class<out T>, label: String): ValueAdapterFactory<T, K> {
+    fun withSubtypeForLabelString(subType: Class<out T>, label: String): ValueAdapterFactory<T> {
         return withSubtype(subType, label.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("$label is not supported type"))
     }
 
-    fun withSubtypes(subTypes: List<Class<out T>>, labels: List<K>): ValueAdapterFactory<T, K> {
+    fun withSubtypes(subTypes: List<Class<out T>>, labels: List<Any>): ValueAdapterFactory<T> {
         require(labels.size == labels.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
         require(labels.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
         return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackAdapter)
     }
 
-    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValueAdapterFactory<T, K> {
+    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValueAdapterFactory<T> {
         return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackJsonAdapter)
     }
 
-    override fun withDefaultValue(defaultValue: T?): ValueAdapterFactory<T, K> {
+    override fun withDefaultValue(defaultValue: T?): ValueAdapterFactory<T> {
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 
@@ -56,13 +52,14 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
             return null
         }
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
-        return PropertyValueAdapter(labelKey, subTypes, labels, fallbackAdapter, jsonAdapters)
+        return PropertyValueAdapter(labelKey, labelType, subTypes, labels, fallbackAdapter, jsonAdapters)
     }
 
-    class PropertyValueAdapter<K : Any> @JvmOverloads constructor(
+    class PropertyValueAdapter @JvmOverloads constructor(
         private val labelKey: String,
+        private val labelType: SupportValueType,
         private val subTypes: List<Type>,
-        private val labels: List<K>,
+        private val labels: List<Any>,
         private val fallbackAdapter: JsonAdapter<Any>?,
         private val jsonAdapters: List<JsonAdapter<Any>>,
         private val keyOption: JsonReader.Options = JsonReader.Options.of(labelKey)
@@ -89,13 +86,14 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
                     continue
                 }
                 val token = reader.peek()
-                val label = labels.lastOrNull()
-                val labelValue = if (label is Boolean && token == JsonReader.Token.BOOLEAN) reader.nextBoolean()
-                else if (label is String && token == JsonReader.Token.STRING) reader.nextString()
-                else if (label is Number && token == JsonReader.Token.NUMBER) getNumber(reader, label)
+                val labelValue = if (labelType == SupportValueType.BOOLEAN && token == JsonReader.Token.BOOLEAN) reader.nextBoolean()
+                else if (labelType == SupportValueType.STRING && token == JsonReader.Token.STRING) reader.nextString()
+                else if (labelType in arrayOf(SupportValueType.BYTE, SupportValueType.SHORT, SupportValueType.INT) && token == JsonReader.Token.NUMBER) reader.nextInt()
+                else if (labelType == SupportValueType.LONG && token == JsonReader.Token.NUMBER) reader.nextLong()
+                else if (labelType in arrayOf(SupportValueType.DOUBLE, SupportValueType.FLOAT) && token == JsonReader.Token.NUMBER) reader.nextDouble()
                 else null
 
-                val index = labels.indexOf(labelValue)
+                val index = if (labelValue != null) labels.indexOf(labelValue) else -1
                 if (index == -1) {
                     if (fallbackAdapter == null) {
                         throw JsonDataException("Expected one of $labels for key '$labelKey' but found '${labelValue}'. Register a subtype for this label.")
@@ -110,9 +108,9 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
             }
         }
 
-        private fun getNumber(reader: JsonReader, label: K): Number? {
+        private fun getNumber(reader: JsonReader): Number? {
             val stringNumber = reader.nextString()
-            return stringNumber.toSupportedTypeOrNull(label.javaClass) as? Number
+            return stringNumber.toSupportedTypeOrNull(labelType) as? Number
         }
 
 
@@ -149,3 +147,4 @@ class ValueAdapterFactory<T, K : Any> @JvmOverloads constructor(
         }
     }
 }
+

@@ -1,7 +1,7 @@
 package com.onenowy.moshipolymorphicadapter.tests.util
 
+import com.onenowy.moshipolymorphicadapter.codegen.annotations.NameAdapterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryCodegen
 import com.squareup.moshi.JsonClass
 
 @NameAdapterFactoryCodegen

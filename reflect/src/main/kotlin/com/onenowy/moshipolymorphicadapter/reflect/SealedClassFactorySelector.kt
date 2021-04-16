@@ -1,13 +1,10 @@
 package com.onenowy.moshipolymorphicadapter.reflect
 
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.MoshiPolymorphicAdapterFactory
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NameAdapterFactory
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.*
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryReflection
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryReflection
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.toSupportedTypeOrNull
+import com.onenowy.moshipolymorphicadapter.reflect.annotations.NameAdapterFactoryReflection
+import com.onenowy.moshipolymorphicadapter.reflect.annotations.ValueAdaterFactoryReflection
 import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
@@ -21,7 +18,6 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
         return if (baseType.findAnnotation<NameAdapterFactoryReflection>() != null) {
             nameAdapterFactoryGenerator(baseType)
         } else {
-            SealedClassFactorySelector::class
             val valueAdapterGenerate = baseType.findAnnotation<ValueAdaterFactoryReflection>()
             if (valueAdapterGenerate != null) {
                 valueAdapterFactoryGenerator(baseType, valueAdapterGenerate.labelKey, valueAdapterGenerate.labelType)
@@ -46,14 +42,14 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
         return nameAdapterFactory.withSubtypes(subtypes, labelFieldNames)
     }
 
-    private fun <T : Any, K : Any> valueAdapterFactoryGenerator(baseType: KClass<T>, labelKey: String, labelType: KClass<K>): ValueAdapterFactory<T, K> {
-        val valueAdapterFactory = ValueAdapterFactory.of(baseType.java, labelKey, labelType.java)
+    private fun <T : Any> valueAdapterFactoryGenerator(baseType: KClass<T>, labelKey: String, labelType: SupportValueType): ValueAdapterFactory<T> {
+        val valueAdapterFactory = ValueAdapterFactory.of(baseType.java, labelKey, labelType)
         val subtypes = mutableListOf<Class<out T>>()
-        val labels = mutableListOf<K>()
+        val labels = mutableListOf<Any>()
         baseType.sealedSubclasses.forEach { subclass ->
             val labelValue = subclass.findAnnotation<LabelValue>()
             if (labelValue != null) {
-                val value = labelValue.value.toSupportedTypeOrNull(labelType.java) ?: throw IllegalArgumentException("Not Supported Type ${labelType.simpleName}")
+                val value = labelValue.value.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("Not Supported Type ${labelType.name}")
                 labels.add(value)
                 subtypes.add(subclass.java)
             }

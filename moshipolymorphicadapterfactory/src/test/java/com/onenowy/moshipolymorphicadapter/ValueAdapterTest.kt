@@ -1,6 +1,7 @@
 package com.onenowy.moshipolymorphicadapter
 
 import com.google.common.truth.Truth.assertThat
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.SupportValueType
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory
 import com.onenowy.moshipolymorphicadapter.util.Computer
 import com.onenowy.moshipolymorphicadapter.util.Keyboard
@@ -12,21 +13,21 @@ import com.squareup.moshi.Moshi
 import org.junit.Test
 
 class ValueAdapterTest {
-    val intFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.javaObjectType)
+    val intFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", SupportValueType.INT)
         .withSubtype(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
         .withSubtype(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubtype(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
 
-    val stringFacgtory = ValueAdapterFactory.of(Computer::class.java, "typeString", String::class.javaObjectType)
+    val stringFacgtory = ValueAdapterFactory.of(Computer::class.java, "typeString", SupportValueType.STRING)
         .withSubtype(Monitor::class.java, Computer.ComTypeString.Monitor.value)
         .withSubtype(Keyboard::class.java, Computer.ComTypeString.Keyboard.value)
         .withSubtype(Mouse::class.java, Computer.ComTypeString.Mouse.value)
 
-    val doubleFactory = ValueAdapterFactory.of(Computer::class.java, "typeDouble", Double::class.javaObjectType)
+    val doubleFactory = ValueAdapterFactory.of(Computer::class.java, "typeDouble", SupportValueType.DOUBLE)
         .withSubtype(Monitor::class.java, Computer.ComTypeDouble.Monitor.value)
         .withSubtype(Keyboard::class.java, Computer.ComTypeDouble.Keyboard.value)
         .withSubtype(Mouse::class.java, Computer.ComTypeDouble.Mouse.value)
 
-    val longFactory = ValueAdapterFactory.of(Computer::class.java, "typeLong", Long::class.javaObjectType)
+    val longFactory = ValueAdapterFactory.of(Computer::class.java, "typeLong", SupportValueType.LONG)
         .withSubtype(Monitor::class.java, Computer.ComTypeLong.Monitor.value)
         .withSubtype(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value).withSubtype(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
 
@@ -87,7 +88,7 @@ class ValueAdapterTest {
 
     @Test
     fun unregisteredSubtype() {
-        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", SupportValueType.INT)
         var adapter = getComputerAdapter(propertyValueAdapterFactory)
 
         try {
@@ -99,7 +100,7 @@ class ValueAdapterTest {
         try {
             adapter.fromJson(monitorJson)
         } catch (e: JsonDataException) {
-            assertThat(e).hasMessageThat().isEqualTo("Expected one of [] for key 'typeInt' but found 'null'. Register a subtype for this label.")
+            assertThat(e).hasMessageThat().isEqualTo("Expected one of [] for key 'typeInt' but found '1'. Register a subtype for this label.")
         }
 
         adapter = getComputerAdapter(propertyValueAdapterFactory.withSubtype(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value))
@@ -125,7 +126,7 @@ class ValueAdapterTest {
 
     @Test
     fun unresigsterdLableKey() {
-        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "wrongKey", Int::class.java)
+        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "wrongKey", SupportValueType.INT)
             .withSubtype(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
             .withSubtype(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value).withSubtype(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
         val adapter = getComputerAdapter(propertyValueAdapterFactory)
@@ -142,7 +143,7 @@ class ValueAdapterTest {
 
     @Test
     fun defaultValue() {
-        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java).withDefaultValue(monitor)
+        val propertyValueAdapterFactory = ValueAdapterFactory.of(Computer::class.java, "typeInt", SupportValueType.INT).withDefaultValue(monitor)
         val adapter = getComputerAdapter(propertyValueAdapterFactory)
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor)

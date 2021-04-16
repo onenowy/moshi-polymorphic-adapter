@@ -15,7 +15,7 @@ object Dependencies {
     }
 
     object Moshi {
-        private const val version = "1.11.0"
+        private const val version = "1.12.0"
         const val moshi = "com.squareup.moshi:moshi:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
         const val adapter = "com.squareup.moshi:moshi-adapters:$version"
@@ -36,7 +36,7 @@ object Dependencies {
     const val gradle_version = "4.1.2"
 
     object KotlinPoet {
-        private const val version = "1.7.2"
+        private const val version = "1.8.0"
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
         const val metadata = "com.squareup:kotlinpoet-metadata:$version"
         const val metadataSpecs = "com.squareup:kotlinpoet-metadata-specs:$version"

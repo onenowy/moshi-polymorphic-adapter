@@ -1,6 +1,7 @@
 package com.onenowy.moshipolymorphicadapter;
 
 import com.google.common.truth.Truth;
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.SupportValueType;
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory;
 import com.onenowy.moshipolymorphicadapter.util.Computer;
 import com.onenowy.moshipolymorphicadapter.util.Keyboard;
@@ -35,16 +36,16 @@ public class ValueAdapterJavaTest {
 
     public ValueAdapterJavaTest() {
         this.intFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", int.class).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
+                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", SupportValueType.INT).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
         this.stringFacgtory = ValueAdapterFactory.Companion.of(Computer.class, "typeString",
-                String.class).withSubtype(Monitor.class,
+                SupportValueType.STRING).withSubtype(Monitor.class,
                 Computer.ComTypeString.Monitor.getValue()).withSubtype(Keyboard.class,
                 Computer.ComTypeString.Keyboard.getValue()).withSubtype(Mouse.class,
                 Computer.ComTypeString.Mouse.getValue());
         this.doubleFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", double.class).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
+                ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", SupportValueType.DOUBLE).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
         this.longFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeLong", long.class).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
+                ValueAdapterFactory.Companion.of(Computer.class, "typeLong", SupportValueType.LONG).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
         this.monitor = new Monitor(1);
         this.mouse = new Mouse("mouse");
         this.keyboard = new Keyboard(true);
@@ -119,7 +120,8 @@ public class ValueAdapterJavaTest {
 
     @Test
     public final void unregisteredSubtype() throws IOException {
-        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE);
+        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class
+                , "typeInt", SupportValueType.INT);
         JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
 
         try {
@@ -133,7 +135,8 @@ public class ValueAdapterJavaTest {
             adapter.fromJson(this.monitorJson);
         } catch (JsonDataException var6) {
             System.out.println(var6);
-            Truth.assertThat(var6).hasMessageThat().isEqualTo("Expected one of [] for key 'typeInt' but found 'null'. Register a subtype for this label.");
+            Truth.assertThat(var6).hasMessageThat().isEqualTo("Expected one of [] for key " +
+                    "'typeInt' but found '1'. Register a subtype for this label.");
         }
 
         adapter = this.getComputerAdapter(valueAdapterFactory.withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()));
@@ -156,7 +159,9 @@ public class ValueAdapterJavaTest {
 
     @Test
     public final void unresigsterdLableKey() throws IOException {
-        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class, "wrongKey", Integer.TYPE).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
+        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class
+                , "wrongKey", SupportValueType.INT).withSubtype(Monitor.class,
+                Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
         JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
         Truth.assertThat(adapter.toJson(this.monitor)).contains("\"wrongKey\":1");
         Truth.assertThat(adapter.toJson(this.mouse)).contains("\"wrongKey\":2");
@@ -174,7 +179,7 @@ public class ValueAdapterJavaTest {
     @Test
     public final void defaultValue() throws IOException {
         ValueAdapterFactory valueAdapterFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", Integer.TYPE).withDefaultValue(this.monitor);
+                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", SupportValueType.INT).withDefaultValue(this.monitor);
         JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
         Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
