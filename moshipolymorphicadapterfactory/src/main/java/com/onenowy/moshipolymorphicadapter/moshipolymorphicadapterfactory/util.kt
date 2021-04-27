@@ -1,11 +1,19 @@
 package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory
 
 fun String.toSupportedTypeOrNull(type: SupportValueType): Any? {
-    return this.let {
+    return this.trim().let {
         when (type) {
             SupportValueType.STRING -> it
+            SupportValueType.CHAR -> {
+                val chars = it.toCharArray()
+                return if (chars.size == 1) {
+                    chars.first()
+                } else {
+                    null
+                }
+            }
             SupportValueType.BOOLEAN -> {
-                val str = it.trim()
+                val str = it
                 if (str == "true" || str == "false") it == "true" else null
             }
             SupportValueType.BYTE -> toByteOrNull()
