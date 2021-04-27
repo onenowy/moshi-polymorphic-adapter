@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter.codegen.annotations
+package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS)

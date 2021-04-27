@@ -1,8 +1,8 @@
 package com.onenowy.moshipolymorphicadapter.codegen.api
 
-import com.onenowy.moshipolymorphicadapter.codegen.annotations.ValueAdaterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.metadata.toImmutableKmClass
