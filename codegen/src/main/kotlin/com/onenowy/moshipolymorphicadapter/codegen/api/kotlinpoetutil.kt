@@ -7,7 +7,7 @@ fun ImmutableKmClass.toClassName(): ClassName {
     val names = this.name.split("/")
     val sb = StringBuffer(names[0])
     for (i in 1 until names.lastIndex) {
-        sb.append(".$names[i]")
+        sb.append(".${names[i]}")
     }
     return ClassName(sb.toString(), names.last())
 }
