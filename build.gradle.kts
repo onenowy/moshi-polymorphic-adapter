@@ -2,10 +2,9 @@ buildscript {
     repositories {
         google()
         maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
-        jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:${Dependencies.gradle_version}")
+        classpath("com.android.tools.build:gradle:4.2.0")
         classpath(Dependencies.Kotlin.plugin)
     }
 }
@@ -14,7 +13,6 @@ allprojects {
     repositories {
         google()
         maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
-        jcenter()
     }
 }
 

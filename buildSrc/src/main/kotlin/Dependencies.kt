@@ -1,7 +1,7 @@
 object Dependencies {
 
     object Kotlin {
-        private const val version = "1.4.32"
+        private const val version = "1.5.0"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
@@ -22,7 +22,7 @@ object Dependencies {
     }
 
     object AutoService {
-        private const val version = "1.0-rc7"
+        private const val version = "1.0"
         const val processor = "com.google.auto.service:auto-service:$version"
         const val annotations = "com.google.auto.service:auto-service-annotations:$version"
     }
@@ -33,8 +33,6 @@ object Dependencies {
         const val processor = "net.ltgt.gradle.incap:incap-processor:$version"
     }
 
-    const val gradle_version = "4.1.2"
-
     object KotlinPoet {
         private const val version = "1.8.0"
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
@@ -44,7 +42,7 @@ object Dependencies {
     }
 
     object Shadow {
-        const val version = "6.1.0"
+        const val version = "7.0.0"
         const val shadow = "com.github.johnrengelman.shadow"
     }
 
