@@ -4,7 +4,7 @@ buildscript {
         maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.0")
+        classpath("com.android.tools.build:gradle:4.2.1")
         classpath(Dependencies.Kotlin.plugin)
     }
 }

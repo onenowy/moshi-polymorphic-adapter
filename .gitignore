@@ -2,12 +2,15 @@
 .gradle
 /local.properties
 /.idea
+/gradle
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
-/gradle/
-/.idea/
+.idea
 /buildSrc/build/
 /projectFilesBackup/.idea/workspace.xml
+/.idea/compiler.xml
+/.idea/misc.xml
+/gradle/wrapper/gradle-wrapper.properties
