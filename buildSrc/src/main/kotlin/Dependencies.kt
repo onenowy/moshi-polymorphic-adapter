@@ -1,7 +1,7 @@
 object Dependencies {
 
     object Kotlin {
-        private const val version = "1.5.0"
+        private const val version = "1.5.10"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
@@ -10,7 +10,7 @@ object Dependencies {
     object Test {
         private const val junit_version = "4.13.2"
         const val junit = "junit:junit:$junit_version"
-        private const val truth_version = "1.1.2"
+        private const val truth_version = "1.1.3"
         const val truth = "com.google.truth:truth:$truth_version"
     }
 
@@ -47,7 +47,7 @@ object Dependencies {
     }
 
     object VersionPlugin {
-        const val version = "0.38.0"
+        const val version = "0.39.0"
         const val versionPlugin = "com.github.ben-manes.versions"
     }
 
