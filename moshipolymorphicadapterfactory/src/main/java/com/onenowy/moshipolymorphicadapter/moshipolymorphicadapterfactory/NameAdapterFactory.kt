@@ -4,11 +4,17 @@ import com.squareup.moshi.*
 import java.lang.reflect.Type
 
 class NameAdapterFactory<T> @JvmOverloads constructor(
-    private val baseType: Class<T>, private val subTypes: List<Type> = emptyList(), private val labelFieldNames: List<String> = emptyList(),
+    private val baseType: Class<T>,
+    private val subTypes: List<Type> = emptyList(),
+    private val labelFieldNames: List<String> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
 ) : MoshiPolymorphicAdapterFactory<NameAdapterFactory<T>, T> {
 
-    override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
+    override fun create(
+        type: Type,
+        annotations: MutableSet<out Annotation>,
+        moshi: Moshi
+    ): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
             return null
         }
@@ -34,7 +40,10 @@ class NameAdapterFactory<T> @JvmOverloads constructor(
         return NameAdapterFactory(baseType, newSubTypes, newLabelFieldNames, fallbackAdapter)
     }
 
-    fun withSubtypes(subTypes: List<Class<out T>>, labelFieldNames: List<String>): NameAdapterFactory<T> {
+    fun withSubtypes(
+        subTypes: List<Class<out T>>,
+        labelFieldNames: List<String>
+    ): NameAdapterFactory<T> {
         require(labelFieldNames.size == labelFieldNames.distinct().size) { "Label Field name for ${baseType.simpleName} must be unique" }
         require(labelFieldNames.size == subTypes.size) { "The number of Label Field names for ${baseType.simpleName} is different from subtypes" }
 

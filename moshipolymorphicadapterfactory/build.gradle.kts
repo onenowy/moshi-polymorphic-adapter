@@ -16,7 +16,6 @@ compileKotlin.kotlinOptions {
     jvmTarget = "11"
 }
 dependencies {
-    implementation(Dependencies.Kotlin.stdlib_jdk8)
     implementation(Dependencies.Moshi.moshi)
     kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
