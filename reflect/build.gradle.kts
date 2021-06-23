@@ -14,10 +14,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     }
 }
 dependencies {
-    implementation(Dependencies.Moshi.moshi)
-    api(project(":moshipolymorphicadapterfactory"))
+    compileOnly(project(":moshipolymorphicadapterfactory"))
     kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)
-    api(Dependencies.Kotlin.reflect)
+    implementation(Dependencies.Kotlin.reflect)
 }

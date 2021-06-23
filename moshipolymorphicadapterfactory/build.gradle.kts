@@ -16,7 +16,7 @@ compileKotlin.kotlinOptions {
     jvmTarget = "11"
 }
 dependencies {
-    implementation(Dependencies.Moshi.moshi)
+    compileOnly(Dependencies.Moshi.moshi)
     kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)

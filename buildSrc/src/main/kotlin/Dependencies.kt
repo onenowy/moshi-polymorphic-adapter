@@ -34,7 +34,7 @@ object Dependencies {
     }
 
     object KotlinPoet {
-        private const val version = "1.8.0"
+        private const val version = "1.9.0"
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
         const val metadata = "com.squareup:kotlinpoet-metadata:$version"
         const val metadataSpecs = "com.squareup:kotlinpoet-metadata-specs:$version"
