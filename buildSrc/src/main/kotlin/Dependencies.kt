@@ -51,4 +51,8 @@ object Dependencies {
         const val versionPlugin = "com.github.ben-manes.versions"
     }
 
+    object Metadata {
+        private const val version = "0.3.0"
+        const val metadata = "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$version"
+    }
 }
