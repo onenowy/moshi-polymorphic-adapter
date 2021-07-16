@@ -58,7 +58,7 @@ class CodegenAdapterFactoryTest {
         try {
             computerAdapter.fromJson(monitorValueJson)
         } catch (e: JsonDataException) {
-            assertThat(e).hasMessageThat().isEqualTo("No matching Field names for [monitorUnique, mouseUnique, keyboardUnique]")
+            assertThat(e).hasMessageThat().contains("No matching Field names for")
         }
     }
 

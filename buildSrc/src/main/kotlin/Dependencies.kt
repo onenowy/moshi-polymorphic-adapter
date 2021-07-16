@@ -1,7 +1,7 @@
 object Dependencies {
 
     object Kotlin {
-        private const val version = "1.5.20"
+        private const val version = "1.5.21"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
