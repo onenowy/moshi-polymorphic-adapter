@@ -3,7 +3,7 @@ package com.onenowy.moshipolymorphicadapter.codegen.api
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.MoshiPolymorphicAdapterFactory
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.metadata.toImmutableKmClass
+import com.squareup.kotlinpoet.metadata.toKmClass
 import javax.lang.model.util.Elements
 
 fun adapterFactoryGenerator(adapterFactoryCodeGenerator: AbstractAdapterFactoryCodeGenerator, postfix: String, elements: Elements): FileSpec {
@@ -12,7 +12,8 @@ fun adapterFactoryGenerator(adapterFactoryCodeGenerator: AbstractAdapterFactoryC
     val starProjection = WildcardTypeName.producerOf(Any::class.asTypeName().copy(nullable = true))
     val funSpec =
         FunSpec.builder("generate$typeName").returns(
-            MoshiPolymorphicAdapterFactory::class.asClassName().parameterizedBy(starProjection, baseType.toImmutableKmClass().toClassName())
+            MoshiPolymorphicAdapterFactory::class.asClassName()
+                .parameterizedBy(starProjection, baseType.toKmClass().toClassName())
         ).addCode(adapterFactoryCodeGenerator.generateCode()).addOriginatingElement(baseType).build()
     return FileSpec.builder(elements.getPackageOf(baseType).qualifiedName.toString(), "${typeName}Generator").addFunction(funSpec).build()
 }

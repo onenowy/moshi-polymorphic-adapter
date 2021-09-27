@@ -5,7 +5,7 @@ import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annota
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.buildCodeBlock
-import com.squareup.kotlinpoet.metadata.toImmutableKmClass
+import com.squareup.kotlinpoet.metadata.toKmClass
 
 class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, private val valueAdapterFactoryCodegen: ValueAdaterFactoryCodegen) :
     AbstractAdapterFactoryCodeGenerator
@@ -17,14 +17,18 @@ class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, pri
             addStatement(
                 "var adapterFactory = %T.of(%T::class.java, %S, %T.%L)",
                 ValueAdapterFactory::class,
-                targetSealedClass.baseType.toImmutableKmClass().toClassName(),
+                targetSealedClass.baseType.toKmClass().toClassName(),
                 valueAdapterFactoryCodegen.labelKey,
                 labelType::class,
                 labelType
             )
             for (type in targetSealedClass.subClass) {
                 val labelValue = type.getAnnotation(annotation)
-                addStatement("adapterFactory = adapterFactory.withSubtypeForLabelString(%T::class.java, %S)", type.toImmutableKmClass().toClassName(), labelValue.value)
+                addStatement(
+                    "adapterFactory = adapterFactory.withSubtypeForLabelString(%T::class.java, %S)",
+                    type.toKmClass().toClassName(),
+                    labelValue.value
+                )
             }
             addStatement("return adapterFactory")
         }
