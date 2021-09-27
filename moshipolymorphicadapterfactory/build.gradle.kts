@@ -16,7 +16,7 @@ compileKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 dependencies {
-    implementation(Dependencies.Moshi.moshi)
+    api(Dependencies.Moshi.moshi)
     kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)

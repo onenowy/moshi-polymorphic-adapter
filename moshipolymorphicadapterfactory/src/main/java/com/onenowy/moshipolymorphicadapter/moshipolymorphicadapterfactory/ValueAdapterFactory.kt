@@ -30,13 +30,16 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
     }
 
     fun withSubtypeForLabelString(subType: Class<out T>, label: String): ValueAdapterFactory<T> {
-        return withSubtype(subType, label.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("$label is not supported type"))
+        return withSubtype(
+            subType,
+            label.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("$label is not supported type")
+        )
     }
 
-    fun withSubtypes(subTypes: List<Class<out T>>, labels: List<Any>): ValueAdapterFactory<T> {
-        require(labels.size == labels.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
-        require(labels.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
-        return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackAdapter)
+    fun withSubtypes(subTypes: List<Class<out T>>, labelValues: List<Any>): ValueAdapterFactory<T> {
+        require(labelValues.size == labelValues.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
+        require(labelValues.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
+        return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labelValues, fallbackAdapter)
     }
 
     override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValueAdapterFactory<T> {
@@ -52,10 +55,10 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
             return null
         }
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
-        return PropertyValueAdapter(labelKey, labelType, subTypes, labels, fallbackAdapter, jsonAdapters)
+        return ValueAdapter(labelKey, labelType, subTypes, labels, fallbackAdapter, jsonAdapters)
     }
 
-    class PropertyValueAdapter @JvmOverloads constructor(
+    class ValueAdapter @JvmOverloads constructor(
         private val labelKey: String,
         private val labelType: SupportValueType,
         private val subTypes: List<Type>,

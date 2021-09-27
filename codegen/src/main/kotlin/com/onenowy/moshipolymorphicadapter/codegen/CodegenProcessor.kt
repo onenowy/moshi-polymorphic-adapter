@@ -5,7 +5,7 @@ import com.onenowy.moshipolymorphicadapter.codegen.api.NameAdapterFactoryCodeGen
 import com.onenowy.moshipolymorphicadapter.codegen.api.ValueAdapterFactoryCodeGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.adapterFactoryGenerator
 import com.onenowy.moshipolymorphicadapter.codegen.api.toTargetSealedClass
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelName
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryCodegen
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
@@ -27,7 +27,7 @@ class CodegenProcessor : AbstractProcessor() {
     private lateinit var messager: Messager
     private val nameAdapterFactoryAnnotation = NameAdapterFactoryCodegen::class.java
     private val valueAdapterFactoryAnnotation = ValueAdaterFactoryCodegen::class.java
-    private val labelFieldAnnotation = LabelField::class.java
+    private val labelFieldAnnotation = LabelName::class.java
     private val labelValueAnnotation = LabelValue::class.java
     private val postfixString = "AdapterFactory"
 

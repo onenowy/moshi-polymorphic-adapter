@@ -1,9 +1,8 @@
 object Dependencies {
 
     object Kotlin {
-        private const val version = "1.5.21"
+        private const val version = "1.5.31"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
-        const val stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
     }
 
@@ -34,7 +33,7 @@ object Dependencies {
     }
 
     object KotlinPoet {
-        private const val version = "1.9.0"
+        private const val version = "1.10.1"
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
         const val metadata = "com.squareup:kotlinpoet-metadata:$version"
         const val metadataSpecs = "com.squareup:kotlinpoet-metadata-specs:$version"

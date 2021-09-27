@@ -2,4 +2,4 @@ package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annot
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
-annotation class LabelField(val fieldName: String)
+annotation class LabelName(val name: String)

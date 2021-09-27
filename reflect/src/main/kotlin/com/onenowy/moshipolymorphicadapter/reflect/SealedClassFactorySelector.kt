@@ -1,7 +1,7 @@
 package com.onenowy.moshipolymorphicadapter.reflect
 
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.*
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelName
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
 import com.onenowy.moshipolymorphicadapter.reflect.annotations.NameAdapterFactoryReflection
 import com.onenowy.moshipolymorphicadapter.reflect.annotations.ValueAdaterFactoryReflection
@@ -31,29 +31,29 @@ class SealedClassFactorySelector<T : Any>(private val baseType: KClass<T>) {
     private fun <T : Any> nameAdapterFactoryGenerator(baseType: KClass<T>): NameAdapterFactory<T> {
         val nameAdapterFactory = NameAdapterFactory.of(baseType.java)
         val subtypes = mutableListOf<Class<out T>>()
-        val labelFieldNames = mutableListOf<String>()
+        val labelNames = mutableListOf<String>()
         baseType.sealedSubclasses.forEach { subclass ->
-            val labelField = subclass.findAnnotation<LabelField>()
+            val labelField = subclass.findAnnotation<LabelName>()
             if (labelField != null) {
-                labelFieldNames.add(labelField.fieldName)
+                labelNames.add(labelField.name)
                 subtypes.add(subclass.java)
             }
         }
-        return nameAdapterFactory.withSubtypes(subtypes, labelFieldNames)
+        return nameAdapterFactory.withSubtypes(subtypes, labelNames)
     }
 
     private fun <T : Any> valueAdapterFactoryGenerator(baseType: KClass<T>, labelKey: String, labelType: SupportValueType): ValueAdapterFactory<T> {
         val valueAdapterFactory = ValueAdapterFactory.of(baseType.java, labelKey, labelType)
         val subtypes = mutableListOf<Class<out T>>()
-        val labels = mutableListOf<Any>()
+        val labelValues = mutableListOf<Any>()
         baseType.sealedSubclasses.forEach { subclass ->
             val labelValue = subclass.findAnnotation<LabelValue>()
             if (labelValue != null) {
                 val value = labelValue.value.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("Not Supported Type ${labelType.name}")
-                labels.add(value)
+                labelValues.add(value)
                 subtypes.add(subclass.java)
             }
         }
-        return valueAdapterFactory.withSubtypes(subtypes, labels)
+        return valueAdapterFactory.withSubtypes(subtypes, labelValues)
     }
 }
