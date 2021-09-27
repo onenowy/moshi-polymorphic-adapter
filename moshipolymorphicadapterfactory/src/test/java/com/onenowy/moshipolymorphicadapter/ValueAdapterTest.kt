@@ -29,21 +29,24 @@ class ValueAdapterTest {
 
     val longFactory = ValueAdapterFactory.of(Computer::class.java, "typeLong", SupportValueType.LONG)
         .withSubtype(Monitor::class.java, Computer.ComTypeLong.Monitor.value)
-        .withSubtype(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value).withSubtype(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
+        .withSubtype(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value)
+        .withSubtype(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
 
 
-    private val monitor = Monitor(1)
-    private val mouse = Mouse("mouse")
-    private val keyboard = Keyboard(true)
+    private val monitor = Monitor(1, "test")
+    private val mouse = Mouse("mouse", "test")
+    private val keyboard = Keyboard(true, "test")
 
     private val monitorJson =
-        "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":${Long.MAX_VALUE - 2},\"monitorUnique\":1}"
-    private val mouseJson = "{\"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":${Long.MAX_VALUE - 1}," +
-            "\"mouseUnique\":\"mouse\"}"
+        "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":${Long.MAX_VALUE - 2},\"monitorUnique\":1,\"testValue\":\"test\"}"
+    private val mouseJson =
+        "{\"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":${Long.MAX_VALUE - 1}," +
+                "\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
     private val keyboardJson =
-        "{\"typeInt\":3,\"typeString\":\"3\",\"typeDouble\":${Double.MAX_VALUE},\"typeLong\":${Long.MAX_VALUE},\"keyboardUnique\":true}"
+        "{\"typeInt\":3,\"typeString\":\"3\",\"typeDouble\":${Double.MAX_VALUE},\"typeLong\":${Long.MAX_VALUE},\"keyboardUnique\":true,\"testValue\":\"test\"}"
 
-    private fun getComputerAdapter(factory: JsonAdapter.Factory) = Moshi.Builder().add(factory).build().adapter(Computer::class.java)
+    private fun getComputerAdapter(factory: JsonAdapter.Factory) =
+        Moshi.Builder().add(factory).build().adapter(Computer::class.java)
 
 
     @Test

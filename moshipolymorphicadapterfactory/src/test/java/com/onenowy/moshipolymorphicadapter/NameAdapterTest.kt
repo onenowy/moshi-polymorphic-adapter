@@ -24,15 +24,16 @@ class NameAdapterTest {
     )
 
 
-    val monitor = Monitor(1)
-    val mouse = Mouse("mouse")
-    val keyboard = Keyboard(true)
+    val monitor = Monitor(1, "test")
+    val mouse = Mouse("mouse", "test")
+    val keyboard = Keyboard(true, "test")
 
-    val monitorJson = "{\"monitorUnique\":1}"
-    val mouseJson = "{\"mouseUnique\":\"mouse\"}"
-    val keyboardJson = "{\"keyboardUnique\":true}"
+    val monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}"
+    val mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
+    val keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}"
 
-    fun getComputerAdapter(factory: JsonAdapter.Factory) = Moshi.Builder().add(factory).build().adapter(Computer::class.java)
+    fun getComputerAdapter(factory: JsonAdapter.Factory) =
+        Moshi.Builder().add(factory).build().adapter(Computer::class.java)
 
     @Test
     fun toJson() {

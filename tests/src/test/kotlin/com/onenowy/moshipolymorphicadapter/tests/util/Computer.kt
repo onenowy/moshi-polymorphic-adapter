@@ -1,6 +1,6 @@
 package com.onenowy.moshipolymorphicadapter.tests.util
 
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelField
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelName
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameAdapterFactoryCodegen
 import com.squareup.moshi.JsonClass
 
@@ -24,15 +24,15 @@ sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, va
 }
 
 @JsonClass(generateAdapter = true)
-@LabelField("monitorUnique")
+@LabelName("monitorUnique")
 data class Monitor(val monitorUnique: Int?) : Computer(ComTypeInt.Monitor, ComTypeString.Monitor, ComTypeDouble.Monitor, ComTypeLong.Monitor)
 
 @JsonClass(generateAdapter = true)
-@LabelField("mouseUnique")
+@LabelName("mouseUnique")
 data class Mouse(val mouseUnique: String?) : Computer(ComTypeInt.Mouse, ComTypeString.Mouse, ComTypeDouble.Mouse, ComTypeLong.Mouse)
 
 @JsonClass(generateAdapter = true)
-@LabelField("keyboardUnique")
+@LabelName("keyboardUnique")
 data class Keyboard(val keyboardUnique: Boolean?) :
     Computer(ComTypeInt.Keyboard, ComTypeString.Keyboard, ComTypeDouble.Keyboard, ComTypeLong.Keyboard)
 

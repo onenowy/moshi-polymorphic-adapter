@@ -10,13 +10,11 @@ import com.onenowy.moshipolymorphicadapter.util.Mouse;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
-
+import kotlin.collections.CollectionsKt;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import kotlin.collections.CollectionsKt;
 
 public class ValueAdapterJavaTest {
     @NotNull
@@ -46,12 +44,12 @@ public class ValueAdapterJavaTest {
                 ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", SupportValueType.DOUBLE).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
         this.longFactory =
                 ValueAdapterFactory.Companion.of(Computer.class, "typeLong", SupportValueType.LONG).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
-        this.monitor = new Monitor(1);
-        this.mouse = new Mouse("mouse");
-        this.keyboard = new Keyboard(true);
-        this.monitorJson = "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":9223372036854775805,\"monitorUnique\":1}";
-        this.mouseJson = "{\"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":9223372036854775806,\"mouseUnique\":\"mouse\"}";
-        this.keyboardJson = "{\"typeInt\":3,\"typeString\":\"3\",\"typeDouble\":1.7976931348623157E308,\"typeLong\":9223372036854775807,\"keyboardUnique\":true}";
+        this.monitor = new Monitor(1, "test");
+        this.mouse = new Mouse("mouse", "test");
+        this.keyboard = new Keyboard(true, "test");
+        this.monitorJson = "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":9223372036854775805,\"monitorUnique\":1,\"testValue\":\"test\"}";
+        this.mouseJson = "{\"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":9223372036854775806,\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}";
+        this.keyboardJson = "{\"typeInt\":3,\"typeString\":\"3\",\"typeDouble\":1.7976931348623157E308,\"typeLong\":9223372036854775807,\"keyboardUnique\":true,\"testValue\":\"test\"}";
     }
 
     @NotNull
