@@ -15,12 +15,13 @@ class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, pri
         val labelType = valueAdapterFactoryCodegen.labelType
         return buildCodeBlock {
             addStatement(
-                "var adapterFactory = %T.of(%T::class.java, %S, %T.%L)",
+                "var adapterFactory = %T.of(%T::class.java, %S, %T.%L, %L)",
                 ValueAdapterFactory::class,
                 targetSealedClass.baseType.toKmClass().toClassName(),
                 valueAdapterFactoryCodegen.labelKey,
                 labelType::class,
-                labelType
+                labelType,
+                valueAdapterFactoryCodegen.subTypeIncludeLabelKey
             )
             for (type in targetSealedClass.subClass) {
                 val labelValue = type.getAnnotation(annotation)

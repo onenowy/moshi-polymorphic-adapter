@@ -17,7 +17,6 @@ object Dependencies {
         private const val version = "1.12.0"
         const val moshi = "com.squareup.moshi:moshi:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
-        const val adapter = "com.squareup.moshi:moshi-adapters:$version"
     }
 
     object AutoService {

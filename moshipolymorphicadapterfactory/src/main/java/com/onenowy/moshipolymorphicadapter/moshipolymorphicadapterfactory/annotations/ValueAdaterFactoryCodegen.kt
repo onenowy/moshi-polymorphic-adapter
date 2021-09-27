@@ -4,4 +4,8 @@ import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.Suppor
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class ValueAdaterFactoryCodegen(val labelType: SupportValueType, val labelKey: String)
+annotation class ValueAdaterFactoryCodegen(
+    val labelType: SupportValueType,
+    val labelKey: String,
+    val subTypeIncludeLabelKey: Boolean = false
+)

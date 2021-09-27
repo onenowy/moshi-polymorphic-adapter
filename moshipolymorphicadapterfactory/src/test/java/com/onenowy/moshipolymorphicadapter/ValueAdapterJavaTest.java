@@ -3,10 +3,7 @@ package com.onenowy.moshipolymorphicadapter;
 import com.google.common.truth.Truth;
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.SupportValueType;
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory;
-import com.onenowy.moshipolymorphicadapter.util.Computer;
-import com.onenowy.moshipolymorphicadapter.util.Keyboard;
-import com.onenowy.moshipolymorphicadapter.util.Monitor;
-import com.onenowy.moshipolymorphicadapter.util.Mouse;
+import com.onenowy.moshipolymorphicadapter.util.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
@@ -33,17 +30,18 @@ public class ValueAdapterJavaTest {
     private final String keyboardJson;
 
     public ValueAdapterJavaTest() {
+
         this.intFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", SupportValueType.INT).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
-        this.stringFacgtory = ValueAdapterFactory.Companion.of(Computer.class, "typeString",
+                ValueAdapterFactory.of(Computer.class, "typeInt", SupportValueType.INT).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
+        this.stringFacgtory = ValueAdapterFactory.of(Computer.class, "typeString",
                 SupportValueType.STRING).withSubtype(Monitor.class,
                 Computer.ComTypeString.Monitor.getValue()).withSubtype(Keyboard.class,
                 Computer.ComTypeString.Keyboard.getValue()).withSubtype(Mouse.class,
                 Computer.ComTypeString.Mouse.getValue());
         this.doubleFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeDouble", SupportValueType.DOUBLE).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
+                ValueAdapterFactory.of(Computer.class, "typeDouble", SupportValueType.DOUBLE).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
         this.longFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeLong", SupportValueType.LONG).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
+                ValueAdapterFactory.of(Computer.class, "typeLong", SupportValueType.LONG).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
         this.monitor = new Monitor(1, "test");
         this.mouse = new Mouse("mouse", "test");
         this.keyboard = new Keyboard(true, "test");
@@ -94,6 +92,10 @@ public class ValueAdapterJavaTest {
         Truth.assertThat(adapter.toJson(this.monitor)).contains("\"typeLong\":9223372036854775805");
         Truth.assertThat(adapter.toJson(this.mouse)).contains("\"typeLong\":9223372036854775806");
         Truth.assertThat(adapter.toJson(this.keyboard)).contains("\"typeLong\":9223372036854775807");
+        adapter = (new Moshi.Builder()).add(ValueAdapterFactory.of(TestData.class, "value", SupportValueType.INT, true).withSubtype(One.class, 1).withSubtype(Two.class, 2).withSubtype(Three.class, 3)).build().adapter(TestData.class);
+        Truth.assertThat(adapter.toJson(new One("test"))).isEqualTo("{\"name\":\"test\",\"value\":1}");
+        Truth.assertThat(adapter.toJson(new Two("test"))).isEqualTo("{\"name\":\"test\",\"value\":2}");
+        Truth.assertThat(adapter.toJson(new Three("test"))).isEqualTo("{\"name\":\"test\",\"value\":3}");
     }
 
     @Test

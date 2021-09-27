@@ -4,18 +4,25 @@ import com.squareup.moshi.*
 import java.lang.reflect.Type
 
 class ValueAdapterFactory<T> @JvmOverloads constructor(
+    private val subTypeIncludeLabelKey: Boolean,
     private val baseType: Class<T>,
     private val labelType: SupportValueType,
     private val labelKey: String,
     private val subTypes: List<Type> = emptyList(),
     private val labels: List<Any> = emptyList(),
-    private val fallbackAdapter: JsonAdapter<Any>? = null
+    private val fallbackAdapter: JsonAdapter<Any>? = null,
 ) : MoshiPolymorphicAdapterFactory<ValueAdapterFactory<T>, T> {
 
     companion object {
         @JvmStatic
-        fun <T> of(baseType: Class<T>, labelKey: String, labelType: SupportValueType): ValueAdapterFactory<T> {
-            return ValueAdapterFactory(baseType, labelType, labelKey)
+        @JvmOverloads
+        fun <T> of(
+            baseType: Class<T>,
+            labelKey: String,
+            labelType: SupportValueType,
+            subTypeIncludeLabelKey: Boolean = false
+        ): ValueAdapterFactory<T> {
+            return ValueAdapterFactory(subTypeIncludeLabelKey, baseType, labelType, labelKey)
         }
     }
 
@@ -26,7 +33,7 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
         newSubTypes.add(subType)
         val newLabels = labels.toMutableList()
         newLabels.add(label)
-        return ValueAdapterFactory(baseType, labelType, labelKey, newSubTypes, newLabels)
+        return ValueAdapterFactory(subTypeIncludeLabelKey, baseType, labelType, labelKey, newSubTypes, newLabels)
     }
 
     fun withSubtypeForLabelString(subType: Class<out T>, label: String): ValueAdapterFactory<T> {
@@ -39,11 +46,27 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
     fun withSubtypes(subTypes: List<Class<out T>>, labelValues: List<Any>): ValueAdapterFactory<T> {
         require(labelValues.size == labelValues.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
         require(labelValues.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
-        return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labelValues, fallbackAdapter)
+        return ValueAdapterFactory(
+            subTypeIncludeLabelKey,
+            baseType,
+            labelType,
+            labelKey,
+            subTypes,
+            labelValues,
+            fallbackAdapter
+        )
     }
 
     override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValueAdapterFactory<T> {
-        return ValueAdapterFactory(baseType, labelType, labelKey, subTypes, labels, fallbackJsonAdapter)
+        return ValueAdapterFactory(
+            subTypeIncludeLabelKey,
+            baseType,
+            labelType,
+            labelKey,
+            subTypes,
+            labels,
+            fallbackJsonAdapter
+        )
     }
 
     override fun withDefaultValue(defaultValue: T?): ValueAdapterFactory<T> {
@@ -55,10 +78,19 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
             return null
         }
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
-        return ValueAdapter(labelKey, labelType, subTypes, labels, fallbackAdapter, jsonAdapters)
+        return ValueAdapter(
+            subTypeIncludeLabelKey,
+            labelKey,
+            labelType,
+            subTypes,
+            labels,
+            fallbackAdapter,
+            jsonAdapters
+        )
     }
 
     class ValueAdapter @JvmOverloads constructor(
+        private val subTypeIncludeLabelKey: Boolean,
         private val labelKey: String,
         private val labelType: SupportValueType,
         private val subTypes: List<Type>,
@@ -131,7 +163,7 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
                 jsonAdapters[typeIndex]
             }
             writer.beginObject()
-            if (adapter != fallbackAdapter) {
+            if (adapter != fallbackAdapter && !subTypeIncludeLabelKey) {
                 writeValue(writer.name(labelKey), labels[typeIndex])
             }
             val flattenToken = writer.beginFlatten()
