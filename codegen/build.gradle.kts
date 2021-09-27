@@ -17,7 +17,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     }
 }
 val shade: Configuration = configurations.maybeCreate("compileShaded")
-configurations.getByName("compileOnly").extendsFrom(shade)
+configurations.getByName("implementation").extendsFrom(shade)
 dependencies {
     compileOnly(project(":moshipolymorphicadapterfactory"))
 

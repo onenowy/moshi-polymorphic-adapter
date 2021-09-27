@@ -2,7 +2,6 @@ package com.onenowy.moshipolymorphicadapter.codegen.api
 
 import com.squareup.kotlinpoet.metadata.isSealed
 import com.squareup.kotlinpoet.metadata.toKmClass
-import kotlinx.metadata.KmClass
 import javax.annotation.processing.Messager
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
@@ -13,7 +12,7 @@ data class TargetSealedClass(val baseType: TypeElement, val subClass: List<TypeE
 
 fun Element.toTargetSealedClass(messager: Messager, typeUtil: Types, annotatedSubclass: Set<Element>): TargetSealedClass? {
     if (this is TypeElement) {
-        val kmClass: KmClass? = try {
+        val kmClass = try {
             this.toKmClass()
         } catch (e: UnsupportedOperationException) {
             null
