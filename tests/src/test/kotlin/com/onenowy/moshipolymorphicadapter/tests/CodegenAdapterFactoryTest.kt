@@ -8,24 +8,26 @@ import org.junit.Test
 
 class CodegenAdapterFactoryTest {
 
-    val computerAdapter = Moshi.Builder().add(generateComputerNameAdapterFactory()).build().adapter(Computer::class.java)
-    val computerValueAdapter = Moshi.Builder().add(generateComputerValueValueAdapterFactory()).build().adapter(ComputerValue::class.java)
+    val computerAdapter =
+        Moshi.Builder().add(generateComputerNameAdapterFactory()).build().adapter(Computer::class.java)
+    val computerValueAdapter =
+        Moshi.Builder().add(generateComputerValueValueAdapterFactory()).build().adapter(ComputerValue::class.java)
 
-    val monitor = Monitor(1)
-    val mouse = Mouse("mouse")
-    val keyboard = Keyboard(true)
+    val monitor = Monitor(1, "test")
+    val mouse = Mouse("mouse", "test")
+    val keyboard = Keyboard(true, "test")
 
-    val monitorJson = "{\"monitorUnique\":1}"
-    val mouseJson = "{\"mouseUnique\":\"mouse\"}"
-    val keyboardJson = "{\"keyboardUnique\":true}"
+    val monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}"
+    val mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
+    val keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}"
 
-    val monitorValue = MonitorValue(1)
-    val mouseValue = MouseValue("mouse")
-    val keyboardValue = KeyboardValue(true)
+    val monitorValue = MonitorValue(1, "test")
+    val mouseValue = MouseValue("mouse", "test")
+    val keyboardValue = KeyboardValue(true, "test")
 
-    val monitorValueJson = "{\"type\":1,\"monitor\":1}"
-    val mouseValueJson = "{\"type\":2,\"mouse\":\"mouse\"}"
-    val keyboardValueJson = "{\"type\":3,\"keyboard\":true}"
+    val monitorValueJson = "{\"type\":1,\"monitor\":1,\"testValue\":\"test\"}"
+    val mouseValueJson = "{\"type\":2,\"mouse\":\"mouse\",\"testValue\":\"test\"}"
+    val keyboardValueJson = "{\"type\":3,\"keyboard\":true,\"testValue\":\"test\"}"
 
     @Test
     fun toJson() {

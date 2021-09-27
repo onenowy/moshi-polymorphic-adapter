@@ -22,13 +22,15 @@ sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, va
 }
 
 @JsonClass(generateAdapter = true)
-data class Monitor(val monitorUnique: Int?) : Computer(ComTypeInt.Monitor, ComTypeString.Monitor, ComTypeDouble.Monitor, ComTypeLong.Monitor)
+data class Monitor(val monitorUnique: Int?, val testValue: String) :
+    Computer(ComTypeInt.Monitor, ComTypeString.Monitor, ComTypeDouble.Monitor, ComTypeLong.Monitor)
 
 @JsonClass(generateAdapter = true)
-data class Mouse(val mouseUnique: String?) : Computer(ComTypeInt.Mouse, ComTypeString.Mouse, ComTypeDouble.Mouse, ComTypeLong.Mouse)
+data class Mouse(val mouseUnique: String?, val testValue: String) :
+    Computer(ComTypeInt.Mouse, ComTypeString.Mouse, ComTypeDouble.Mouse, ComTypeLong.Mouse)
 
 @JsonClass(generateAdapter = true)
-data class Keyboard(val keyboardUnique: Boolean?) :
+data class Keyboard(val keyboardUnique: Boolean?, val testValue: String) :
     Computer(ComTypeInt.Keyboard, ComTypeString.Keyboard, ComTypeDouble.Keyboard, ComTypeLong.Keyboard)
 
 

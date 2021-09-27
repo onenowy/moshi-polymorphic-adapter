@@ -8,13 +8,11 @@ import com.onenowy.moshipolymorphicadapter.util.Mouse;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
-
+import kotlin.collections.CollectionsKt;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import kotlin.collections.CollectionsKt;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -43,12 +41,12 @@ public class NameAdapterJavaTest {
         this.nameAdapterFactory = NameAdapterFactory.Companion.of(Computer.class);
         this.withSubtype = this.nameAdapterFactory.withSubtype(Monitor.class, "monitorUnique").withSubtype(Mouse.class, "mouseUnique").withSubtype(Keyboard.class, "keyboardUnique");
         this.withSubtypes = this.nameAdapterFactory.withSubtypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
-        this.monitor = new Monitor(1);
-        this.mouse = new Mouse("mouse");
-        this.keyboard = new Keyboard(true);
-        this.monitorJson = "{\"monitorUnique\":1}";
-        this.mouseJson = "{\"mouseUnique\":\"mouse\"}";
-        this.keyboardJson = "{\"keyboardUnique\":true}";
+        this.monitor = new Monitor(1, "test");
+        this.mouse = new Mouse("mouse", "test");
+        this.keyboard = new Keyboard(true, "test");
+        this.monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}";
+        this.mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}";
+        this.keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}";
     }
 
     @NotNull
