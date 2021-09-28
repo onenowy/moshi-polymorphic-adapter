@@ -1,10 +1,10 @@
 package com.onenowy.moshipolymorphicadapter.reflect.util
 
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameLabel
-import com.onenowy.moshipolymorphicadapter.reflect.annotations.NameAdapterFactoryReflection
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NamePolymorphicAdapter
 import com.squareup.moshi.JsonClass
 
-@NameAdapterFactoryReflection
+@NamePolymorphicAdapter
 sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, val typeDouble: ComTypeDouble, val typeLong: ComTypeLong) {
     enum class ComTypeInt(val value: Int) {
         Monitor(1), Mouse(2), Keyboard(3)
