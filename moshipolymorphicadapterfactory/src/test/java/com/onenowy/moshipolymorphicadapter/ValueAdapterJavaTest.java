@@ -2,7 +2,7 @@ package com.onenowy.moshipolymorphicadapter;
 
 import com.google.common.truth.Truth;
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.SupportValueType;
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory;
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValuePolymorphicAdapterFactory;
 import com.onenowy.moshipolymorphicadapter.util.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
@@ -15,13 +15,13 @@ import java.io.IOException;
 
 public class ValueAdapterJavaTest {
     @NotNull
-    private final ValueAdapterFactory intFactory;
+    private final ValuePolymorphicAdapterFactory intFactory;
     @NotNull
-    private final ValueAdapterFactory stringFacgtory;
+    private final ValuePolymorphicAdapterFactory stringFacgtory;
     @NotNull
-    private final ValueAdapterFactory doubleFactory;
+    private final ValuePolymorphicAdapterFactory doubleFactory;
     @NotNull
-    private final ValueAdapterFactory longFactory;
+    private final ValuePolymorphicAdapterFactory longFactory;
     private final Monitor monitor;
     private final Mouse mouse;
     private final Keyboard keyboard;
@@ -32,16 +32,16 @@ public class ValueAdapterJavaTest {
     public ValueAdapterJavaTest() {
 
         this.intFactory =
-                ValueAdapterFactory.of(Computer.class, "typeInt", SupportValueType.INT).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
-        this.stringFacgtory = ValueAdapterFactory.of(Computer.class, "typeString",
+                ValuePolymorphicAdapterFactory.of(Computer.class, "typeInt", SupportValueType.INT).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
+        this.stringFacgtory = ValuePolymorphicAdapterFactory.of(Computer.class, "typeString",
                 SupportValueType.STRING).withSubtype(Monitor.class,
                 Computer.ComTypeString.Monitor.getValue()).withSubtype(Keyboard.class,
                 Computer.ComTypeString.Keyboard.getValue()).withSubtype(Mouse.class,
                 Computer.ComTypeString.Mouse.getValue());
         this.doubleFactory =
-                ValueAdapterFactory.of(Computer.class, "typeDouble", SupportValueType.DOUBLE).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
+                ValuePolymorphicAdapterFactory.of(Computer.class, "typeDouble", SupportValueType.DOUBLE).withSubtype(Monitor.class, Computer.ComTypeDouble.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeDouble.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeDouble.Mouse.getValue());
         this.longFactory =
-                ValueAdapterFactory.of(Computer.class, "typeLong", SupportValueType.LONG).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
+                ValuePolymorphicAdapterFactory.of(Computer.class, "typeLong", SupportValueType.LONG).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
         this.monitor = new Monitor(1, "test");
         this.mouse = new Mouse("mouse", "test");
         this.keyboard = new Keyboard(true, "test");
@@ -51,22 +51,22 @@ public class ValueAdapterJavaTest {
     }
 
     @NotNull
-    public final ValueAdapterFactory getIntFactory() {
+    public final ValuePolymorphicAdapterFactory getIntFactory() {
         return this.intFactory;
     }
 
     @NotNull
-    public final ValueAdapterFactory getStringFacgtory() {
+    public final ValuePolymorphicAdapterFactory getStringFacgtory() {
         return this.stringFacgtory;
     }
 
     @NotNull
-    public final ValueAdapterFactory getDoubleFactory() {
+    public final ValuePolymorphicAdapterFactory getDoubleFactory() {
         return this.doubleFactory;
     }
 
     @NotNull
-    public final ValueAdapterFactory getLongFactory() {
+    public final ValuePolymorphicAdapterFactory getLongFactory() {
         return this.longFactory;
     }
 
@@ -92,7 +92,7 @@ public class ValueAdapterJavaTest {
         Truth.assertThat(adapter.toJson(this.monitor)).contains("\"typeLong\":9223372036854775805");
         Truth.assertThat(adapter.toJson(this.mouse)).contains("\"typeLong\":9223372036854775806");
         Truth.assertThat(adapter.toJson(this.keyboard)).contains("\"typeLong\":9223372036854775807");
-        adapter = (new Moshi.Builder()).add(ValueAdapterFactory.of(TestData.class, "value", SupportValueType.INT, true).withSubtype(One.class, 1).withSubtype(Two.class, 2).withSubtype(Three.class, 3)).build().adapter(TestData.class);
+        adapter = (new Moshi.Builder()).add(ValuePolymorphicAdapterFactory.of(TestData.class, "value", SupportValueType.INT, true).withSubtype(One.class, 1).withSubtype(Two.class, 2).withSubtype(Three.class, 3)).build().adapter(TestData.class);
         Truth.assertThat(adapter.toJson(new One("test"))).isEqualTo("{\"name\":\"test\",\"value\":1}");
         Truth.assertThat(adapter.toJson(new Two("test"))).isEqualTo("{\"name\":\"test\",\"value\":2}");
         Truth.assertThat(adapter.toJson(new Three("test"))).isEqualTo("{\"name\":\"test\",\"value\":3}");
@@ -120,7 +120,7 @@ public class ValueAdapterJavaTest {
 
     @Test
     public final void unregisteredSubtype() throws IOException {
-        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class
+        ValuePolymorphicAdapterFactory valueAdapterFactory = ValuePolymorphicAdapterFactory.Companion.of(Computer.class
                 , "typeInt", SupportValueType.INT);
         JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
 
@@ -159,7 +159,7 @@ public class ValueAdapterJavaTest {
 
     @Test
     public final void unresigsterdLableKey() throws IOException {
-        ValueAdapterFactory valueAdapterFactory = ValueAdapterFactory.Companion.of(Computer.class
+        ValuePolymorphicAdapterFactory valueAdapterFactory = ValuePolymorphicAdapterFactory.Companion.of(Computer.class
                 , "wrongKey", SupportValueType.INT).withSubtype(Monitor.class,
                 Computer.ComTypeInt.Monitor.getValue()).withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue()).withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
         JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
@@ -178,8 +178,8 @@ public class ValueAdapterJavaTest {
 
     @Test
     public final void defaultValue() throws IOException {
-        ValueAdapterFactory valueAdapterFactory =
-                ValueAdapterFactory.Companion.of(Computer.class, "typeInt", SupportValueType.INT).withDefaultValue(this.monitor);
+        ValuePolymorphicAdapterFactory valueAdapterFactory =
+                ValuePolymorphicAdapterFactory.Companion.of(Computer.class, "typeInt", SupportValueType.INT).withDefaultValue(this.monitor);
         JsonAdapter adapter = this.getComputerAdapter(valueAdapterFactory);
         Truth.assertThat(adapter.fromJson(this.monitorJson)).isEqualTo(this.monitor);
         Truth.assertThat(adapter.fromJson(this.mouseJson)).isEqualTo(this.monitor);
@@ -189,7 +189,7 @@ public class ValueAdapterJavaTest {
             adapter.toJson(this.keyboard);
         } catch (IllegalArgumentException var4) {
             System.out.println(var4);
-            Truth.assertThat(var4).hasMessageThat().isEqualTo("FallbackJsonAdapter with "+monitor+" cannot make Json Object");
+            Truth.assertThat(var4).hasMessageThat().isEqualTo("FallbackJsonAdapter with " + monitor + " cannot make Json Object");
         }
 
     }

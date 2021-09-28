@@ -14,8 +14,8 @@ compileKotlin.kotlinOptions {
 }
 dependencies {
     testImplementation(project(":moshipolymorphicadapterfactory"))
-    testImplementation(project(":codegen"))
-    kaptTest(project(":codegen"))
+    testImplementation(project(":sealedclasscodegen"))
+    kaptTest(project(":sealedclasscodegen"))
     kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)

@@ -1,6 +1,6 @@
 package com.onenowy.moshipolymorphicadapter;
 
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NameAdapterFactory;
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NamePolymorphicAdapterFactory;
 import com.onenowy.moshipolymorphicadapter.util.Computer;
 import com.onenowy.moshipolymorphicadapter.util.Keyboard;
 import com.onenowy.moshipolymorphicadapter.util.Monitor;
@@ -19,11 +19,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 public class NameAdapterJavaTest {
     @NotNull
-    private final NameAdapterFactory nameAdapterFactory;
+    private final NamePolymorphicAdapterFactory nameAdapterFactory;
     @NotNull
-    private final NameAdapterFactory withSubtype;
+    private final NamePolymorphicAdapterFactory withSubtype;
     @NotNull
-    private final NameAdapterFactory withSubtypes;
+    private final NamePolymorphicAdapterFactory withSubtypes;
     @NotNull
     private final Monitor monitor;
     @NotNull
@@ -38,7 +38,7 @@ public class NameAdapterJavaTest {
     private final String keyboardJson;
 
     public NameAdapterJavaTest() {
-        this.nameAdapterFactory = NameAdapterFactory.Companion.of(Computer.class);
+        this.nameAdapterFactory = NamePolymorphicAdapterFactory.Companion.of(Computer.class);
         this.withSubtype = this.nameAdapterFactory.withSubtype(Monitor.class, "monitorUnique").withSubtype(Mouse.class, "mouseUnique").withSubtype(Keyboard.class, "keyboardUnique");
         this.withSubtypes = this.nameAdapterFactory.withSubtypes(CollectionsKt.listOf(Monitor.class, Mouse.class, Keyboard.class), CollectionsKt.listOf("monitorUnique", "mouseUnique", "keyboardUnique"));
         this.monitor = new Monitor(1, "test");
@@ -50,17 +50,17 @@ public class NameAdapterJavaTest {
     }
 
     @NotNull
-    public final NameAdapterFactory getNameAdapterFactory() {
+    public final NamePolymorphicAdapterFactory getNameAdapterFactory() {
         return this.nameAdapterFactory;
     }
 
     @NotNull
-    public final NameAdapterFactory getWithSubtype() {
+    public final NamePolymorphicAdapterFactory getWithSubtype() {
         return this.withSubtype;
     }
 
     @NotNull
-    public final NameAdapterFactory getWithSubtypes() {
+    public final NamePolymorphicAdapterFactory getWithSubtypes() {
         return this.withSubtypes;
     }
 

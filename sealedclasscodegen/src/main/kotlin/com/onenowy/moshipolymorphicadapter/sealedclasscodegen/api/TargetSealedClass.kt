@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter.codegen.api
+package com.onenowy.moshipolymorphicadapter.sealedclasscodegen.api
 
 import com.squareup.kotlinpoet.metadata.isSealed
 import com.squareup.kotlinpoet.metadata.toKmClass

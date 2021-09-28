@@ -1,7 +1,7 @@
-package com.onenowy.moshipolymorphicadapter.codegen.api
+package com.onenowy.moshipolymorphicadapter.sealedclasscodegen.api
 
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NameAdapterFactory
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelName
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NamePolymorphicAdapterFactory
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.NameLabel
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.metadata.toKmClass
@@ -9,12 +9,12 @@ import com.squareup.kotlinpoet.metadata.toKmClass
 
 class NameAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass) :
     AbstractAdapterFactoryCodeGenerator(targetSealedClass) {
-    private val annotation = LabelName::class.java
+    private val annotation = NameLabel::class.java
     override fun generateCode(): CodeBlock {
         return buildCodeBlock {
             addStatement(
                 "var adapterFactory = %T.of(%T::class.java)",
-                NameAdapterFactory::class,
+                NamePolymorphicAdapterFactory::class,
                 targetSealedClass.baseType.toKmClass().toClassName()
             )
             for (type in targetSealedClass.subClass) {

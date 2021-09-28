@@ -3,7 +3,7 @@ package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
-class ValueAdapterFactory<T> @JvmOverloads constructor(
+class ValuePolymorphicAdapterFactory<T> @JvmOverloads constructor(
     private val subTypeIncludeLabelKey: Boolean,
     private val baseType: Class<T>,
     private val labelType: SupportValueType,
@@ -11,7 +11,7 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
     private val subTypes: List<Type> = emptyList(),
     private val labels: List<Any> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null,
-) : MoshiPolymorphicAdapterFactory<ValueAdapterFactory<T>, T> {
+) : MoshiPolymorphicAdapterFactory<ValuePolymorphicAdapterFactory<T>, T> {
 
     companion object {
         @JvmStatic
@@ -21,44 +21,51 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
             labelKey: String,
             labelType: SupportValueType,
             subTypeIncludeLabelKey: Boolean = false
-        ): ValueAdapterFactory<T> {
-            return ValueAdapterFactory(subTypeIncludeLabelKey, baseType, labelType, labelKey)
+        ): ValuePolymorphicAdapterFactory<T> {
+            return ValuePolymorphicAdapterFactory(subTypeIncludeLabelKey, baseType, labelType, labelKey)
         }
     }
 
-    fun withSubtype(subType: Class<out T>, label: Any): ValueAdapterFactory<T> {
+    fun withSubtype(subType: Class<out T>, label: Any): ValuePolymorphicAdapterFactory<T> {
         require(label.typeCheck(labelType)) { "the type of $label is not ${labelType.name}" }
         require(!labels.contains(label)) { "$label must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newLabels = labels.toMutableList()
         newLabels.add(label)
-        return ValueAdapterFactory(subTypeIncludeLabelKey, baseType, labelType, labelKey, newSubTypes, newLabels)
+        return ValuePolymorphicAdapterFactory(
+            subTypeIncludeLabelKey,
+            baseType,
+            labelType,
+            labelKey,
+            newSubTypes,
+            newLabels
+        )
     }
 
-    fun withSubtypeForLabelString(subType: Class<out T>, label: String): ValueAdapterFactory<T> {
+    fun withSubtypeForLabelString(subType: Class<out T>, label: String): ValuePolymorphicAdapterFactory<T> {
         return withSubtype(
             subType,
             label.toSupportedTypeOrNull(labelType) ?: throw IllegalArgumentException("$label is not supported type")
         )
     }
 
-    fun withSubtypes(subTypes: List<Class<out T>>, labelValues: List<Any>): ValueAdapterFactory<T> {
-        require(labelValues.size == labelValues.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
-        require(labelValues.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
-        return ValueAdapterFactory(
+    fun withSubtypes(subTypes: List<Class<out T>>, valueLabels: List<Any>): ValuePolymorphicAdapterFactory<T> {
+        require(valueLabels.size == valueLabels.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
+        require(valueLabels.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
+        return ValuePolymorphicAdapterFactory(
             subTypeIncludeLabelKey,
             baseType,
             labelType,
             labelKey,
             subTypes,
-            labelValues,
+            valueLabels,
             fallbackAdapter
         )
     }
 
-    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValueAdapterFactory<T> {
-        return ValueAdapterFactory(
+    override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): ValuePolymorphicAdapterFactory<T> {
+        return ValuePolymorphicAdapterFactory(
             subTypeIncludeLabelKey,
             baseType,
             labelType,
@@ -69,7 +76,7 @@ class ValueAdapterFactory<T> @JvmOverloads constructor(
         )
     }
 
-    override fun withDefaultValue(defaultValue: T?): ValueAdapterFactory<T> {
+    override fun withDefaultValue(defaultValue: T?): ValuePolymorphicAdapterFactory<T> {
         return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 

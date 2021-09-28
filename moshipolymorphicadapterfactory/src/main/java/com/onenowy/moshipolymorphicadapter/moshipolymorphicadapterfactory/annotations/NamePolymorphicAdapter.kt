@@ -1,5 +1,5 @@
 package com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations
 
-@Retention(AnnotationRetention.RUNTIME)
+@Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS)
-annotation class LabelName(val name: String)
+annotation class NamePolymorphicAdapter

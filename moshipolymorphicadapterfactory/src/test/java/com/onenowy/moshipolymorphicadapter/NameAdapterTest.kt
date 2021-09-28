@@ -1,7 +1,7 @@
 package com.onenowy.moshipolymorphicadapter
 
 import com.google.common.truth.Truth.assertThat
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NameAdapterFactory
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.NamePolymorphicAdapterFactory
 import com.onenowy.moshipolymorphicadapter.util.Computer
 import com.onenowy.moshipolymorphicadapter.util.Keyboard
 import com.onenowy.moshipolymorphicadapter.util.Monitor
@@ -13,7 +13,7 @@ import org.junit.Test
 
 class NameAdapterTest {
 
-    val nameAdapterFactory = NameAdapterFactory.of(Computer::class.java)
+    val nameAdapterFactory = NamePolymorphicAdapterFactory.of(Computer::class.java)
     val withSubtype = nameAdapterFactory.withSubtype(
         Monitor::class.java,
         "monitorUnique"

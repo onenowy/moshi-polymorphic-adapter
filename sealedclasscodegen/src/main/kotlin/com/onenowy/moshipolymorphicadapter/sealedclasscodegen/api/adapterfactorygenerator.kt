@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter.codegen.api
+package com.onenowy.moshipolymorphicadapter.sealedclasscodegen.api
 
 import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.MoshiPolymorphicAdapterFactory
 import com.squareup.kotlinpoet.*

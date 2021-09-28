@@ -1,22 +1,25 @@
-package com.onenowy.moshipolymorphicadapter.codegen.api
+package com.onenowy.moshipolymorphicadapter.sealedclasscodegen.api
 
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValueAdapterFactory
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.LabelValue
-import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueAdaterFactoryCodegen
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.ValuePolymorphicAdapterFactory
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValueLabel
+import com.onenowy.moshipolymorphicadapter.moshipolymorphicadapterfactory.annotations.ValuePolymorphicAdapter
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.metadata.toKmClass
 
-class ValueAdapterFactoryCodeGenerator(targetSealedClass: TargetSealedClass, private val valueAdapterFactoryCodegen: ValueAdaterFactoryCodegen) :
+class ValueAdapterFactoryCodeGenerator(
+    targetSealedClass: TargetSealedClass,
+    private val valueAdapterFactoryCodegen: ValuePolymorphicAdapter
+) :
     AbstractAdapterFactoryCodeGenerator
         (targetSealedClass) {
-    private val annotation = LabelValue::class.java
+    private val annotation = ValueLabel::class.java
     override fun generateCode(): CodeBlock {
         val labelType = valueAdapterFactoryCodegen.labelType
         return buildCodeBlock {
             addStatement(
                 "var adapterFactory = %T.of(%T::class.java, %S, %T.%L, %L)",
-                ValueAdapterFactory::class,
+                ValuePolymorphicAdapterFactory::class,
                 targetSealedClass.baseType.toKmClass().toClassName(),
                 valueAdapterFactoryCodegen.labelKey,
                 labelType::class,

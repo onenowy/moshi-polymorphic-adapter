@@ -35,6 +35,7 @@ object Dependencies {
         private const val version = "1.10.1"
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
         const val metadata = "com.squareup:kotlinpoet-metadata:$version"
+        const val ksp = "com.squareup:kotlinpoet-ksp:$version"
     }
 
     object Shadow {
@@ -50,5 +51,10 @@ object Dependencies {
     object Metadata {
         private const val version = "0.3.0"
         const val metadata = "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$version"
+    }
+
+    object KSP {
+        private const val version = "1.5.31-1.0.0"
+        const val ksp = "com.google.devtools.ksp:symbol-processing-api:$version"
     }
 }
