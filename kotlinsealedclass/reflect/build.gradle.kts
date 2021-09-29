@@ -13,11 +13,9 @@ compileKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 dependencies {
-    testImplementation(project(":moshipolymorphicadapter"))
-    testImplementation(project(":kotlinsealedclass:codegen"))
-    kaptTest(project(":kotlinsealedclass:codegen"))
+    compileOnly(project(":moshipolymorphicadapter"))
     kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)
-    testImplementation(Dependencies.Moshi.moshi)
+    implementation(Dependencies.Kotlin.reflect)
 }
