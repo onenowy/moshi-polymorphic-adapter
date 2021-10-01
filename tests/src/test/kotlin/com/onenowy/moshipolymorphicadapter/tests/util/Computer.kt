@@ -1,10 +1,10 @@
 package com.onenowy.moshipolymorphicadapter.tests.util
 
+import com.onenowy.moshipolymorphicadapter.AdapterType
 import com.onenowy.moshipolymorphicadapter.annotations.NameLabel
-import com.onenowy.moshipolymorphicadapter.annotations.NamePolymorphicAdapter
 import com.squareup.moshi.JsonClass
 
-@NamePolymorphicAdapter
+@JsonClass(generateAdapter = true, generator = AdapterType.NAME_ADAPTER)
 sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, val typeDouble: ComTypeDouble, val typeLong: ComTypeLong) {
     enum class ComTypeInt(val value: Int) {
         Monitor(1), Mouse(2), Keyboard(3)

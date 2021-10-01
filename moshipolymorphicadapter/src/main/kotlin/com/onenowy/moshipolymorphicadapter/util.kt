@@ -16,32 +16,37 @@
 
 package com.onenowy.moshipolymorphicadapter
 
-fun String.toSupportedTypeOrNull(type: SupportValueType): Any? {
+fun String.toSupportTypeOrNull(type: String): Any? {
     return this.trim().let {
         when (type) {
-            SupportValueType.STRING -> it
-            SupportValueType.CHAR -> {
-                val chars = it.toCharArray()
-                return if (chars.size == 1) {
-                    chars.first()
-                } else {
-                    null
-                }
-            }
-            SupportValueType.BOOLEAN -> {
-                val str = it
-                if (str == "true" || str == "false") it == "true" else null
-            }
-            SupportValueType.BYTE -> toByteOrNull()
-            SupportValueType.SHORT -> toShortOrNull()
-            SupportValueType.INT -> toIntOrNull()
-            SupportValueType.LONG -> toLongOrNull()
-            SupportValueType.FLOAT -> toFloatOrNull()
-            SupportValueType.DOUBLE -> toDoubleOrNull()
+            AdapterType.VALUE_ADAPTER.STRING -> it
+            AdapterType.VALUE_ADAPTER.BOOLEAN -> toBooleanStrictOrNull()
+            AdapterType.VALUE_ADAPTER.INT -> toIntOrNull()
+            AdapterType.VALUE_ADAPTER.LONG -> toLongOrNull()
+            AdapterType.VALUE_ADAPTER.DOUBLE -> toDoubleOrNull()
+            else -> null
         }
     }
 }
 
-fun Any.typeCheck(type: SupportValueType): Boolean {
-    return this::class.javaObjectType == type.classType
+fun <T> String.toSupportTypeOrNull(type: Class<T>): Any? {
+    return this.trim().let {
+        when (type) {
+            String::class.java -> it
+            Boolean::class.javaObjectType, Boolean::class.javaPrimitiveType -> toBooleanStrictOrNull()
+            Int::class.javaObjectType, Int::class.javaPrimitiveType -> toIntOrNull()
+            Long::class.javaObjectType, Long::class.javaPrimitiveType -> toLongOrNull()
+            Double::class.javaObjectType, Double::class.javaPrimitiveType -> toDoubleOrNull()
+            else -> null
+        }
+    }
+}
+
+fun getSupportTypeClass(type: String) = when (type) {
+    AdapterType.VALUE_ADAPTER.INT -> Int::class
+    AdapterType.VALUE_ADAPTER.DOUBLE -> Double::class
+    AdapterType.VALUE_ADAPTER.BOOLEAN -> Boolean::class
+    AdapterType.VALUE_ADAPTER.LONG -> Long::class
+    AdapterType.VALUE_ADAPTER.STRING -> String::class
+    else -> throw IllegalArgumentException("")
 }

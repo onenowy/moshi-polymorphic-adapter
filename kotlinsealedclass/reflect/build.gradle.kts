@@ -14,8 +14,8 @@ compileKotlin.kotlinOptions {
 }
 dependencies {
     compileOnly(project(":moshipolymorphicadapter"))
-    kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)
+    kaptTest(Dependencies.Moshi.codegen)
     implementation(Dependencies.Kotlin.reflect)
 }

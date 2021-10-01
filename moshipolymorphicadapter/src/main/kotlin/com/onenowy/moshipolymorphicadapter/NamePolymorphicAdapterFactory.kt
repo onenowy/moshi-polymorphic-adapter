@@ -40,7 +40,6 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
             return null
         }
-
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
         return NameAdapter(subTypes, nameLabels, jsonAdapters, fallbackAdapter).nullSafe()
     }

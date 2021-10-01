@@ -1,11 +1,10 @@
 package com.onenowy.moshipolymorphicadapter.kotlinsealedclass.reflect.util
 
-import com.onenowy.moshipolymorphicadapter.SupportValueType
+import com.onenowy.moshipolymorphicadapter.AdapterType
 import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
-import com.onenowy.moshipolymorphicadapter.annotations.ValuePolymorphicAdapter
 import com.squareup.moshi.JsonClass
 
-@ValuePolymorphicAdapter(SupportValueType.INT, "type")
+@JsonClass(generateAdapter = true, generator = AdapterType.VALUE_ADAPTER.INT + ":type")
 sealed class ComputerValue
 
 @ValueLabel(1.toString())
@@ -19,5 +18,4 @@ data class MouseValue(val mouse: String?) : ComputerValue()
 @ValueLabel(3.toString())
 @JsonClass(generateAdapter = true)
 data class KeyboardValue(val keyboard: Boolean?) : ComputerValue()
-
 

@@ -1,11 +1,16 @@
 package com.onenowy.moshipolymorphicadapter.kotlinsealedclass.reflect.util
 
+import com.onenowy.moshipolymorphicadapter.AdapterType
 import com.onenowy.moshipolymorphicadapter.annotations.NameLabel
-import com.onenowy.moshipolymorphicadapter.annotations.NamePolymorphicAdapter
 import com.squareup.moshi.JsonClass
 
-@NamePolymorphicAdapter
-sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, val typeDouble: ComTypeDouble, val typeLong: ComTypeLong) {
+@JsonClass(generateAdapter = true, generator = AdapterType.NAME_ADAPTER)
+sealed class Computer(
+    val typeInt: ComTypeInt,
+    val typeString: ComTypeString,
+    val typeDouble: ComTypeDouble,
+    val typeLong: ComTypeLong
+) {
     enum class ComTypeInt(val value: Int) {
         Monitor(1), Mouse(2), Keyboard(3)
     }
@@ -25,11 +30,13 @@ sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, va
 
 @JsonClass(generateAdapter = true)
 @NameLabel("monitorUnique")
-data class Monitor(val monitorUnique: Int?) : Computer(ComTypeInt.Monitor, ComTypeString.Monitor, ComTypeDouble.Monitor, ComTypeLong.Monitor)
+data class Monitor(val monitorUnique: Int?) :
+    Computer(ComTypeInt.Monitor, ComTypeString.Monitor, ComTypeDouble.Monitor, ComTypeLong.Monitor)
 
 @JsonClass(generateAdapter = true)
 @NameLabel("mouseUnique")
-data class Mouse(val mouseUnique: String?) : Computer(ComTypeInt.Mouse, ComTypeString.Mouse, ComTypeDouble.Mouse, ComTypeLong.Mouse)
+data class Mouse(val mouseUnique: String?) :
+    Computer(ComTypeInt.Mouse, ComTypeString.Mouse, ComTypeDouble.Mouse, ComTypeLong.Mouse)
 
 @JsonClass(generateAdapter = true)
 @NameLabel("keyboardUnique")
