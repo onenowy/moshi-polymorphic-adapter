@@ -7,10 +7,9 @@ import com.squareup.moshi.Moshi
 import org.junit.Test
 
 class KotlinSealedPolymorphicAdapterFactoryTest {
-    val computerAdapter =
-        Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build().adapter(Computer::class.java)
-    val computerValueAdapter =
-        Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build().adapter(ComputerValue::class.java)
+    val moshi = Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build()
+    val computerAdapter = moshi.adapter(Computer::class.java)
+    val computerValueAdapter = moshi.adapter(ComputerValue::class.java)
 
     val monitor = Monitor(1)
     val mouse = Mouse("mouse")
@@ -64,19 +63,13 @@ class KotlinSealedPolymorphicAdapterFactoryTest {
         }
     }
 
-//    @Test
-//    fun defaultValue() {
-//        val computerDefaultAdapter =
-//            Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()=).build().adapter(Computer::class.java)
-//        val computerValueDefaultAdapter =
-//            Moshi.Builder().add(SealedClassFactorySelector(ComputerValue::class).getAdapterFactory().withDefaultValue(monitorValue)).build()
-//                .adapter(ComputerValue::class.java)
-//
-//        assertThat(computerDefaultAdapter.fromJson(monitorValueJson)).isEqualTo(monitor)
-//        assertThat(computerDefaultAdapter.fromJson(mouseValueJson)).isEqualTo(monitor)
-//        assertThat(computerDefaultAdapter.fromJson(keyboardValueJson)).isEqualTo(monitor)
-//        assertThat(computerValueDefaultAdapter.fromJson(monitorJson)).isEqualTo(monitorValue)
-//        assertThat(computerValueDefaultAdapter.fromJson(mouseJson)).isEqualTo(monitorValue)
-//        assertThat(computerValueDefaultAdapter.fromJson(keyboardJson)).isEqualTo(monitorValue)
-//    }
+    @Test
+    fun defaultValue() {
+        assertThat(computerAdapter.fromJson(monitorValueJson)).isEqualTo(null)
+        assertThat(computerAdapter.fromJson(mouseValueJson)).isEqualTo(null)
+        assertThat(computerAdapter.fromJson(keyboardValueJson)).isEqualTo(null)
+        assertThat(computerValueAdapter.fromJson(monitorJson)).isEqualTo(null)
+        assertThat(computerValueAdapter.fromJson(mouseJson)).isEqualTo(null)
+        assertThat(computerValueAdapter.fromJson(keyboardJson)).isEqualTo(null)
+    }
 }

@@ -1,10 +1,12 @@
 package com.onenowy.moshipolymorphicadapter.kotlinsealedclass.reflect.util
 
 import com.onenowy.moshipolymorphicadapter.AdapterType
+import com.onenowy.moshipolymorphicadapter.annotations.DefaultNull
 import com.onenowy.moshipolymorphicadapter.annotations.NameLabel
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true, generator = AdapterType.NAME_ADAPTER)
+@DefaultNull
 sealed class Computer(
     val typeInt: ComTypeInt,
     val typeString: ComTypeString,
