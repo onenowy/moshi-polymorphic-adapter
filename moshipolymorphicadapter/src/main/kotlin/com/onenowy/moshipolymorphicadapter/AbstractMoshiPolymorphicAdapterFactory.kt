@@ -20,9 +20,10 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 
-interface MoshiPolymorphicAdapterFactory<S : MoshiPolymorphicAdapterFactory<S, T>, T> : JsonAdapter.Factory {
+abstract class AbstractMoshiPolymorphicAdapterFactory<S : AbstractMoshiPolymorphicAdapterFactory<S, T>, T> :
+    JsonAdapter.Factory {
 
-    fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
+    private fun buildFallbackJsonAdapter(defaultValue: T?): JsonAdapter<Any> {
         return object : JsonAdapter<Any>() {
             override fun fromJson(reader: JsonReader): Any? {
                 reader.skipValue()
@@ -35,7 +36,7 @@ interface MoshiPolymorphicAdapterFactory<S : MoshiPolymorphicAdapterFactory<S, T
         }
     }
 
-    fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): S
+    abstract fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): S
 
-    fun withDefaultValue(defaultValue: T?): S
+    fun withDefaultValue(defaultValue: T?) = withFallbackJsonAdapter((buildFallbackJsonAdapter(defaultValue)))
 }

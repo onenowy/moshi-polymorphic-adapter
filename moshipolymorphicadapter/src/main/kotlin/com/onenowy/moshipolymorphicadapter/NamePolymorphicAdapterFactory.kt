@@ -1,20 +1,3 @@
-/*
- * Copyright (c) 2021 nowy(nowy08 at gmail dot com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
 package com.onenowy.moshipolymorphicadapter
 
 import com.squareup.moshi.*
@@ -30,7 +13,7 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
     private val subTypes: List<Type> = emptyList(),
     private val nameLabels: List<String> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null
-) : MoshiPolymorphicAdapterFactory<NamePolymorphicAdapterFactory<T>, T> {
+) : AbstractMoshiPolymorphicAdapterFactory<NamePolymorphicAdapterFactory<T>, T>() {
 
     override fun create(
         type: Type,
@@ -82,10 +65,6 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
 
     override fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): NamePolymorphicAdapterFactory<T> {
         return NamePolymorphicAdapterFactory(baseType, subTypes, nameLabels, fallbackJsonAdapter)
-    }
-
-    override fun withDefaultValue(defaultValue: T?): NamePolymorphicAdapterFactory<T> {
-        return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 
     class NameAdapter @JvmOverloads constructor(

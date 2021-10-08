@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2021 nowy(nowy08 at gmail dot com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.onenowy.moshipolymorphicadapter
 
 import com.squareup.moshi.*
@@ -26,7 +10,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
     private val subTypes: List<Type> = emptyList(),
     private val labels: List<V> = emptyList(),
     private val fallbackAdapter: JsonAdapter<Any>? = null,
-) : MoshiPolymorphicAdapterFactory<ValuePolymorphicAdapterFactory<T, V>, T> {
+) : AbstractMoshiPolymorphicAdapterFactory<ValuePolymorphicAdapterFactory<T, V>, T>() {
 
     companion object {
 
@@ -81,10 +65,6 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
             labels,
             fallbackJsonAdapter
         )
-    }
-
-    override fun withDefaultValue(defaultValue: T?): ValuePolymorphicAdapterFactory<T, V> {
-        return withFallbackJsonAdapter(buildFallbackJsonAdapter(defaultValue))
     }
 
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
