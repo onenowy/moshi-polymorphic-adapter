@@ -1,6 +1,7 @@
 package com.onenowy.moshipolymorphicadapter.kotlinsealedclass.reflect
 
 import com.onenowy.moshipolymorphicadapter.*
+import com.onenowy.moshipolymorphicadapter.annotations.DefaultNull
 import com.onenowy.moshipolymorphicadapter.annotations.NameLabel
 import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
 import com.squareup.moshi.JsonAdapter
@@ -24,6 +25,9 @@ class KotlinSealedPolymorphicAdapterFactory : JsonAdapter.Factory {
             }
         }
         nameAdapterFactory = nameAdapterFactory.withSubtypes(subtypes, nameLabels)
+        if (baseType.findAnnotation<DefaultNull>() != null) {
+            nameAdapterFactory = nameAdapterFactory.withDefaultValue(null)
+        }
         return nameAdapterFactory
     }
 
@@ -48,6 +52,9 @@ class KotlinSealedPolymorphicAdapterFactory : JsonAdapter.Factory {
             }
         }
         valueAdapterFactory = valueAdapterFactory.withSubtypes(subtypes, labelValues)
+        if (baseType.findAnnotation<DefaultNull>() != null) {
+            valueAdapterFactory = valueAdapterFactory.withDefaultValue(null)
+        }
         return valueAdapterFactory
     }
 
