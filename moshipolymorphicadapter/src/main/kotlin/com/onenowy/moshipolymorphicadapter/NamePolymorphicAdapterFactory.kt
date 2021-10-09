@@ -17,7 +17,7 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
 
     override fun create(
         type: Type,
-        annotations: MutableSet<out Annotation>,
+        annotations: Set<Annotation>,
         moshi: Moshi
     ): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {

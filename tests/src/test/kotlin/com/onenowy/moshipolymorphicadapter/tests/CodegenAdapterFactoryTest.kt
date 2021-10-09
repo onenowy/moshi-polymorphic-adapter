@@ -7,11 +7,9 @@ import com.squareup.moshi.Moshi
 import org.junit.Test
 
 class CodegenAdapterFactoryTest {
-
-    val computerAdapter =
-        Moshi.Builder().add(generateComputerNameAdapterFactory()).build().adapter(Computer::class.java)
-    val computerValueAdapter =
-        Moshi.Builder().add(generateComputerValueValueAdapterFactory()).build().adapter(ComputerValue::class.java)
+    val moshi = Moshi.Builder().build()
+    val computerAdapter = moshi.adapter(Computer::class.java)
+    val computerValueAdapter = moshi.adapter(ComputerValue::class.java)
 
     val monitor = Monitor(1, "test")
     val mouse = Mouse("mouse", "test")
@@ -50,33 +48,14 @@ class CodegenAdapterFactoryTest {
     }
 
     @Test
-    fun unregisteredSubtype() {
+    fun defaultValue() {
+        assertThat(computerAdapter.fromJson(monitorValueJson)).isEqualTo(null)
+        assertThat(computerAdapter.fromJson(mouseValueJson)).isEqualTo(null)
+        assertThat(computerAdapter.fromJson(keyboardValueJson)).isEqualTo(null)
         try {
             computerValueAdapter.fromJson(monitorJson)
         } catch (e: JsonDataException) {
             assertThat(e).hasMessageThat().isEqualTo("Missing label for type")
         }
-
-        try {
-            computerAdapter.fromJson(monitorValueJson)
-        } catch (e: JsonDataException) {
-            assertThat(e).hasMessageThat().contains("No matching Field names for")
-        }
-    }
-
-    @Test
-    fun defaultValue() {
-        val computerDefaultAdapter =
-            Moshi.Builder().add(generateComputerNameAdapterFactory().withDefaultValue(monitor)).build().adapter(Computer::class.java)
-        val computerValueDefaultAdapter =
-            Moshi.Builder().add(generateComputerValueValueAdapterFactory().withDefaultValue(monitorValue)).build()
-                .adapter(ComputerValue::class.java)
-
-        assertThat(computerDefaultAdapter.fromJson(monitorValueJson)).isEqualTo(monitor)
-        assertThat(computerDefaultAdapter.fromJson(mouseValueJson)).isEqualTo(monitor)
-        assertThat(computerDefaultAdapter.fromJson(keyboardValueJson)).isEqualTo(monitor)
-        assertThat(computerValueDefaultAdapter.fromJson(monitorJson)).isEqualTo(monitorValue)
-        assertThat(computerValueDefaultAdapter.fromJson(mouseJson)).isEqualTo(monitorValue)
-        assertThat(computerValueDefaultAdapter.fromJson(keyboardJson)).isEqualTo(monitorValue)
     }
 }

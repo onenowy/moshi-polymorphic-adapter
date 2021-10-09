@@ -67,7 +67,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
         )
     }
 
-    override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
+    override fun create(type: Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
             return null
         }
