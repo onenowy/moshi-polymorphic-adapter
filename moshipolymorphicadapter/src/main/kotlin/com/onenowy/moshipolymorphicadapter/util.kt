@@ -13,16 +13,14 @@ fun String.toSupportTypeOrNull(type: String): Any? {
     }
 }
 
-fun <T> String.toSupportTypeOrNull(type: Class<T>): Any? {
-    return this.trim().let {
-        when (type) {
-            String::class.java -> it
-            Boolean::class.javaObjectType, Boolean::class.javaPrimitiveType -> toBooleanStrictOrNull()
-            Int::class.javaObjectType, Int::class.javaPrimitiveType -> toIntOrNull()
-            Long::class.javaObjectType, Long::class.javaPrimitiveType -> toLongOrNull()
-            Double::class.javaObjectType, Double::class.javaPrimitiveType -> toDoubleOrNull()
-            else -> null
-        }
+fun <T> getValueAdaterTypeOrNull(type: Class<T>): String? {
+    return when (type) {
+        String::class.java -> AdapterType.VALUE_ADAPTER.STRING
+        Boolean::class.javaObjectType, Boolean::class.javaPrimitiveType -> AdapterType.VALUE_ADAPTER.BOOLEAN
+        Int::class.javaObjectType, Int::class.javaPrimitiveType -> AdapterType.VALUE_ADAPTER.INT
+        Long::class.javaObjectType, Long::class.javaPrimitiveType -> AdapterType.VALUE_ADAPTER.LONG
+        Double::class.javaObjectType, Double::class.javaPrimitiveType -> AdapterType.VALUE_ADAPTER.DOUBLE
+        else -> null
     }
 }
 
