@@ -54,8 +54,8 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         subTypes: List<Class<out T>>,
         nameLabels: List<String>
     ): NamePolymorphicAdapterFactory<T> {
-        require(nameLabels.size == nameLabels.distinct().size) { "Label Field name for ${baseType.simpleName} must be unique" }
-        require(nameLabels.size == subTypes.size) { "The number of Label Field names for ${baseType.simpleName} is different from subtypes" }
+        require(nameLabels.size == nameLabels.distinct().size) { "The label name for ${baseType.simpleName} must be unique" }
+        require(nameLabels.size == subTypes.size) { "The number of label names for ${baseType.simpleName} is different from subtypes" }
         val newSubTypes = this.subTypes.toMutableList()
         newSubTypes.addAll(subTypes)
         val newNameLabels = this.nameLabels.toMutableList()

@@ -40,8 +40,8 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
     }
 
     fun withSubtypes(subTypes: List<Class<out T>>, valueLabels: List<V>): ValuePolymorphicAdapterFactory<T, V> {
-        require(valueLabels.size == valueLabels.distinct().size) { "Key property name for ${baseType.simpleName} must be unique" }
-        require(valueLabels.size == subTypes.size) { "The number of Key property names for ${baseType.simpleName} is different from subtypes" }
+        require(valueLabels.size == valueLabels.distinct().size) { "The value for ${baseType.simpleName} must be unique" }
+        require(valueLabels.size == subTypes.size) { "The number of values for ${baseType.simpleName} is different from subtypes" }
         val newSubTypes = this.subTypes.toMutableList()
         newSubTypes.addAll(subTypes)
         val newLabels = labels.toMutableList()

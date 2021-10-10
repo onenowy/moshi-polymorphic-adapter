@@ -8,6 +8,7 @@ import com.onenowy.moshipolymorphicadapter.util.Mouse
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import org.junit.Assert.fail
 import org.junit.Test
 
 class ValueAdapterTest {
@@ -98,6 +99,7 @@ class ValueAdapterTest {
 
         try {
             adapter.toJson(monitor)
+            fail()
         } catch (e: IllegalArgumentException) {
             assertThat(e).hasMessageThat()
                 .isEqualTo("Expected one of [] but found $monitor, a ${monitor.javaClass}. Register this subtype.")
@@ -105,6 +107,7 @@ class ValueAdapterTest {
 
         try {
             adapter.fromJson(monitorJson)
+            fail()
         } catch (e: JsonDataException) {
             assertThat(e).hasMessageThat()
                 .isEqualTo("Expected one of [] for key 'typeInt' but found '1'. Register a subtype for this label.")
@@ -118,6 +121,7 @@ class ValueAdapterTest {
         )
         try {
             adapter.toJson(monitor)
+            fail()
         } catch (e: IllegalArgumentException) {
             assertThat(e).hasMessageThat().isEqualTo(
                 "Expected one of ${listOf(Keyboard::class.java)} but found $monitor, a ${monitor.javaClass}. Register " +
@@ -127,6 +131,7 @@ class ValueAdapterTest {
 
         try {
             adapter.fromJson(monitorJson)
+            fail()
         } catch (e: JsonDataException) {
             assertThat(e).hasMessageThat().isEqualTo(
                 "Expected one of ${listOf(Computer.ComTypeInt.Keyboard.value)} for key 'typeInt' but found '1'. " +
@@ -137,7 +142,7 @@ class ValueAdapterTest {
     }
 
     @Test
-    fun unresigsterdLableKey() {
+    fun unregisteredLabelKey() {
         val propertyValueAdapterFactory =
             ValuePolymorphicAdapterFactory.of(Computer::class.java, "wrongKey", Int::class.java)
                 .withSubtype(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
@@ -149,6 +154,7 @@ class ValueAdapterTest {
         assertThat(adapter.toJson(keyboard)).contains("\"wrongKey\":3")
         try {
             adapter.fromJson(monitorJson)
+            fail()
         } catch (e: JsonDataException) {
             assertThat(e).hasMessageThat().isEqualTo("Missing label for wrongKey")
         }
@@ -166,8 +172,70 @@ class ValueAdapterTest {
         assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor)
         try {
             adapter.toJson(keyboard)
+            fail()
         } catch (e: IllegalArgumentException) {
             assertThat(e).hasMessageThat().isEqualTo("FallbackJsonAdapter with $monitor cannot make Json Object")
+        }
+    }
+
+    @Test
+    fun notUniqueSubtype() {
+        val notUnique = ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+            .withSubtype(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
+            .withSubtype(Monitor::class.java, Computer.ComTypeInt.Keyboard.value)
+            .withSubtype(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
+        val adapter = getComputerAdapter(notUnique)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
+        assertThat(adapter.fromJson("{\"typeInt\":3,\"monitorUnique\":1,\"testValue\":\"test\"}")).isEqualTo(monitor)
+        assertThat(
+            adapter.toJson(
+                Monitor(
+                    1,
+                    "test"
+                )
+            )
+        ).isEqualTo("{\"typeInt\":1,\"monitorUnique\":1,\"testValue\":\"test\"}")
+    }
+
+    @Test
+    fun uniqueLabel() {
+        try {
+            ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+                .withSubtype(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
+                .withSubtype(Keyboard::class.java, Computer.ComTypeInt.Monitor.value)
+                .withSubtype(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
+            fail()
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat().isEqualTo("${Computer.ComTypeInt.Monitor.value} must be unique")
+        }
+
+        try {
+            val subtypes = listOf(Monitor::class.java, Keyboard::class.java, Mouse::class.java)
+            val labels = listOf(
+                Computer.ComTypeInt.Monitor.value,
+                Computer.ComTypeInt.Monitor.value,
+                Computer.ComTypeInt.Monitor.value
+            )
+            ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+                .withSubtypes(subtypes, labels)
+            fail()
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat().isEqualTo("The value for ${Computer::class.java.simpleName} must be unique")
+        }
+    }
+
+    @Test
+    fun notEqualNumberWithSubtypes() {
+        try {
+            val subtypes = listOf(Monitor::class.java, Keyboard::class.java, Mouse::class.java)
+            val labels = listOf(Computer.ComTypeInt.Monitor.value)
+            ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
+                .withSubtypes(subtypes, labels)
+            fail()
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat()
+                .isEqualTo("The number of values for ${Computer::class.java.simpleName} is different from subtypes")
         }
     }
 }
