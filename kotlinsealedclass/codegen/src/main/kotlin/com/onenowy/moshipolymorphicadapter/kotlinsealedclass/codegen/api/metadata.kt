@@ -6,7 +6,6 @@ import com.onenowy.moshipolymorphicadapter.kotlinsealedclass.codegen.KotlinSeale
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.metadata.isInternal
-import com.squareup.kotlinpoet.metadata.toKmClass
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
@@ -18,7 +17,6 @@ import javax.tools.Diagnostic
 internal fun adapterPropertySpec(
     generatorTag: List<String>,
     element: TypeElement,
-    kmClass: KmClass,
     sealedSubClasses: List<TypeElement>,
     targetType: ClassName,
     moshiParam: ParameterSpec,
@@ -27,9 +25,9 @@ internal fun adapterPropertySpec(
     messager: Messager
 ): PropertySpec? {
     val adapterPropertyInit = if (generatorTag[0] == AdapterType.NAME_ADAPTER) {
-        nameAdapterInitializer(kmClass, sealedSubClasses).toBuilder()
+        nameAdapterInitializer(element, sealedSubClasses).toBuilder()
     } else {
-        valueAdapterInitializer(generatorTag, kmClass, sealedSubClasses, messager)?.toBuilder() ?: return null
+        valueAdapterInitializer(generatorTag, element, sealedSubClasses, messager)?.toBuilder() ?: return null
     }
 
     if (element.getAnnotation(KotlinSealedCodegenProcessor.defaultNullAnnotation) != null) {
@@ -101,7 +99,6 @@ internal fun adapterClassSpec(
     val runtimeAdapterProperty = adapterPropertySpec(
         generatorTag,
         element,
-        kmClass,
         sealedSubClasses,
         targetType,
         moshiParam,
@@ -133,27 +130,29 @@ internal fun adapterClassSpec(
     return classBuilder.build()
 }
 
-private fun nameAdapterInitializer(baseType: KmClass, subClasses: List<TypeElement>): CodeBlock {
+@OptIn(DelicateKotlinPoetApi::class)
+private fun nameAdapterInitializer(baseType: TypeElement, subClasses: List<TypeElement>): CodeBlock {
     return buildCodeBlock {
         add(
             " %T.of(%T::class.java)\n",
             NamePolymorphicAdapterFactory::class,
-            baseType.toClassName()
+            baseType.asClassName()
         )
         for (type in subClasses) {
             val nameLabel = type.getAnnotation(KotlinSealedCodegenProcessor.nameLabelAnnotation)
             add(
                 ".withSubtype(%T::class.java, %S)\n",
-                type.toKmClass().toClassName(),
+                type.asClassName(),
                 nameLabel.name
             )
         }
     }
 }
 
+@OptIn(DelicateKotlinPoetApi::class)
 private fun valueAdapterInitializer(
     generatorTag: List<String>,
-    baseType: KmClass,
+    baseType: TypeElement,
     subClasses: List<TypeElement>,
     messager: Messager
 ): CodeBlock? {
@@ -162,7 +161,7 @@ private fun valueAdapterInitializer(
         add(
             "%T.of(%T::class.java, %S, %T::class.java)\n",
             ValuePolymorphicAdapterFactory::class,
-            baseType.toClassName(),
+            baseType.asClassName(),
             generatorTag[1],
             labelType
         )
@@ -178,7 +177,7 @@ private fun valueAdapterInitializer(
             }
             add(
                 ".withSubtype(%T::class.java, %L)\n",
-                type.toKmClass().toClassName(),
+                type.asClassName(),
                 value
             )
         }
