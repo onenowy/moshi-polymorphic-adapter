@@ -13,24 +13,24 @@ import org.junit.Test
 
 class NameAdapterTest {
 
-    val nameAdapterFactory = NamePolymorphicAdapterFactory.of(Computer::class.java)
-    val withSubtype = nameAdapterFactory.withSubtype(
+    private val nameAdapterFactory = NamePolymorphicAdapterFactory.of(Computer::class.java)
+    private val withSubtype = nameAdapterFactory.withSubtype(
         Monitor::class.java,
         "monitorUnique"
     ).withSubtype(Mouse::class.java, "mouseUnique").withSubtype(Keyboard::class.java, "keyboardUnique")
-    val withSubtypes = nameAdapterFactory.withSubtypes(
+    private val withSubtypes = nameAdapterFactory.withSubtypes(
         listOf(Monitor::class.java, Mouse::class.java, Keyboard::class.java),
         listOf("monitorUnique", "mouseUnique", "keyboardUnique")
     )
-    val monitor = Monitor(1, "test")
-    val mouse = Mouse("mouse", "test")
-    val keyboard = Keyboard(true, "test")
+    private val monitor = Monitor(1, "test")
+    private val mouse = Mouse("mouse", "test")
+    private val keyboard = Keyboard(true, "test")
 
-    val monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}"
-    val mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
-    val keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}"
+    private val monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}"
+    private val mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
+    private val keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}"
 
-    fun getComputerAdapter(factory: JsonAdapter.Factory) =
+    private fun getComputerAdapter(factory: JsonAdapter.Factory) =
         Moshi.Builder().add(factory).build().adapter(Computer::class.java)
 
     @Test

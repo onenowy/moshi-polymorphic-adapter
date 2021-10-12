@@ -8,25 +8,25 @@ import org.junit.Assert.fail
 import org.junit.Test
 
 class KotlinSealedPolymorphicAdapterFactoryTest {
-    val moshi = Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build()
-    val computerAdapter = moshi.adapter(Computer::class.java)
-    val computerValueAdapter = moshi.adapter(ComputerValue::class.java)
+    private val moshi = Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build()
+    private val computerAdapter = moshi.adapter(Computer::class.java)
+    private val computerValueAdapter = moshi.adapter(ComputerValue::class.java)
 
-    val monitor = Monitor(1, "test")
-    val mouse = Mouse("mouse", "test")
-    val keyboard = Keyboard(true, "test")
+    private val monitor = Monitor(1, "test")
+    private val mouse = Mouse("mouse", "test")
+    private val keyboard = Keyboard(true, "test")
 
-    val monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}"
-    val mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
-    val keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}"
+    private val monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}"
+    private val mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
+    private val keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}"
 
-    val monitorValue = MonitorValue(1, "test")
-    val mouseValue = MouseValue("mouse", "test")
-    val keyboardValue = KeyboardValue(true, "test")
+    private val monitorValue = MonitorValue(1, "test")
+    private val mouseValue = MouseValue("mouse", "test")
+    private val keyboardValue = KeyboardValue(true, "test")
 
-    val monitorValueJson = "{\"type\":1,\"monitor\":1,\"testValue\":\"test\"}"
-    val mouseValueJson = "{\"type\":2,\"mouse\":\"mouse\",\"testValue\":\"test\"}"
-    val keyboardValueJson = "{\"type\":3,\"keyboard\":true,\"testValue\":\"test\"}"
+    private val monitorValueJson = "{\"type\":1,\"monitor\":1,\"testValue\":\"test\"}"
+    private val mouseValueJson = "{\"type\":2,\"mouse\":\"mouse\",\"testValue\":\"test\"}"
+    private val keyboardValueJson = "{\"type\":3,\"keyboard\":true,\"testValue\":\"test\"}"
 
     @Test
     fun toJson() {

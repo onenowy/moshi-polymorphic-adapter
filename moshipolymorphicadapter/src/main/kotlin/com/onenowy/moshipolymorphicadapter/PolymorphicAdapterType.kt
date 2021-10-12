@@ -4,7 +4,7 @@ object PolymorphicAdapterType {
     const val PREFIX = "MoshiPolymorphic"
     const val NAME_ADAPTER = "$PREFIX.Name"
 
-    object VALUE_ADAPTER {
+    object ValueAdapter {
         const val INT = "$PREFIX.Int"
         const val LONG = "$PREFIX.Long"
         const val DOUBLE = "$PREFIX.Double"

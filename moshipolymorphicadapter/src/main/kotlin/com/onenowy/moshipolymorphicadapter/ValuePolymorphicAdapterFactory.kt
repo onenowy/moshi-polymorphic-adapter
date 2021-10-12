@@ -13,7 +13,6 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
 ) : AbstractMoshiPolymorphicAdapterFactory<ValuePolymorphicAdapterFactory<T, V>, T>() {
 
     companion object {
-
         @JvmStatic
         fun <T, V : Any> of(
             baseType: Class<T>,
@@ -114,11 +113,11 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
                     continue
                 }
                 val labelValue = when (getValueAdaterTypeOrNull(labelType)) {
-                    PolymorphicAdapterType.VALUE_ADAPTER.STRING -> reader.nextString()
-                    PolymorphicAdapterType.VALUE_ADAPTER.BOOLEAN -> reader.nextBoolean()
-                    PolymorphicAdapterType.VALUE_ADAPTER.INT -> reader.nextInt()
-                    PolymorphicAdapterType.VALUE_ADAPTER.LONG -> reader.nextLong()
-                    PolymorphicAdapterType.VALUE_ADAPTER.DOUBLE -> reader.nextDouble()
+                    PolymorphicAdapterType.ValueAdapter.STRING -> reader.nextString()
+                    PolymorphicAdapterType.ValueAdapter.BOOLEAN -> reader.nextBoolean()
+                    PolymorphicAdapterType.ValueAdapter.INT -> reader.nextInt()
+                    PolymorphicAdapterType.ValueAdapter.LONG -> reader.nextLong()
+                    PolymorphicAdapterType.ValueAdapter.DOUBLE -> reader.nextDouble()
                     else -> null
                 }
                 val index = if (labelValue != null) labels.indexOf(labelValue as V) else -1

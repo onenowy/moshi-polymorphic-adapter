@@ -66,7 +66,7 @@ class KotlinSealedCodegenProcessor : AbstractProcessor() {
             ClassName("javax.annotation", "Generated")
         ).associateBy { it.canonicalName }
 
-        internal val SUPPRESS_NAMES = arrayOf(
+        private val SUPPRESS_NAMES = arrayOf(
             // https://github.com/square/moshi/issues/1023
             "DEPRECATION",
             // Because we look it up reflectively

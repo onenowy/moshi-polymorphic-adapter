@@ -1,6 +1,7 @@
 package com.onenowy.moshipolymorphicadapter.kotlinsealed.codegen
 
 import com.google.common.truth.Truth.assertThat
+import com.onenowy.moshipolymorphicadapter.kotlinsealed.codegen.KotlinSealedCodegenProcessor.Companion.OPTION_GENERATE_PROGUARD_RULES
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.SourceFile.Companion.kotlin
@@ -9,10 +10,11 @@ import kotlin.reflect.full.declaredFunctions
 import kotlin.reflect.full.declaredMemberProperties
 
 class KotlinSealedCodegenProcessorTest {
-    private fun generateResult(source: SourceFile) = KotlinCompilation().apply {
+    private fun generateResult(source: SourceFile, proguard: Boolean = true) = KotlinCompilation().apply {
         sources = listOf(source)
         annotationProcessors = listOf(KotlinSealedCodegenProcessor())
         inheritClassPath = true
+        kaptArgs[OPTION_GENERATE_PROGUARD_RULES] = proguard.toString()
         messageOutputStream = System.out
     }.compile()
 
@@ -33,13 +35,35 @@ class KotlinSealedCodegenProcessorTest {
             assertThat(codeText).contains("withDefaultValue(null)")
         }
         val adapterClass = result.classLoader.loadClass(adapterName).kotlin
-        val adapterProperty = adapterClass.declaredMemberProperties.first { it.name == "polymorphicAdapter" }
+        val adapterProperty = adapterClass.declaredMemberProperties.find { it.name == "polymorphicAdapter" }
         assertThat(adapterProperty.toString()).contains("JsonAdapter")
         assertThat(adapterProperty.toString()).contains(typeName)
-        val fromJson = adapterClass.declaredFunctions.first { it.name == "fromJson" }
-        assertThat(fromJson.returnType.toString()).contains(typeName)
-        val toJson = adapterClass.declaredFunctions.first { it.name == "toJson" }
-        assertThat(toJson.parameters.first { it.name?.contains("value") ?: false }.toString()).contains(typeName)
+        val fromJson = adapterClass.declaredFunctions.find { it.name == "fromJson" }
+        assertThat(fromJson?.returnType.toString()).contains(typeName)
+        val toJson = adapterClass.declaredFunctions.find { it.name == "toJson" }
+        assertThat(toJson?.parameters?.find { it.name?.contains("value") ?: false }.toString()).contains(typeName)
+        proguardTest(source, typeName, adapterName, result)
+    }
+
+    private fun proguardTest(
+        source: SourceFile,
+        typeName: String,
+        adapterName: String,
+        result: KotlinCompilation.Result
+    ) {
+        assertThat(result.generatedFiles.find { it.name.contains("moshi-kotlinsealed-polymorphic-$typeName") }
+            ?.readText()).contains(
+            """
+          -if class $typeName
+          -keepnames class $typeName
+          -if class $typeName
+          -keep class $adapterName {
+              public <init>(com.squareup.moshi.Moshi);
+          }
+          """.trimIndent()
+        )
+        val withoutProguardResult = generateResult(source, false)
+        assertThat(withoutProguardResult.generatedFiles.find { it.name.contains("moshi-kotlinsealed-polymorphic-$typeName") }).isNull()
     }
 
     @Suppress("SameParameterValue")
@@ -90,7 +114,7 @@ class KotlinSealedCodegenProcessorTest {
             import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
             import com.squareup.moshi.JsonClass
 
-            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_ADAPTER.INT + ":type")
+            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.ValueAdapter.INT + ":type")
             sealed class ComputerValue
 
             @ValueLabel(1.toString())
@@ -117,7 +141,7 @@ class KotlinSealedCodegenProcessorTest {
             import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
             import com.squareup.moshi.JsonClass
 
-            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_ADAPTER.INT + ":type")
+            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.ValueAdapter.INT + ":type")
             interface NotSealedComputerValue
 
             @ValueLabel(1.toString())

@@ -18,7 +18,7 @@ class ValueAdapterTest {
         .withSubtype(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
 
 
-    val stringFacgtory = ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeString", String::class.java)
+    val stringFactory = ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeString", String::class.java)
         .withSubtype(Monitor::class.java, Computer.ComTypeString.Monitor.value)
         .withSubtype(Keyboard::class.java, Computer.ComTypeString.Keyboard.value)
         .withSubtype(Mouse::class.java, Computer.ComTypeString.Mouse.value)
@@ -56,7 +56,7 @@ class ValueAdapterTest {
         assertThat(adapter.toJson(monitor)).contains("\"typeInt\":1")
         assertThat(adapter.toJson(mouse)).contains("\"typeInt\":2")
         assertThat(adapter.toJson(keyboard)).contains("\"typeInt\":3")
-        adapter = getComputerAdapter(stringFacgtory)
+        adapter = getComputerAdapter(stringFactory)
         assertThat(adapter.toJson(monitor)).contains("\"typeString\":\"1\"")
         assertThat(adapter.toJson(mouse)).contains("\"typeString\":\"2\"")
         assertThat(adapter.toJson(keyboard)).contains("\"typeString\":\"3\"")
@@ -76,7 +76,7 @@ class ValueAdapterTest {
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
         assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
-        adapter = getComputerAdapter(stringFacgtory)
+        adapter = getComputerAdapter(stringFactory)
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
         assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
