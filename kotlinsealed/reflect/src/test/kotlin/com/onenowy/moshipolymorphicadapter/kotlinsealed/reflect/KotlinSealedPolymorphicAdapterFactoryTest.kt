@@ -1,13 +1,14 @@
-package com.onenowy.moshipolymorphicadapter.tests
+package com.onenowy.moshipolymorphicadapter.kotlinsealed.reflect
 
 import com.google.common.truth.Truth.assertThat
-import com.onenowy.moshipolymorphicadapter.tests.util.*
+import com.onenowy.moshipolymorphicadapter.kotlinsealed.reflect.util.*
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import org.junit.Assert.fail
 import org.junit.Test
 
-class CodegenAdapterFactoryTest {
-    val moshi = Moshi.Builder().build()
+class KotlinSealedPolymorphicAdapterFactoryTest {
+    val moshi = Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build()
     val computerAdapter = moshi.adapter(Computer::class.java)
     val computerValueAdapter = moshi.adapter(ComputerValue::class.java)
 
@@ -38,7 +39,7 @@ class CodegenAdapterFactoryTest {
     }
 
     @Test
-    fun FromJson() {
+    fun romJson() {
         assertThat(computerAdapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(computerAdapter.fromJson(mouseJson)).isEqualTo(mouse)
         assertThat(computerAdapter.fromJson(keyboardJson)).isEqualTo(keyboard)
@@ -54,8 +55,21 @@ class CodegenAdapterFactoryTest {
         assertThat(computerAdapter.fromJson(keyboardValueJson)).isEqualTo(null)
         try {
             computerValueAdapter.fromJson(monitorJson)
+            fail()
         } catch (e: JsonDataException) {
-            assertThat(e).hasMessageThat().isEqualTo("Missing label for type")
+            assertThat(e).hasMessageThat()
+                .isEqualTo("Missing label for type")
+        }
+    }
+
+    @Test
+    fun notSealed() {
+        try {
+            moshi.adapter(NotSealedComputerValue::class.java)
+            fail()
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat()
+                .isEqualTo("${NotSealedComputerValue::class.simpleName} is not a sealed class")
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.onenowy.moshipolymorphicadapter.kotlinsealedclass.reflect
+package com.onenowy.moshipolymorphicadapter.kotlinsealed.reflect
 
 import com.onenowy.moshipolymorphicadapter.*
 import com.onenowy.moshipolymorphicadapter.annotations.DefaultNull
@@ -61,18 +61,19 @@ class KotlinSealedPolymorphicAdapterFactory : JsonAdapter.Factory {
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         val baseClass = Types.getRawType(type).kotlin
         val jsonClass = baseClass.findAnnotation<JsonClass>()
-        if (annotations.isNotEmpty() || jsonClass == null || !jsonClass.generator.startsWith(AdapterType.PREFIX)) {
+        if (annotations.isNotEmpty() || jsonClass == null || !jsonClass.generator.startsWith(PolymorphicAdapterType.PREFIX)) {
             return null
         }
-        val adapterFactory = if (jsonClass.generator == AdapterType.NAME_ADAPTER) {
+        require(baseClass.isSealed) { "${baseClass.simpleName} is not a sealed class" }
+        val adapterFactory = if (jsonClass.generator == PolymorphicAdapterType.NAME_ADAPTER) {
             nameAdapterFactoryGenerator(baseClass)
         } else {
-            val generaterTag = jsonClass.generator.split(":")
+            val generatorTag = jsonClass.generator.split(":")
             valueAdapterFactoryGenerator(
                 baseClass,
-                generaterTag[1],
-                generaterTag[0],
-                labelTypeClass = getSupportTypeClass(generaterTag[0])
+                generatorTag[1],
+                generatorTag[0],
+                labelTypeClass = getSupportTypeClass(generatorTag[0])
             )
         }
         return adapterFactory.create(type, annotations, moshi)
