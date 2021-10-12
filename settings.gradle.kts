@@ -1,6 +1,6 @@
 include(":tests")
-include(":kotlinsealedclass:codegen")
-include(":kotlinsealedclass:reflect")
+include(":kotlinsealed:codegen")
+include(":kotlinsealed:reflect")
 include(":moshipolymorphicadapter")
 rootProject.name = "moshipolymorphicadapter"
 

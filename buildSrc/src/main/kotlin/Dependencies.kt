@@ -48,13 +48,13 @@ object Dependencies {
         const val versionPlugin = "com.github.ben-manes.versions"
     }
 
-    object Metadata {
-        private const val version = "0.3.0"
-        const val metadata = "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$version"
-    }
-
     object KSP {
         private const val version = "1.5.31-1.0.0"
         const val ksp = "com.google.devtools.ksp:symbol-processing-api:$version"
+    }
+
+    object KotlinCompileTest {
+        private const val version = "1.4.5"
+        const val test = "com.github.tschuchortdev:kotlin-compile-testing:$version"
     }
 }

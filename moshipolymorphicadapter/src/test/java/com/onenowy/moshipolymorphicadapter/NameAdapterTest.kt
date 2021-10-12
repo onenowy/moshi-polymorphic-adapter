@@ -22,8 +22,6 @@ class NameAdapterTest {
         listOf(Monitor::class.java, Mouse::class.java, Keyboard::class.java),
         listOf("monitorUnique", "mouseUnique", "keyboardUnique")
     )
-
-
     val monitor = Monitor(1, "test")
     val mouse = Mouse("mouse", "test")
     val keyboard = Keyboard(true, "test")
