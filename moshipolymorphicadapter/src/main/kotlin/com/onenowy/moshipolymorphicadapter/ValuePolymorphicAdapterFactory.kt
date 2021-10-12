@@ -113,11 +113,11 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
                     continue
                 }
                 val labelValue = when (getValueAdaterTypeOrNull(labelType)) {
-                    PolymorphicAdapterType.ValueAdapter.STRING -> reader.nextString()
-                    PolymorphicAdapterType.ValueAdapter.BOOLEAN -> reader.nextBoolean()
-                    PolymorphicAdapterType.ValueAdapter.INT -> reader.nextInt()
-                    PolymorphicAdapterType.ValueAdapter.LONG -> reader.nextLong()
-                    PolymorphicAdapterType.ValueAdapter.DOUBLE -> reader.nextDouble()
+                    PolymorphicAdapterType.VALUE_ADAPTER_STRING -> reader.nextString()
+                    PolymorphicAdapterType.VALUE_ADAPTER_BOOLEAN -> reader.nextBoolean()
+                    PolymorphicAdapterType.VALUE_ADAPTER_INT -> reader.nextInt()
+                    PolymorphicAdapterType.VALUE_ADAPTER_LONG -> reader.nextLong()
+                    PolymorphicAdapterType.VALUE_ADAPTER_DOUBLE -> reader.nextDouble()
                     else -> null
                 }
                 val index = if (labelValue != null) labels.indexOf(labelValue as V) else -1

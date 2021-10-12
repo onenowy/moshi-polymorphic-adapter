@@ -114,7 +114,7 @@ class KotlinSealedCodegenProcessorTest {
             import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
             import com.squareup.moshi.JsonClass
 
-            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.ValueAdapter.INT + ":type")
+            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_ADAPTER_INT + ":type")
             sealed class ComputerValue
 
             @ValueLabel(1.toString())
@@ -141,7 +141,7 @@ class KotlinSealedCodegenProcessorTest {
             import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
             import com.squareup.moshi.JsonClass
 
-            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.ValueAdapter.INT + ":type")
+            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_ADAPTER_INT + ":type")
             interface NotSealedComputerValue
 
             @ValueLabel(1.toString())
