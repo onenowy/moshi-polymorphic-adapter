@@ -61,7 +61,7 @@ class KotlinSealedPolymorphicAdapterFactory : JsonAdapter.Factory {
     override fun create(type: Type, annotations: MutableSet<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
         val baseClass = Types.getRawType(type).kotlin
         val jsonClass = baseClass.findAnnotation<JsonClass>()
-        if (annotations.isNotEmpty() || jsonClass == null || !jsonClass.generator.startsWith(PolymorphicAdapterType.PREFIX)) {
+        if (annotations.isNotEmpty() || jsonClass == null || (!jsonClass.generator.startsWith(PolymorphicAdapterType.PREFIX) && jsonClass.generator != PolymorphicAdapterType.PREFIX)) {
             return null
         }
         require(baseClass.isSealed) { "${baseClass.simpleName} is not a sealed class" }

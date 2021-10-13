@@ -116,7 +116,7 @@ class KotlinSealedCodegenProcessor : AbstractProcessor() {
         }
         for (element in roundEnv.getElementsAnnotatedWith(jsonClassAnnotation)) {
             val jsonClass = element.getAnnotation(jsonClassAnnotation)
-            if (element is TypeElement && jsonClass.generator.startsWith(PolymorphicAdapterType.PREFIX)) {
+            if (element is TypeElement && jsonClass.generator.startsWith(PolymorphicAdapterType.PREFIX) && jsonClass.generator != PolymorphicAdapterType.PREFIX) {
                 val kmClass = element.getAnnotation(metadataAnnotation).toKmClass()
                 if (!kmClass.flags.isSealed) {
                     messager.printMessage(Diagnostic.Kind.ERROR, "Must be a sealed class!", element)
