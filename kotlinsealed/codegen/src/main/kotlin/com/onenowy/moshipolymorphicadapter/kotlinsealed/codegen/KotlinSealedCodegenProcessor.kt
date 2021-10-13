@@ -1,7 +1,6 @@
 package com.onenowy.moshipolymorphicadapter.kotlinsealed.codegen
 
 import com.google.auto.service.AutoService
-import com.onenowy.moshipolymorphicadapter.PolymorphicAdapterType
 import com.onenowy.moshipolymorphicadapter.annotations.DefaultNull
 import com.onenowy.moshipolymorphicadapter.annotations.NameLabel
 import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
@@ -116,7 +115,7 @@ class KotlinSealedCodegenProcessor : AbstractProcessor() {
         }
         for (element in roundEnv.getElementsAnnotatedWith(jsonClassAnnotation)) {
             val jsonClass = element.getAnnotation(jsonClassAnnotation)
-            if (element is TypeElement && jsonClass.generator.startsWith(PolymorphicAdapterType.PREFIX) && jsonClass.generator != PolymorphicAdapterType.PREFIX) {
+            if (element is TypeElement && jsonClass.generator.startsWith("MoshiPolymorphic")) {
                 val kmClass = element.getAnnotation(metadataAnnotation).toKmClass()
                 if (!kmClass.flags.isSealed) {
                     messager.printMessage(Diagnostic.Kind.ERROR, "Must be a sealed class!", element)
