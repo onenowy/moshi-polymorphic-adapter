@@ -65,7 +65,7 @@ class KotlinSealedPolymorphicAdapterFactory : JsonAdapter.Factory {
             return null
         }
         require(baseClass.isSealed) { "${baseClass.simpleName} is not a sealed class" }
-        val adapterFactory = if (jsonClass.generator == PolymorphicAdapterType.NAME_ADAPTER) {
+        val adapterFactory = if (jsonClass.generator == PolymorphicAdapterType.NAME_POLYMORPHIC_ADAPTER) {
             nameAdapterFactoryGenerator(baseClass)
         } else {
             val generatorTag = jsonClass.generator.split(":")

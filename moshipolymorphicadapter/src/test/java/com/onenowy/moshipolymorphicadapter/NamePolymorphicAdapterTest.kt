@@ -11,7 +11,7 @@ import com.squareup.moshi.Moshi
 import org.junit.Assert.fail
 import org.junit.Test
 
-class NameAdapterTest {
+class NamePolymorphicAdapterTest {
 
     private val nameAdapterFactory = NamePolymorphicAdapterFactory.of(Computer::class.java)
     private val withSubtype = nameAdapterFactory.withSubtype(

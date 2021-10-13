@@ -25,7 +25,7 @@ internal fun adapterPropertySpec(
     allocator: NameAllocator,
     messager: Messager
 ): PropertySpec? {
-    val adapterPropertyInit = if (generatorTag[0] == PolymorphicAdapterType.NAME_ADAPTER) {
+    val adapterPropertyInit = if (generatorTag[0] == PolymorphicAdapterType.NAME_POLYMORPHIC_ADAPTER) {
         nameAdapterInitializer(element, sealedSubClasses).toBuilder()
     } else {
         valueAdapterInitializer(generatorTag, element, sealedSubClasses, messager)?.toBuilder() ?: return null

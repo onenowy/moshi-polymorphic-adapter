@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class ValueAdapterJavaTest {
+public class ValuePolymorphicAdapterJavaTest {
     ValuePolymorphicAdapterFactory<Computer, Integer> intFactory = ValuePolymorphicAdapterFactory.of(Computer.class,
                     "typeInt", int.class).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue())
             .withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue())

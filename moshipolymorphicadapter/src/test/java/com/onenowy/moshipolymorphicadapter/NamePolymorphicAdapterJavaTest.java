@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class NameAdapterJavaTest {
+public class NamePolymorphicAdapterJavaTest {
     private final NamePolymorphicAdapterFactory<Computer> nameAdapterFactory = NamePolymorphicAdapterFactory.of(
             Computer.class);
     private final NamePolymorphicAdapterFactory<Computer> withSubtype =

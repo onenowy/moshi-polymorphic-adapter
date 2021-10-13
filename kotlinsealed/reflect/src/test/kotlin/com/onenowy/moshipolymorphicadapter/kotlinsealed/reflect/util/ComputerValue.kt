@@ -4,7 +4,7 @@ import com.onenowy.moshipolymorphicadapter.PolymorphicAdapterType
 import com.onenowy.moshipolymorphicadapter.annotations.ValueLabel
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_ADAPTER_INT + ":type")
+@JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_INT + ":type")
 sealed class ComputerValue
 
 @ValueLabel(1.toString())

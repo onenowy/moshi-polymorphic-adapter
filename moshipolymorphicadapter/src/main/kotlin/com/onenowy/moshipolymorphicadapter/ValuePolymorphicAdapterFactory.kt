@@ -71,7 +71,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
             return null
         }
         val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
-        return ValueAdapter(
+        return ValuePolymorphicAdapter(
             labelKey,
             labelType,
             subTypes,
@@ -81,7 +81,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
         )
     }
 
-    class ValueAdapter<V> @JvmOverloads constructor(
+    class ValuePolymorphicAdapter<V> @JvmOverloads constructor(
         private val labelKey: String,
         private val labelType: Class<V>,
         private val subTypes: List<Type>,
@@ -112,12 +112,12 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
                     reader.skipValue()
                     continue
                 }
-                val labelValue = when (getValueAdaterTypeOrNull(labelType)) {
-                    PolymorphicAdapterType.VALUE_ADAPTER_STRING -> reader.nextString()
-                    PolymorphicAdapterType.VALUE_ADAPTER_BOOLEAN -> reader.nextBoolean()
-                    PolymorphicAdapterType.VALUE_ADAPTER_INT -> reader.nextInt()
-                    PolymorphicAdapterType.VALUE_ADAPTER_LONG -> reader.nextLong()
-                    PolymorphicAdapterType.VALUE_ADAPTER_DOUBLE -> reader.nextDouble()
+                val labelValue = when (getValueAdapterTypeOrNull(labelType)) {
+                    PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_STRING -> reader.nextString()
+                    PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_BOOLEAN -> reader.nextBoolean()
+                    PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_INT -> reader.nextInt()
+                    PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_LONG -> reader.nextLong()
+                    PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_DOUBLE -> reader.nextDouble()
                     else -> null
                 }
                 val index = if (labelValue != null) labels.indexOf(labelValue as V) else -1
