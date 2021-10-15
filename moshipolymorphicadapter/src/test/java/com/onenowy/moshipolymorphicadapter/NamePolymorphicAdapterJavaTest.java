@@ -151,4 +151,25 @@ public class NamePolymorphicAdapterJavaTest {
         }
     }
 
+    @Test
+    public final void javaInterfaceWithCustomName() throws IOException {
+        JsonAdapter<ComputerJava> adapter = (new Moshi.Builder()).add(
+                        NamePolymorphicAdapterFactory.of(ComputerJava.class)
+                                .withSubtypes(Arrays.asList(MouseJava.class, KeyboardJava.class, MonitorJava.class),
+                                        Arrays.asList("unique_mouse", "uniqueKeyboard", "uniqueMonitor"))).build()
+                .adapter(ComputerJava.class);
+        final MonitorJava monitorJava = new MonitorJava("test");
+        final MouseJava mouseJava = new MouseJava(Long.MAX_VALUE);
+        final KeyboardJava keyboardJava = new KeyboardJava(true);
+        final String monitorJavaJson = "{\"uniqueMonitor\":\"test\"}";
+        final String mouseJavaJson = "{\"unique_mouse\":" + Long.MAX_VALUE + "}";
+        final String keyboardJavaJson = "{\"uniqueKeyboard\":true}";
+
+        Truth.assertThat(adapter.toJson(monitorJava)).isEqualTo(monitorJavaJson);
+        Truth.assertThat(adapter.toJson(mouseJava)).isEqualTo(mouseJavaJson);
+        Truth.assertThat(adapter.toJson(keyboardJava)).isEqualTo(keyboardJavaJson);
+        Truth.assertThat(adapter.fromJson(monitorJavaJson)).isEqualTo(monitorJava);
+        Truth.assertThat(adapter.fromJson(mouseJavaJson)).isEqualTo(mouseJava);
+        Truth.assertThat(adapter.fromJson(keyboardJavaJson)).isEqualTo(keyboardJava);
+    }
 }

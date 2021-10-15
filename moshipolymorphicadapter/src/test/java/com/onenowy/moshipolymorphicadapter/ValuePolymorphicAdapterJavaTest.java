@@ -222,6 +222,27 @@ public class ValuePolymorphicAdapterJavaTest {
             Truth.assertThat(e).hasMessageThat().isEqualTo(
                     "The number of values for " + Computer.class.getSimpleName() + " is different from subtypes");
         }
+    }
 
+    @Test
+    public final void javaInterfaceWithCustomName() throws IOException {
+        JsonAdapter<ComputerJava> adapter = (new Moshi.Builder()).add(
+                        ValuePolymorphicAdapterFactory.of(ComputerJava.class, "type", int.class)
+                                .withSubtypes(Arrays.asList(MouseJava.class, KeyboardJava.class, MonitorJava.class),
+                                        Arrays.asList(2, 3, 1))).build()
+                .adapter(ComputerJava.class);
+        final MonitorJava monitorJava = new MonitorJava("test");
+        final MouseJava mouseJava = new MouseJava(Long.MAX_VALUE);
+        final KeyboardJava keyboardJava = new KeyboardJava(true);
+        final String monitorJavaJson = "{\"type\":1,\"uniqueMonitor\":\"test\"}";
+        final String mouseJavaJson = "{\"type\":2,\"unique_mouse\":" + Long.MAX_VALUE + "}";
+        final String keyboardJavaJson = "{\"type\":3,\"uniqueKeyboard\":true}";
+
+        Truth.assertThat(adapter.toJson(monitorJava)).isEqualTo(monitorJavaJson);
+        Truth.assertThat(adapter.toJson(mouseJava)).isEqualTo(mouseJavaJson);
+        Truth.assertThat(adapter.toJson(keyboardJava)).isEqualTo(keyboardJavaJson);
+        Truth.assertThat(adapter.fromJson(monitorJavaJson)).isEqualTo(monitorJava);
+        Truth.assertThat(adapter.fromJson(mouseJavaJson)).isEqualTo(mouseJava);
+        Truth.assertThat(adapter.fromJson(keyboardJavaJson)).isEqualTo(keyboardJava);
     }
 }

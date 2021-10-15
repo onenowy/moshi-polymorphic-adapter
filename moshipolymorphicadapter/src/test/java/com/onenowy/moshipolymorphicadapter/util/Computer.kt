@@ -2,7 +2,6 @@ package com.onenowy.moshipolymorphicadapter.util
 
 import com.squareup.moshi.JsonClass
 
-
 sealed class Computer(val typeInt: ComTypeInt, val typeString: ComTypeString, val typeDouble: ComTypeDouble, val typeLong: ComTypeLong) {
     enum class ComTypeInt(val value: Int) {
         Monitor(1), Mouse(2), Keyboard(3)

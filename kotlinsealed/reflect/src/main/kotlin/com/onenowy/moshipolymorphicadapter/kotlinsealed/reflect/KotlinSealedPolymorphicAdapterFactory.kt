@@ -44,7 +44,7 @@ class KotlinSealedPolymorphicAdapterFactory : JsonAdapter.Factory {
         baseType.sealedSubclasses.forEach { subclass ->
             val labelValue = subclass.findAnnotation<ValueLabel>()
             if (labelValue != null) {
-                val value = labelValue.value.toSupportTypeOrNull(labelType)
+                val value = labelValue.value.toSupportTypeValueOrNull(labelType)
                     ?: throw IllegalArgumentException("Not Supported Type ${labelTypeClass.simpleName}")
                 @Suppress("UNCHECKED_CAST")
                 labelValues.add(value as V)
