@@ -1,6 +1,6 @@
 include(":tests")
-include(":kotlinsealed:codegen")
-include(":kotlinsealed:reflect")
-include(":moshipolymorphicadapter")
-rootProject.name = "moshipolymorphicadapter"
+include(":kotlin-sealed:codegen")
+include(":kotlin-sealed:reflect")
+include(":moshi-polymorphic-adapter")
+rootProject.name = "moshi-polymorphic-adapter"
 

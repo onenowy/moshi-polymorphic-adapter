@@ -13,7 +13,7 @@ compileKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 dependencies {
-    implementation(project(":moshipolymorphicadapter"))
+    implementation(project(":moshi-polymorphic-adapter"))
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)
     kaptTest(Dependencies.Moshi.codegen)

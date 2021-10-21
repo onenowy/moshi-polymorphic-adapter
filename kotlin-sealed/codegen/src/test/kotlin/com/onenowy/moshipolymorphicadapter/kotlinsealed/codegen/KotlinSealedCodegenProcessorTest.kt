@@ -84,7 +84,7 @@ class KotlinSealedCodegenProcessorTest {
             import com.onenowy.moshipolymorphicadapter.annotations.NameLabel
             import com.squareup.moshi.JsonClass
 
-            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.NAME_ADAPTER)
+            @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.NAME_POLYMORPHIC_ADAPTER)
             @DefaultNull
             sealed class Computer
 
