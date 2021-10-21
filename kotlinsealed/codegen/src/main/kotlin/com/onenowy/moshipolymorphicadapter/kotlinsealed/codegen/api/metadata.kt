@@ -141,7 +141,7 @@ private fun valueAdapterInitializer(
         )
         for (type in subClasses) {
             val labelValue = type.getAnnotation(KotlinSealedCodegenProcessor.valueLabelAnnotation)
-            val value = labelValue.value.toSupportTypeOrNull(generatorTag[0])
+            val value = labelValue.value.toSupportTypeValueOrNull(generatorTag[0])
             if (value == null) {
                 messager.printMessage(
                     Diagnostic.Kind.ERROR,
@@ -157,5 +157,3 @@ private fun valueAdapterInitializer(
         }
     }
 }
-
-

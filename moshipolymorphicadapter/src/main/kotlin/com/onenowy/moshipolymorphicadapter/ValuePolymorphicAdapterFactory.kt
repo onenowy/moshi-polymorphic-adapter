@@ -1,8 +1,14 @@
+@file:Suppress("KDocUnresolvedReference")
+
 package com.onenowy.moshipolymorphicadapter
 
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
+/**
+ * A polymorphic adapter factory creates an adapter that uses the unique value to determine which type to decode to.
+ * This adapter factory is similar to [PolymorphicJsonAdapterFactory], but it allows not only [String], but also [Int], [Long], [Double] and [Boolean].
+ */
 class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
     private val baseType: Class<T>,
     private val labelType: Class<V>,
@@ -13,6 +19,13 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
 ) : AbstractMoshiPolymorphicAdapterFactory<ValuePolymorphicAdapterFactory<T, V>, T>() {
 
     companion object {
+
+
+        /**
+         * @param baseType The base type for which this factory will create adapters.
+         * @param labelKey The name of the JSON field that determines which type to decode to.
+         * @param labelType The label value type.
+         */
         @JvmStatic
         fun <T, V : Any> of(
             baseType: Class<T>,
@@ -23,6 +36,9 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns a new factory that decodes instances of [subType]
+     */
     fun withSubtype(subType: Class<out T>, valueLabel: V): ValuePolymorphicAdapterFactory<T, V> {
         require(!labels.contains(valueLabel)) { "$valueLabel must be unique" }
         val newSubTypes = subTypes.toMutableList()
@@ -38,6 +54,10 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
         )
     }
 
+    /**
+     * This method is similar to [withSubtype], but it gets lists as arguments.
+     * the index of each subtype corresponds to the index of the value label of each subtype.
+     */
     fun withSubtypes(subTypes: List<Class<out T>>, valueLabels: List<V>): ValuePolymorphicAdapterFactory<T, V> {
         require(valueLabels.size == valueLabels.distinct().size) { "The value for ${baseType.simpleName} must be unique" }
         require(valueLabels.size == subTypes.size) { "The number of values for ${baseType.simpleName} is different from subtypes" }

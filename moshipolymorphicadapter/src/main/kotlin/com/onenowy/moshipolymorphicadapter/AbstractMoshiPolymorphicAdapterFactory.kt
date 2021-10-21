@@ -20,7 +20,16 @@ abstract class AbstractMoshiPolymorphicAdapterFactory<S : AbstractMoshiPolymorph
         }
     }
 
+    /**
+     * Returns a new factory that with default to [fallbackJsonAdapter.fromJson(reader)] upon
+     * decoding of unrecognized labels.
+     */
+
     abstract fun withFallbackJsonAdapter(fallbackJsonAdapter: JsonAdapter<Any>): S
 
+    /**
+     * Returns a new factory that will default to [defaultValue] upon decoding of unrecognized
+     * labels. The default value should be immutable.
+     */
     fun withDefaultValue(defaultValue: T?) = withFallbackJsonAdapter((buildFallbackJsonAdapter(defaultValue)))
 }

@@ -13,6 +13,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 
 class KotlinSealedPolymorphicAdapterFactory : JsonAdapter.Factory {
+
     private fun <T : Any> nameAdapterFactoryGenerator(baseType: KClass<T>): NamePolymorphicAdapterFactory<T> {
         var nameAdapterFactory = NamePolymorphicAdapterFactory.of(baseType.java)
         val subtypes = mutableListOf<Class<out T>>()

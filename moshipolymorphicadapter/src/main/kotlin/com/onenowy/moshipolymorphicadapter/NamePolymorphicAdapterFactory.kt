@@ -3,10 +3,9 @@ package com.onenowy.moshipolymorphicadapter
 import com.squareup.moshi.*
 import java.lang.reflect.Type
 
-
 /**
- * A polymorphic JSONAdapter
- *
+ * A polymorphic adapter factory creates an adapter that uses the unique name of properties, fields or JSON fields
+ * to determine which type to decode to.
  */
 class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
     private val baseType: Class<T>,
@@ -37,9 +36,8 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         }
     }
 
-
     /**
-     * @param nameLabel The unique property name of subtype
+     * Returns a new factory that decodes instances of [subType]
      */
     fun withSubtype(subType: Class<out T>, nameLabel: String): NamePolymorphicAdapterFactory<T> {
         require(!nameLabels.contains(nameLabel)) { "$nameLabel must be unique" }
@@ -50,6 +48,10 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         return NamePolymorphicAdapterFactory(baseType, newSubTypes, newNameLabels, fallbackAdapter)
     }
 
+    /**
+     * This method is similar to [withSubtype], but it gets lists as arguments.
+     * the index of each subtype corresponds to the index of the name label of each subtype.
+     */
     fun withSubtypes(
         subTypes: List<Class<out T>>,
         nameLabels: List<String>

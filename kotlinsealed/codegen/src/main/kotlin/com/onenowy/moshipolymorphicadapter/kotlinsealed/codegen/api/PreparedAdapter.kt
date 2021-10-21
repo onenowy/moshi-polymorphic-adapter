@@ -29,12 +29,15 @@ internal fun preparedAdapter(
             return null
         }
     }
+
     val adapterName = ClassName.bestGuess(
         com.squareup.moshi.Types.generatedJsonAdapterName(
             element.asClassName().reflectionName()
         )
     ).simpleName
+
     val targetType = element.asClassName()
+
     val typeSpec = adapterClassSpec(
         element,
         kmClass,
