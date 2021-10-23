@@ -115,7 +115,7 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
             }
 
             val adapter = if (typeIndex == -1) {
-                require(fallbackAdapter != null) { "Expected one of $subTypes but found $value, a ${value?.javaClass}. Register this subtype." }
+                require(fallbackAdapter != null) { "Expected one of $subTypes but found $value, a ${type}. Register this subtype." }
                 fallbackAdapter
             } else {
                 jsonAdapters[typeIndex]

@@ -1,6 +1,5 @@
 package com.onenowy.moshi.polymorphicadapter;
 
-import com.google.common.truth.Truth;
 import com.onenowy.moshi.polymorphicadapter.util.Computer;
 import com.onenowy.moshi.polymorphicadapter.util.Keyboard;
 import com.onenowy.moshi.polymorphicadapter.util.Monitor;
@@ -14,6 +13,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+
+import static com.google.common.truth.Truth.assertThat;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ValuePolymorphicAdapterJavaTest {
@@ -33,12 +34,18 @@ public class ValuePolymorphicAdapterJavaTest {
                     "typeLong", long.class).withSubtype(Monitor.class, Computer.ComTypeLong.Monitor.getValue())
             .withSubtype(Keyboard.class, Computer.ComTypeLong.Keyboard.getValue())
             .withSubtype(Mouse.class, Computer.ComTypeLong.Mouse.getValue());
+    ValuePolymorphicAdapterFactory<Computer, Boolean> boolFactory = ValuePolymorphicAdapterFactory.of(Computer.class,
+                    "typeBool", boolean.class)
+            .withSubtype(Monitor.class, true)
+            .withSubtype(Mouse.class, false);
     Monitor monitor = new Monitor(1, "test");
     Mouse mouse = new Mouse("mouse", "test");
     Keyboard keyboard = new Keyboard(true, "test");
-    String monitorJson = "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":9223372036854775805," +
+    String monitorJson = "{\"typeBool\":true, \"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0," +
+            "\"typeLong\":9223372036854775805," +
             "\"monitorUnique\":1,\"testValue\":\"test\"}";
-    String mouseJson = "{\"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":9223372036854775806," +
+    String mouseJson = "{\"typeBool\":false, \"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1," +
+            "\"typeLong\":9223372036854775806," +
             "\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}";
     String keyboardJson = "{\"typeInt\":3,\"typeString\":\"3\",\"typeDouble\":1.7976931348623157E308," +
             "\"typeLong\":9223372036854775807,\"keyboardUnique\":true,\"testValue\":\"test\"}";
@@ -50,41 +57,47 @@ public class ValuePolymorphicAdapterJavaTest {
     @Test
     public final void toJson() {
         JsonAdapter<Computer> adapter = getComputerAdapter(intFactory);
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeInt\":1");
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeInt\":2");
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeInt\":3");
+        assertThat(adapter.toJson(monitor)).contains("\"typeInt\":1");
+        assertThat(adapter.toJson(mouse)).contains("\"typeInt\":2");
+        assertThat(adapter.toJson(keyboard)).contains("\"typeInt\":3");
         adapter = getComputerAdapter(stringFactory);
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeString\":\"1\"");
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeString\":\"2\"");
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeString\":\"3\"");
+        assertThat(adapter.toJson(monitor)).contains("\"typeString\":\"1\"");
+        assertThat(adapter.toJson(mouse)).contains("\"typeString\":\"2\"");
+        assertThat(adapter.toJson(keyboard)).contains("\"typeString\":\"3\"");
         adapter = getComputerAdapter(doubleFactory);
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeDouble\":5.0");
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeDouble\":10000.1");
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeDouble\":1.7976931348623157E308");
+        assertThat(adapter.toJson(monitor)).contains("\"typeDouble\":5.0");
+        assertThat(adapter.toJson(mouse)).contains("\"typeDouble\":10000.1");
+        assertThat(adapter.toJson(keyboard)).contains("\"typeDouble\":1.7976931348623157E308");
         adapter = getComputerAdapter(longFactory);
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"typeLong\":9223372036854775805");
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"typeLong\":9223372036854775806");
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"typeLong\":9223372036854775807");
+        assertThat(adapter.toJson(monitor)).contains("\"typeLong\":9223372036854775805");
+        assertThat(adapter.toJson(mouse)).contains("\"typeLong\":9223372036854775806");
+        assertThat(adapter.toJson(keyboard)).contains("\"typeLong\":9223372036854775807");
+        adapter = getComputerAdapter(boolFactory);
+        assertThat(adapter.toJson(monitor)).contains("\"typeBool\":true");
+        assertThat(adapter.toJson(mouse)).contains("\"typeBool\":false");
     }
 
     @Test
     public final void fromJson() throws IOException {
         JsonAdapter<Computer> adapter = getComputerAdapter(intFactory);
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
         adapter = getComputerAdapter(stringFactory);
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
         adapter = getComputerAdapter(doubleFactory);
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
         adapter = getComputerAdapter(longFactory);
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard);
+        adapter = getComputerAdapter(boolFactory);
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
     }
 
     @Test
@@ -98,7 +111,7 @@ public class ValuePolymorphicAdapterJavaTest {
             adapter.toJson(monitor);
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo(
+            assertThat(e).hasMessageThat().isEqualTo(
                     "Expected one of [] but found " + monitor + ", a " + monitor.getClass() + ". Register this " +
                             "subtype.");
         }
@@ -107,7 +120,7 @@ public class ValuePolymorphicAdapterJavaTest {
             adapter.fromJson(monitorJson);
             Assert.fail();
         } catch (JsonDataException e) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo(
+            assertThat(e).hasMessageThat().isEqualTo(
                     "Expected one of [] for key 'typeInt' but found '1'. Register a subtype for this label.");
         }
 
@@ -118,7 +131,7 @@ public class ValuePolymorphicAdapterJavaTest {
             adapter.toJson(monitor);
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo("Expected one of " + Collections.singletonList(
+            assertThat(e).hasMessageThat().isEqualTo("Expected one of " + Collections.singletonList(
                     Keyboard.class) + " but found " + monitor + ", a " + monitor.getClass() + ". Register " + "this " +
                     "subtype.");
         }
@@ -127,7 +140,7 @@ public class ValuePolymorphicAdapterJavaTest {
             adapter.fromJson(monitorJson);
             Assert.fail();
         } catch (JsonDataException e) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo("Expected one of " + Collections.singletonList(
+            assertThat(e).hasMessageThat().isEqualTo("Expected one of " + Collections.singletonList(
                     Computer.ComTypeInt.Keyboard.getValue()) + " for key 'typeInt' but found '1'. " + "Register a " + "subtype for this label.");
         }
     }
@@ -141,15 +154,15 @@ public class ValuePolymorphicAdapterJavaTest {
                         .withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue())
                         .withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
         JsonAdapter<Computer> adapter = getComputerAdapter(propertyValueAdapterFactory);
-        Truth.assertThat(adapter.toJson(monitor)).contains("\"wrongKey\":1");
-        Truth.assertThat(adapter.toJson(mouse)).contains("\"wrongKey\":2");
-        Truth.assertThat(adapter.toJson(keyboard)).contains("\"wrongKey\":3");
+        assertThat(adapter.toJson(monitor)).contains("\"wrongKey\":1");
+        assertThat(adapter.toJson(mouse)).contains("\"wrongKey\":2");
+        assertThat(adapter.toJson(keyboard)).contains("\"wrongKey\":3");
 
         try {
             adapter.fromJson(monitorJson);
             Assert.fail();
         } catch (JsonDataException e) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo("Missing label for wrongKey");
+            assertThat(e).hasMessageThat().isEqualTo("Missing label for wrongKey");
         }
     }
 
@@ -159,15 +172,30 @@ public class ValuePolymorphicAdapterJavaTest {
                 ValuePolymorphicAdapterFactory.of(
                         Computer.class, "typeInt", int.class).withDefaultValue(monitor);
         JsonAdapter<Computer> adapter = getComputerAdapter(propertyValueAdapterFactory);
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor);
-        Truth.assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor);
 
         try {
             adapter.toJson(keyboard);
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            Truth.assertThat(e).hasMessageThat()
+            assertThat(e).hasMessageThat()
+                    .isEqualTo("FallbackJsonAdapter with " + monitor + " cannot make Json Object");
+        }
+        ValuePolymorphicAdapterFactory<Computer, Integer> propertyValueAdapterFactoryWithWrongLabelKey =
+                ValuePolymorphicAdapterFactory.of(
+                        Computer.class, "typeWrong", int.class).withDefaultValue(monitor);
+        adapter = getComputerAdapter(propertyValueAdapterFactoryWithWrongLabelKey);
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor);
+
+        try {
+            adapter.toJson(keyboard);
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+            assertThat(e).hasMessageThat()
                     .isEqualTo("FallbackJsonAdapter with " + monitor + " cannot make Json Object");
         }
     }
@@ -179,11 +207,11 @@ public class ValuePolymorphicAdapterJavaTest {
                 .withSubtype(Monitor.class, Computer.ComTypeInt.Keyboard.getValue())
                 .withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
         JsonAdapter<Computer> adapter = getComputerAdapter(notUnique);
-        Truth.assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
-        Truth.assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
-        Truth.assertThat(adapter.fromJson("{\"typeInt\":3,\"monitorUnique\":1,\"testValue\":\"test\"}"))
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor);
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse);
+        assertThat(adapter.fromJson("{\"typeInt\":3,\"monitorUnique\":1,\"testValue\":\"test\"}"))
                 .isEqualTo(monitor);
-        Truth.assertThat(adapter.toJson(new Monitor(1, "test")))
+        assertThat(adapter.toJson(new Monitor(1, "test")))
                 .isEqualTo("{\"typeInt\":1,\"monitorUnique\":1,\"testValue\":\"test\"}");
     }
 
@@ -196,7 +224,7 @@ public class ValuePolymorphicAdapterJavaTest {
                     .withSubtype(Mouse.class, Computer.ComTypeInt.Mouse.getValue());
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo(Computer.ComTypeInt.Monitor.getValue() + " must be unique");
+            assertThat(e).hasMessageThat().isEqualTo("The value label must be unique");
         }
 
         try {
@@ -206,7 +234,7 @@ public class ValuePolymorphicAdapterJavaTest {
                                     Computer.ComTypeInt.Monitor.getValue(), Computer.ComTypeInt.Monitor.getValue()));
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            Truth.assertThat(e).hasMessageThat()
+            assertThat(e).hasMessageThat()
                     .isEqualTo("The value for " + Computer.class.getSimpleName() + " must be unique");
         }
     }
@@ -219,7 +247,7 @@ public class ValuePolymorphicAdapterJavaTest {
                             Collections.singletonList(Computer.ComTypeInt.Monitor.getValue()));
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            Truth.assertThat(e).hasMessageThat().isEqualTo(
+            assertThat(e).hasMessageThat().isEqualTo(
                     "The number of values for " + Computer.class.getSimpleName() + " is different from subtypes");
         }
     }
@@ -238,11 +266,21 @@ public class ValuePolymorphicAdapterJavaTest {
         final String mouseJavaJson = "{\"type\":2,\"unique_mouse\":" + Long.MAX_VALUE + "}";
         final String keyboardJavaJson = "{\"type\":3,\"uniqueKeyboard\":true}";
 
-        Truth.assertThat(adapter.toJson(monitorJava)).isEqualTo(monitorJavaJson);
-        Truth.assertThat(adapter.toJson(mouseJava)).isEqualTo(mouseJavaJson);
-        Truth.assertThat(adapter.toJson(keyboardJava)).isEqualTo(keyboardJavaJson);
-        Truth.assertThat(adapter.fromJson(monitorJavaJson)).isEqualTo(monitorJava);
-        Truth.assertThat(adapter.fromJson(mouseJavaJson)).isEqualTo(mouseJava);
-        Truth.assertThat(adapter.fromJson(keyboardJavaJson)).isEqualTo(keyboardJava);
+        assertThat(adapter.toJson(monitorJava)).isEqualTo(monitorJavaJson);
+        assertThat(adapter.toJson(mouseJava)).isEqualTo(mouseJavaJson);
+        assertThat(adapter.toJson(keyboardJava)).isEqualTo(keyboardJavaJson);
+        assertThat(adapter.fromJson(monitorJavaJson)).isEqualTo(monitorJava);
+        assertThat(adapter.fromJson(mouseJavaJson)).isEqualTo(mouseJava);
+        assertThat(adapter.fromJson(keyboardJavaJson)).isEqualTo(keyboardJava);
+    }
+
+    @Test
+    public final void notSupportedType() {
+        try {
+            ValuePolymorphicAdapterFactory.Companion.of(Computer.class, "typeInt", byte.class);
+            Assert.fail();
+        } catch (IllegalArgumentException e) {
+            assertThat(e).hasMessageThat().isEqualTo(byte.class.getSimpleName() + " is not a supported type");
+        }
     }
 }

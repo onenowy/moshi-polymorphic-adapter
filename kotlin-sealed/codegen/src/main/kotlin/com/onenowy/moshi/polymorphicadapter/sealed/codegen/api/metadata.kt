@@ -130,7 +130,7 @@ private fun valueAdapterInitializer(
     subClasses: List<TypeElement>,
     messager: Messager
 ): CodeBlock? {
-    val labelType = getSupportTypeClass(generatorTag[0])
+    val labelType = getSupportedTypeClass(generatorTag[0])
     return buildCodeBlock {
         add(
             "%T.of(%T::class.java, %S, %T::class.java)\n",
@@ -141,11 +141,11 @@ private fun valueAdapterInitializer(
         )
         for (type in subClasses) {
             val labelValue = type.getAnnotation(KotlinSealedCodegenProcessor.valueLabelAnnotation)
-            val value = labelValue.value.toSupportTypeValueOrNull(generatorTag[0])
+            val value = labelValue.value.toSupportedTypeValueOrNull(generatorTag[0])
             if (value == null) {
                 messager.printMessage(
                     Diagnostic.Kind.ERROR,
-                    "${labelValue.value} cannot be cast to ${getSupportTypeClass(generatorTag[1]).simpleName}"
+                    "${labelValue.value} cannot be cast to ${getSupportedTypeClass(generatorTag[1]).simpleName}"
                 )
                 return null
             }

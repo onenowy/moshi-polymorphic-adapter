@@ -32,6 +32,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
             labelKey: String,
             labelType: Class<V>
         ): ValuePolymorphicAdapterFactory<T, V> {
+            require(getValueAdapterTypeOrNull(labelType) != null) { "${labelType.simpleName} is not a supported type" }
             return ValuePolymorphicAdapterFactory(baseType, labelType, labelKey)
         }
     }
@@ -40,7 +41,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
      * Returns a new factory that decodes instances of [subType]
      */
     fun withSubtype(subType: Class<out T>, valueLabel: V): ValuePolymorphicAdapterFactory<T, V> {
-        require(!labels.contains(valueLabel)) { "$valueLabel must be unique" }
+        require(!labels.contains(valueLabel)) { "The value label must be unique" }
         val newSubTypes = subTypes.toMutableList()
         newSubTypes.add(subType)
         val newLabels = labels.toMutableList()

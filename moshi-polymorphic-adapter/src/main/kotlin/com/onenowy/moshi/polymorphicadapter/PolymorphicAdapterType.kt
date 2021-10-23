@@ -22,7 +22,7 @@ object PolymorphicAdapterType {
     const val VALUE_POLYMORPHIC_ADAPTER_BOOLEAN = "MoshiPolymorphic.Boolean"
 }
 
-fun String.toSupportTypeValueOrNull(type: String): Any? {
+fun String.toSupportedTypeValueOrNull(type: String): Any? {
     return this.trim().let {
         when (type) {
             PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_STRING -> it
@@ -46,7 +46,7 @@ fun <T> getValueAdapterTypeOrNull(type: Class<T>): String? {
     }
 }
 
-fun getSupportTypeClass(type: String) = when (type) {
+fun getSupportedTypeClass(type: String) = when (type) {
     PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_INT -> Int::class
     PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_DOUBLE -> Double::class
     PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_BOOLEAN -> Boolean::class

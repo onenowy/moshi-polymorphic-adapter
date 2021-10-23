@@ -33,15 +33,19 @@ class ValuePolymorphicAdapterTest {
         .withSubtype(Keyboard::class.java, Computer.ComTypeLong.Keyboard.value)
         .withSubtype(Mouse::class.java, Computer.ComTypeLong.Mouse.value)
 
+    val boolFactory = ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeBool", Boolean::class.java)
+        .withSubtype(Monitor::class.java, true)
+        .withSubtype(Mouse::class.java, false)
+
 
     private val monitor = Monitor(1, "test")
     private val mouse = Mouse("mouse", "test")
     private val keyboard = Keyboard(true, "test")
 
     private val monitorJson =
-        "{\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":${Long.MAX_VALUE - 2},\"monitorUnique\":1,\"testValue\":\"test\"}"
+        "{\"typeBool\":true,\"typeInt\":1,\"typeString\":\"1\",\"typeDouble\":5.0,\"typeLong\":${Long.MAX_VALUE - 2},\"monitorUnique\":1,\"testValue\":\"test\"}"
     private val mouseJson =
-        "{\"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":${Long.MAX_VALUE - 1}," +
+        "{\"typeBool\":false, \"typeInt\":2,\"typeString\":\"2\",\"typeDouble\":10000.1,\"typeLong\":${Long.MAX_VALUE - 1}," +
                 "\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
     private val keyboardJson =
         "{\"typeInt\":3,\"typeString\":\"3\",\"typeDouble\":${Double.MAX_VALUE},\"typeLong\":${Long.MAX_VALUE},\"keyboardUnique\":true,\"testValue\":\"test\"}"
@@ -68,6 +72,9 @@ class ValuePolymorphicAdapterTest {
         assertThat(adapter.toJson(monitor)).contains("\"typeLong\":${Long.MAX_VALUE - 2}")
         assertThat(adapter.toJson(mouse)).contains("\"typeLong\":${Long.MAX_VALUE - 1}")
         assertThat(adapter.toJson(keyboard)).contains("\"typeLong\":${Long.MAX_VALUE}")
+        adapter = getComputerAdapter(boolFactory)
+        assertThat(adapter.toJson(monitor)).contains("\"typeBool\":${true}")
+        assertThat(adapter.toJson(mouse)).contains("\"typeBool\":${false}")
     }
 
     @Test
@@ -88,7 +95,9 @@ class ValuePolymorphicAdapterTest {
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
         assertThat(adapter.fromJson(keyboardJson)).isEqualTo(keyboard)
-
+        adapter = getComputerAdapter(boolFactory)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(mouse)
     }
 
     @Test
@@ -163,10 +172,23 @@ class ValuePolymorphicAdapterTest {
 
     @Test
     fun defaultValue() {
-        val propertyValueAdapterFactory =
+        val valueAdapterFactory =
             ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
                 .withDefaultValue(monitor)
-        val adapter = getComputerAdapter(propertyValueAdapterFactory)
+        var adapter = getComputerAdapter(valueAdapterFactory)
+        assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor)
+        assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor)
+        try {
+            adapter.toJson(keyboard)
+            fail()
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat().isEqualTo("FallbackJsonAdapter with $monitor cannot make Json Object")
+        }
+        val propertyValueAdapterFactoryWithWrongLabelKey =
+            ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeWrong", Int::class.java)
+                .withDefaultValue(monitor)
+        adapter = getComputerAdapter(propertyValueAdapterFactoryWithWrongLabelKey)
         assertThat(adapter.fromJson(monitorJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(mouseJson)).isEqualTo(monitor)
         assertThat(adapter.fromJson(keyboardJson)).isEqualTo(monitor)
@@ -207,7 +229,7 @@ class ValuePolymorphicAdapterTest {
                 .withSubtype(Mouse::class.java, Computer.ComTypeInt.Mouse.value)
             fail()
         } catch (e: IllegalArgumentException) {
-            assertThat(e).hasMessageThat().isEqualTo("${Computer.ComTypeInt.Monitor.value} must be unique")
+            assertThat(e).hasMessageThat().isEqualTo("The value label must be unique")
         }
 
         try {
@@ -236,6 +258,16 @@ class ValuePolymorphicAdapterTest {
         } catch (e: IllegalArgumentException) {
             assertThat(e).hasMessageThat()
                 .isEqualTo("The number of values for ${Computer::class.java.simpleName} is different from subtypes")
+        }
+    }
+
+    @Test
+    fun notSupportedType() {
+        try {
+            ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeInt", Byte::class.java)
+            fail()
+        } catch (e: IllegalArgumentException) {
+            assertThat(e).hasMessageThat().isEqualTo("${Byte::class.java.simpleName} is not a supported type")
         }
     }
 }
