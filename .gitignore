@@ -14,3 +14,4 @@
 /.idea/compiler.xml
 /.idea/misc.xml
 /gradle/wrapper/gradle-wrapper.properties
+/coverage/
