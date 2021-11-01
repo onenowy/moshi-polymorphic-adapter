@@ -1,5 +1,4 @@
 plugins {
-    `java-library`
     kotlin("jvm")
     kotlin("kapt")
     id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version

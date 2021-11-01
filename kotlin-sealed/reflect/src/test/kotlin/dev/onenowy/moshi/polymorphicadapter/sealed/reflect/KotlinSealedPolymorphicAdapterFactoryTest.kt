@@ -16,7 +16,7 @@ class KotlinSealedPolymorphicAdapterFactoryTest {
     private val mouse = Mouse("mouse", "test")
     private val keyboard = Keyboard(true, "test")
 
-    private val monitorJson = "{\"monitorUnique\":1,\"testValue\":\"test\"}"
+    private val monitorJson = "{\"monitor_Unique\":1,\"testValue\":\"test\"}"
     private val mouseJson = "{\"mouseUnique\":\"mouse\",\"testValue\":\"test\"}"
     private val keyboardJson = "{\"keyboardUnique\":true,\"testValue\":\"test\"}"
 

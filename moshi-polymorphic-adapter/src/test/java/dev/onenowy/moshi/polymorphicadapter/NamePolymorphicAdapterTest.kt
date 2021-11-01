@@ -4,10 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
-import dev.onenowy.moshi.polymorphicadapter.util.Computer
-import dev.onenowy.moshi.polymorphicadapter.util.Keyboard
-import dev.onenowy.moshi.polymorphicadapter.util.Monitor
-import dev.onenowy.moshi.polymorphicadapter.util.Mouse
+import dev.onenowy.moshi.polymorphicadapter.util.*
 import org.junit.Assert.fail
 import org.junit.Test
 
@@ -149,5 +146,33 @@ class NamePolymorphicAdapterTest {
             assertThat(e).hasMessageThat()
                 .isEqualTo("The number of label names for ${Computer::class.java.simpleName} is different from subtypes")
         }
+    }
+
+    @Test
+    fun javaInterfaceWithCustomName() {
+        val adapter = Moshi.Builder().add(
+            NamePolymorphicAdapterFactory.of(ComputerJava::class.java)
+                .withSubtypes(
+                    listOf(
+                        MouseJava::class.java,
+                        KeyboardJava::class.java,
+                        MonitorJava::class.java
+                    ),
+                    listOf("unique_mouse", "uniqueKeyboard", "uniqueMonitor")
+                )
+        ).build()
+            .adapter(ComputerJava::class.java)
+        val monitorJava = MonitorJava("test")
+        val mouseJava = MouseJava(Long.MAX_VALUE)
+        val keyboardJava = KeyboardJava(true)
+        val monitorJavaJson = "{\"uniqueMonitor\":\"test\"}"
+        val mouseJavaJson = "{\"unique_mouse\":" + Long.MAX_VALUE + "}"
+        val keyboardJavaJson = "{\"uniqueKeyboard\":true}"
+        assertThat(adapter.toJson(monitorJava)).isEqualTo(monitorJavaJson)
+        assertThat(adapter.toJson(mouseJava)).isEqualTo(mouseJavaJson)
+        assertThat(adapter.toJson(keyboardJava)).isEqualTo(keyboardJavaJson)
+        assertThat(adapter.fromJson(monitorJavaJson)).isEqualTo(monitorJava)
+        assertThat(adapter.fromJson(mouseJavaJson)).isEqualTo(mouseJava)
+        assertThat(adapter.fromJson(keyboardJavaJson)).isEqualTo(keyboardJava)
     }
 }

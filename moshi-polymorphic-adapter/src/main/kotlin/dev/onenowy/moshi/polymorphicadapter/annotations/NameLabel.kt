@@ -3,9 +3,9 @@
 package dev.onenowy.moshi.polymorphicadapter.annotations
 
 /**
- * An annotation sets property name as a label for [NamePolymorphicAdapter].
+ * An annotation sets a JSON field name as a label for [NamePolymorphicAdapter].
  *
- * @property name the unique property name.
+ * @property name the unique JSON field name.
  *
  * ```
  * [

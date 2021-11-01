@@ -23,7 +23,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
 
         /**
          * @param baseType The base type for which this factory will create adapters.
-         * @param labelKey The name of the JSON field that determines which type to decode to.
+         * @param labelKey The JSON field name that determines which type to decode to.
          * @param labelType The label value type.
          */
         @JvmStatic

@@ -4,7 +4,7 @@ import com.squareup.moshi.*
 import java.lang.reflect.Type
 
 /**
- * A polymorphic adapter factory creates an adapter that uses the unique name of properties, fields or JSON fields
+ * A polymorphic adapter factory creates an adapter that uses the unique JSON field name
  * to determine which type to decode to.
  */
 class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(

@@ -1,5 +1,6 @@
 package dev.onenowy.moshi.polymorphicadapter.sealed.reflect.util
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import dev.onenowy.moshi.polymorphicadapter.PolymorphicAdapterType
 import dev.onenowy.moshi.polymorphicadapter.annotations.DefaultNull
@@ -10,8 +11,8 @@ import dev.onenowy.moshi.polymorphicadapter.annotations.NameLabel
 sealed class Computer
 
 @JsonClass(generateAdapter = true)
-@NameLabel("monitorUnique")
-data class Monitor(val monitorUnique: Int?, val testValue: String) : Computer()
+@NameLabel("monitor_Unique")
+data class Monitor(@Json(name = "monitor_Unique") val monitorUnique: Int?, val testValue: String) : Computer()
 
 @JsonClass(generateAdapter = true)
 @NameLabel("mouseUnique")

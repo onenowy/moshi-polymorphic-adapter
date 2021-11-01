@@ -84,14 +84,15 @@ class KotlinSealedCodegenProcessorTest {
             import dev.onenowy.moshi.polymorphicadapter.annotations.DefaultNull
             import dev.onenowy.moshi.polymorphicadapter.annotations.NameLabel
             import com.squareup.moshi.JsonClass
+            import com.squareup.moshi.Json
 
             @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.NAME_POLYMORPHIC_ADAPTER)
             @DefaultNull
             sealed class Computer
 
             @JsonClass(generateAdapter = true)
-            @NameLabel("monitorUnique")
-            data class Monitor(val monitorUnique: Int?, val testValue: String) : Computer()
+            @NameLabel("monitor_Unique")
+            data class Monitor(@Json(name = "monitor_Unique") val monitorUnique: Int?, val testValue: String) : Computer()
 
             @JsonClass(generateAdapter = true)
             @NameLabel("mouseUnique")

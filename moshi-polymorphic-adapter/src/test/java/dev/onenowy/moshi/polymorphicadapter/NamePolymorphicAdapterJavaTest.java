@@ -4,10 +4,7 @@ import com.google.common.truth.Truth;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
-import dev.onenowy.moshi.polymorphicadapter.util.Computer;
-import dev.onenowy.moshi.polymorphicadapter.util.Keyboard;
-import dev.onenowy.moshi.polymorphicadapter.util.Monitor;
-import dev.onenowy.moshi.polymorphicadapter.util.Mouse;
+import dev.onenowy.moshi.polymorphicadapter.util.*;
 import org.junit.Assert;
 import org.junit.Test;
 
