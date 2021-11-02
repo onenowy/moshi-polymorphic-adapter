@@ -1,4 +1,4 @@
-package dev.onenowy.moshi.polymorphicadapter.util;
+package dev.onenowy.moshi.polymorphicadapter;
 
 import com.squareup.moshi.Json;
 
