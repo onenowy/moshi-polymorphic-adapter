@@ -1,8 +1,10 @@
 plugins {
     kotlin("jvm")
     kotlin("kapt")
+    id("publish")
     id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
 }
+description = "Generate a PolymorphicAdapter for using annotation processor"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {

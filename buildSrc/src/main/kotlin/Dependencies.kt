@@ -57,4 +57,9 @@ object Dependencies {
         private const val version = "1.4.5"
         const val test = "com.github.tschuchortdev:kotlin-compile-testing:$version"
     }
+
+    object GradleMavenPublish {
+        private const val version = "0.18.0"
+        const val plugin = "com.vanniktech:gradle-maven-publish-plugin:$version"
+    }
 }

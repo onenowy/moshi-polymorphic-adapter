@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath(Dependencies.Kotlin.plugin)
+//        classpath(Dependencies.GradleMavenPublish.plugin)
     }
 }
 
