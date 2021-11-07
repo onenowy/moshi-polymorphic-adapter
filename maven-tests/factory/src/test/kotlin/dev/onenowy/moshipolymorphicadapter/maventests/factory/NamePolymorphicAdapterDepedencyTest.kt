@@ -1,19 +1,18 @@
-package dev.onenowy.moshipolymorphicadapter
+package dev.onenowy.moshipolymorphicadapter.maventests.factory
 
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import dev.onenowy.moshipolymorphicadapter.NamePolymorphicAdapterFactory
 import org.junit.Assert.fail
 import org.junit.Test
 
-class NamePolymorphicAdapterTest {
+class NamePolymorphicAdapterDepedencyTest {
 
     private val nameAdapterFactory = NamePolymorphicAdapterFactory.of(Computer::class.java)
-    private val withSubtype = nameAdapterFactory.withSubtype(
-        Monitor::class.java,
-        "monitorUnique"
-    ).withSubtype(Mouse::class.java, "mouseUnique").withSubtype(Keyboard::class.java, "keyboardUnique")
+    private val withSubtype = nameAdapterFactory.withSubtype(Monitor::class.java, "monitorUnique")
+        .withSubtype(Mouse::class.java, "mouseUnique").withSubtype(Keyboard::class.java, "keyboardUnique")
     private val withSubtypes = nameAdapterFactory.withSubtypes(
         listOf(Monitor::class.java, Mouse::class.java, Keyboard::class.java),
         listOf("monitorUnique", "mouseUnique", "keyboardUnique")

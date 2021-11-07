@@ -1,9 +1,10 @@
-package dev.onenowy.moshipolymorphicadapter;
+package dev.onenowy.moshipolymorphicadapter.maventests.factory;
 
 import com.google.common.truth.Truth;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
+import dev.onenowy.moshipolymorphicadapter.NamePolymorphicAdapterFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class NamePolymorphicAdapterJavaTest {
+public class NamePolymorphicAdapterDependencyJavaTest {
     private final NamePolymorphicAdapterFactory<Computer> nameAdapterFactory = NamePolymorphicAdapterFactory.of(
             Computer.class);
     private final NamePolymorphicAdapterFactory<Computer> withSubtype =

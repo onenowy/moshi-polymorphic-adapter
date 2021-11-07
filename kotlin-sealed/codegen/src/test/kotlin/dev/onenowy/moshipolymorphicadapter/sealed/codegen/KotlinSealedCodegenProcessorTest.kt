@@ -80,9 +80,9 @@ class KotlinSealedCodegenProcessorTest {
         val typeName = "Computer"
         val source = kotlin(
             "$typeName.kt", """
-            import dev.onenowy.moshi.moshipolymorphicadapter.PolymorphicAdapterType
-            import dev.onenowy.moshi.moshipolymorphicadapter.annotations.DefaultNull
-            import dev.onenowy.moshi.moshipolymorphicadapter.annotations.NameLabel
+            import dev.onenowy.moshipolymorphicadapter.PolymorphicAdapterType
+            import dev.onenowy.moshipolymorphicadapter.annotations.DefaultNull
+            import dev.onenowy.moshipolymorphicadapter.annotations.NameLabel
             import com.squareup.moshi.JsonClass
             import com.squareup.moshi.Json
 
@@ -112,8 +112,8 @@ class KotlinSealedCodegenProcessorTest {
         val source = kotlin(
             "$typeName.kt",
             """
-            import dev.onenowy.moshi.moshipolymorphicadapter.PolymorphicAdapterType
-            import dev.onenowy.moshi.moshipolymorphicadapter.annotations.ValueLabel
+            import dev.onenowy.moshipolymorphicadapter.PolymorphicAdapterType
+            import dev.onenowy.moshipolymorphicadapter.annotations.ValueLabel
             import com.squareup.moshi.JsonClass
 
             @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_INT + ":type")
@@ -139,8 +139,8 @@ class KotlinSealedCodegenProcessorTest {
     fun notSealed() {
         val source = kotlin(
             "NotSealedComputerValue.kt", """
-            import dev.onenowy.moshi.moshipolymorphicadapter.PolymorphicAdapterType
-            import dev.onenowy.moshi.moshipolymorphicadapter.annotations.ValueLabel
+            import dev.onenowy.moshipolymorphicadapter.PolymorphicAdapterType
+            import dev.onenowy.moshipolymorphicadapter.annotations.ValueLabel
             import com.squareup.moshi.JsonClass
 
             @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_INT + ":type")

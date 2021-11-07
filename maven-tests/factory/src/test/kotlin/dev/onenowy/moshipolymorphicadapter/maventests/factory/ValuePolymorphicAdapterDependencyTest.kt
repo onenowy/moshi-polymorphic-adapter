@@ -1,13 +1,14 @@
-package dev.onenowy.moshipolymorphicadapter
+package dev.onenowy.moshipolymorphicadapter.maventests.factory
 
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import dev.onenowy.moshipolymorphicadapter.ValuePolymorphicAdapterFactory
 import org.junit.Assert.fail
 import org.junit.Test
 
-class ValuePolymorphicAdapterTest {
+class ValuePolymorphicAdapterDependencyTest {
     val intFactory = ValuePolymorphicAdapterFactory.of(Computer::class.java, "typeInt", Int::class.java)
         .withSubtype(Monitor::class.java, Computer.ComTypeInt.Monitor.value)
         .withSubtype(Keyboard::class.java, Computer.ComTypeInt.Keyboard.value)

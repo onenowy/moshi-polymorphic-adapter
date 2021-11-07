@@ -251,7 +251,7 @@ val moshi = Moshi.Builder()
     .build()
 ```
 
-The reflection feature requires the following dependency:
+The reflection feature requires the following additional dependency:
 
 ```xml
 
@@ -268,7 +268,7 @@ implementation("dev.onenowy.moshipolymorphicadapter:kotlin-sealed-reflect:{versi
 
 ### Codegen
 
-The codgen feature requires kapt plugin and the following dependency:
+The codgen feature requires kapt plugin and the following additional dependency:
 
 ```xml
 

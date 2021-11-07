@@ -1,4 +1,4 @@
-package dev.onenowy.moshipolymorphicadapter.sealed.reflect
+package dev.onenowy.moshipolymorphicadapter.maventests.codgen
 
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.JsonDataException
@@ -6,8 +6,8 @@ import com.squareup.moshi.Moshi
 import org.junit.Assert.fail
 import org.junit.Test
 
-class KotlinSealedPolymorphicAdapterFactoryTest {
-    private val moshi = Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build()
+class CodegenDependencyTest {
+    private val moshi = Moshi.Builder().build()
     private val computerAdapter = moshi.adapter(Computer::class.java)
     private val computerValueAdapter = moshi.adapter(ComputerValue::class.java)
 
@@ -58,17 +58,6 @@ class KotlinSealedPolymorphicAdapterFactoryTest {
         } catch (e: JsonDataException) {
             assertThat(e).hasMessageThat()
                 .isEqualTo("Missing label for type")
-        }
-    }
-
-    @Test
-    fun notSealed() {
-        try {
-            moshi.adapter(NotSealedComputerValue::class.java)
-            fail()
-        } catch (e: IllegalArgumentException) {
-            assertThat(e).hasMessageThat()
-                .isEqualTo("${NotSealedComputerValue::class.simpleName} is not a sealed class")
         }
     }
 }

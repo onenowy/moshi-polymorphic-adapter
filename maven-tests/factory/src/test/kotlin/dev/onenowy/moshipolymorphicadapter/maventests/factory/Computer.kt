@@ -1,4 +1,4 @@
-package dev.onenowy.moshipolymorphicadapter
+package dev.onenowy.moshipolymorphicadapter.maventests.factory
 
 import com.squareup.moshi.JsonClass
 

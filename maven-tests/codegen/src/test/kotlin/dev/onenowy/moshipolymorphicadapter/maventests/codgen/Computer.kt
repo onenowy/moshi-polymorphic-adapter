@@ -1,4 +1,4 @@
-package dev.onenowy.moshipolymorphicadapter.sealed.reflect.util
+package dev.onenowy.moshipolymorphicadapter.maventests.codgen
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

@@ -8,8 +8,8 @@ java {
     withSourcesJar()
 }
 
-group = "dev.onenowy.moshipolymorphicadapter"
-version = "0.1.0-SNAPSHOT"
+group = Dependencies.MoshiPolymorphicAdapter.group
+version = Dependencies.MoshiPolymorphicAdapter.version
 
 publishing {
     publications {

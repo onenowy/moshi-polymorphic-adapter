@@ -1,8 +1,9 @@
-package dev.onenowy.moshipolymorphicadapter;
+package dev.onenowy.moshipolymorphicadapter.maventests.factory;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;
+import dev.onenowy.moshipolymorphicadapter.ValuePolymorphicAdapterFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import java.util.Collections;
 import static com.google.common.truth.Truth.assertThat;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class ValuePolymorphicAdapterJavaTest {
+public class ValuePolymorphicAdapterDependencyJavaTest {
     ValuePolymorphicAdapterFactory<Computer, Integer> intFactory = ValuePolymorphicAdapterFactory.of(Computer.class,
                     "typeInt", int.class).withSubtype(Monitor.class, Computer.ComTypeInt.Monitor.getValue())
             .withSubtype(Keyboard.class, Computer.ComTypeInt.Keyboard.getValue())

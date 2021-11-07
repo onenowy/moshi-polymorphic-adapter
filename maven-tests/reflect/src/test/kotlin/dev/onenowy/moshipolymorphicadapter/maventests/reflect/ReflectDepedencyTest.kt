@@ -1,12 +1,13 @@
-package dev.onenowy.moshipolymorphicadapter.sealed.reflect
+package dev.onenowy.moshipolymorphicadapter.maventests.reflect
 
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import dev.onenowy.moshipolymorphicadapter.sealed.reflect.KotlinSealedPolymorphicAdapterFactory
 import org.junit.Assert.fail
 import org.junit.Test
 
-class KotlinSealedPolymorphicAdapterFactoryTest {
+class ReflectDepedencyTest {
     private val moshi = Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).build()
     private val computerAdapter = moshi.adapter(Computer::class.java)
     private val computerValueAdapter = moshi.adapter(ComputerValue::class.java)
