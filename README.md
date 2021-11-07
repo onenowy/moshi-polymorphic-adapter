@@ -11,7 +11,7 @@ A polymorphic adapter factory creates an adapter that uses the unique value to d
 The `ValuePolymorphicAdapterFactory` is almost same as the `PolymorphicJsonAdapterFactory`, but it supports `Int`
 , `Long`, `Double` and `Boolean`, not only `String`.
 
-Suppose, We want to decode a JSON object to a Kotlin or a Java type, and the JSON object is like:
+Suppose we want to decode a JSON object to a Kotlin or a Java type, and the JSON object is like:
 
 ```json
 [
@@ -177,7 +177,7 @@ NamePolymorphicAdapterFactory<Parent> namePolymorphicAdapterFactory=NamePolymorp
 
 ### Set the default value or the fallback Adapter
 
-Moshi Polymorphic adapters set the default value or the fallback adapter using the `withDefaultValue`
+Moshi Polymorphic adapter sets the default value or the fallback adapter using the `withDefaultValue`
 and `withFallbackJsonAdapter` methods, which are derived from the `PolymorphicJsonAdapterFactory`. Please refer to
 the [PolymorphicJsonAdapterFactory](https://github.com/square/moshi/blob/master/adapters/src/main/java/com/squareup/moshi/adapters/PolymorphicJsonAdapterFactory.java#L98)
 for more details.
