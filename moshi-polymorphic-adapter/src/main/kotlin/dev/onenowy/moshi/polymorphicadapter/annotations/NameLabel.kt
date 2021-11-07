@@ -10,25 +10,27 @@ package dev.onenowy.moshi.polymorphicadapter.annotations
  * ```
  * [
  *  {
- *      "uniqueData":1,
- *      "commonData":"data"
+ *      "unique Name":1,
+ *      "commonData":"data",
+ *      "data" : "data"
  *  },
  * {
- *      "uniqueSecondData":1,
- *      "commonData":"data"
+ *      "uniqueSecondName":1,
+ *      "commonData":"data",
+ *      "data": 1
  *  }
  * ]
  * ```
  *
  * ```
- * @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.NAME_ADAPTER)
+ * @JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.NAME_POLYMORPHIC_ADAPTER)
  * sealed class Parent()
  *
- * @NameLabel("uniqueData")
- * data class FirstChild(val uniqueData:Int, val commonData:Sting):Parent()
+ * @NameLabel("unique Name")
+ * data class FirstChild(@Json(name = "unique name") val uniqueName:Int, val commonData:Sting, val data:String):Parent()
  *
- * @NameLabel("uniqueSecondData")
- * data class SecondChild(val uniqueSecondData:Int, val commonData:Sting):Parent()
+ * @NameLabel("uniqueSecondName")
+ * data class SecondChild(val uniqueSecondName:Int, val commonData:Sting, val data:Int):Parent()
  * ```
  */
 @Retention(AnnotationRetention.RUNTIME)

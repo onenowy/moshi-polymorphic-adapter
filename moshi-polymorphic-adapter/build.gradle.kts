@@ -13,7 +13,7 @@ java {
 }
 
 dependencies {
-    api(Dependencies.Moshi.moshi)
+    implementation(Dependencies.Moshi.moshi)
     kaptTest(Dependencies.Moshi.codegen)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)

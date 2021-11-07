@@ -7,7 +7,7 @@ import java.lang.reflect.Type
 
 /**
  * A polymorphic adapter factory creates an adapter that uses the unique value to determine which type to decode to.
- * This adapter factory is similar to [PolymorphicJsonAdapterFactory], but it allows not only [String], but also [Int], [Long], [Double] and [Boolean].
+ * It's almost same as [PolymorphicJsonAdapterFactory] of moshi, but it supports [Int], [Long], [Double] and [Boolean], not only [String].
  */
 class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
     private val baseType: Class<T>,
@@ -19,8 +19,6 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
 ) : AbstractMoshiPolymorphicAdapterFactory<ValuePolymorphicAdapterFactory<T, V>, T>() {
 
     companion object {
-
-
         /**
          * @param baseType The base type for which this factory will create adapters.
          * @param labelKey The JSON field name that determines which type to decode to.

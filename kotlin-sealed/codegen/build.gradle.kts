@@ -16,6 +16,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
+    implementation(Dependencies.Moshi.moshi)
     implementation(project(":moshi-polymorphic-adapter"))
     implementation(Dependencies.Kotlin.reflect)
     implementation(Dependencies.KotlinPoet.kotlinpoet)

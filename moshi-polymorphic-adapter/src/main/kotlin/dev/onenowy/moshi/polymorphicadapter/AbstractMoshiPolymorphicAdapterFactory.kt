@@ -1,9 +1,14 @@
+@file:Suppress("KDocUnresolvedReference")
+
 package dev.onenowy.moshi.polymorphicadapter
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 
+/**
+ * [withFallbackJsonAdapter] and [withDefaultValue] are derived from [PolymorphicJsonAdapterFactory] of moshi.
+ */
 abstract class AbstractMoshiPolymorphicAdapterFactory<S : AbstractMoshiPolymorphicAdapterFactory<S, T>, T> :
     JsonAdapter.Factory {
 

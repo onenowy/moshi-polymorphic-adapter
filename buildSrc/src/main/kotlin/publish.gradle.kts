@@ -19,7 +19,7 @@ publishing {
             pom {
                 name.set("$groupId:$")
                 description.set(project.description)
-                url.set("https://gitlab.com/onenowy/moshi-polymorphic-adapter")
+                url.set("https://github.com/onenowy/moshi-polymorphic-adapter")
                 licenses {
                     license {
                         name.set("Apache 2.0")
@@ -34,9 +34,9 @@ publishing {
                     }
                 }
                 scm {
-                    url.set("https://gitlab.com/onenowy/moshi-polymorphic-adapter")
-                    connection.set("https://gitlab.com/onenowy/moshi-polymorphic-adapter.git")
-                    developerConnection.set("scm:git@gitlab.com:onenowy/moshi-polymorphic-adapter.git")
+                    url.set("https://github.com/onenowy/moshi-polymorphic-adapter")
+                    connection.set("https://github.com/onenowy/moshi-polymorphic-adapter.git")
+                    developerConnection.set("scm:git@github.com:onenowy/moshi-polymorphic-adapter.git")
                 }
             }
         }
