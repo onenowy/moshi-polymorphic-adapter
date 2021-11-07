@@ -1,5 +1,13 @@
 object Dependencies {
 
+    object MoshiPolymorphicAdapter {
+        const val version = "0.1.0-SNAPSHOT"
+        const val group = "dev.onenowy.moshipolymorphicadapter"
+        const val moshi_polymorphic_adapter = "$group:moshi-polymorphic-adapter:$version"
+        const val reflect = "$group:kotlin-sealed-reflect:$version"
+        const val codegen = "$group:kotlin-sealed-codegen:$version"
+    }
+
     object Kotlin {
         private const val version = "1.5.31"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"

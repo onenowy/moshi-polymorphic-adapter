@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    kotlin("kapt")
     id("publish")
     id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
 }
@@ -12,6 +11,5 @@ dependencies {
     implementation(Dependencies.Moshi.moshi)
     testImplementation(Dependencies.Test.junit)
     testImplementation(Dependencies.Test.truth)
-    kaptTest(Dependencies.Moshi.codegen)
     implementation(Dependencies.Kotlin.reflect)
 }
