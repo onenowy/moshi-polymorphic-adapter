@@ -1,12 +1,13 @@
-name: Test and publish
+name: CI
 
-on:[push,pull_request]
+on: [push, pull_request]
 
 jobs:
-  build-test:
+  build_test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -39,7 +40,8 @@ jobs:
           check_name: "Unit Test Results"
           files: build/test-result/*.xml
           report_individual_runs: "true"
-
-      - name: publish
-        if: github.repository == 'onenowy/moshi-polymorphic-adapter' && github.event.head_commit.message.startsWith('[Release')
-        uses: onenowy/moshi-polymorphic-adapter/.github/workflow/publish.yml
+  publish:
+    needs: [build_test]
+    name: Publish artifacts
+    if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, '[Release')
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@master
