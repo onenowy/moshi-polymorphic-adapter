@@ -1,7 +1,7 @@
 object Dependencies {
 
     object MoshiPolymorphicAdapter {
-        const val version = "0.1.0-SNAPSHOT"
+        const val version = "0.1.0"
         const val group = "dev.onenowy.moshipolymorphicadapter"
         const val moshi_polymorphic_adapter = "$group:moshi-polymorphic-adapter:$version"
         const val reflect = "$group:kotlin-sealed-reflect:$version"
@@ -46,11 +46,6 @@ object Dependencies {
         const val ksp = "com.squareup:kotlinpoet-ksp:$version"
     }
 
-    object Shadow {
-        const val version = "7.0.0"
-        const val shadow = "com.github.johnrengelman.shadow"
-    }
-
     object VersionPlugin {
         const val version = "0.39.0"
         const val versionPlugin = "com.github.ben-manes.versions"
@@ -64,10 +59,5 @@ object Dependencies {
     object KotlinCompileTest {
         private const val version = "1.4.5"
         const val test = "com.github.tschuchortdev:kotlin-compile-testing:$version"
-    }
-
-    object GradleMavenPublish {
-        private const val version = "0.18.0"
-        const val plugin = "com.vanniktech:gradle-maven-publish-plugin:$version"
     }
 }
