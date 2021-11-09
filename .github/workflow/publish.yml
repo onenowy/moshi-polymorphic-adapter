@@ -1,0 +1,30 @@
+name: Publish and test
+
+on:
+  workflow_call:
+
+jobs:
+  publish:
+    steps:
+      - name: publish
+          run: ./gradlew publish
+          env:
+            ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_signingKey }}
+            ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}
+            ORG_GRADLE_PROJECT_ossrhUsername: ${{ secrets.ORG_GRADLE_PROJECT_ossrhUsername }}
+            ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.ORG_GRADLE_PROJECT_ossrhPassword }}
+
+      - name: Clear cache
+          run: ./gradlew clean
+
+      - name: Dependency test
+          run: ./gradlew -p maven-tests test
+
+      - name: Test report
+          uses: EnricoMi/publish-unit-test-result-action@v1
+          if: always()
+          with:
+            check_name: "Unit Test Results"
+            files: build/test-result/*.xml
+            report_individual_runs: "true"
+            check_run_annotations: all tests, skipped tests
