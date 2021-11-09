@@ -16,6 +16,11 @@ allprojects {
 }
 
 subprojects {
+    tasks.withType<Test>().configureEach {
+        if (project.hasProperty("excludeTest")) {
+            exclude(project.findProperty("excludeTest") as String)
+        }
+    }
     pluginManager.withPlugin("java") {
         configure<JavaPluginExtension> {
             toolchain {

@@ -15,7 +15,7 @@ jobs:
             ORG_GRADLE_PROJECT_ossrhPassword: ${{ secrets.ORG_GRADLE_PROJECT_ossrhPassword }}
 
       - name: Clear cache
-          run: ./gradlew clean
+          run: rm -rf ~/.gradle/caches
 
       - name: Dependency test
           run: ./gradlew -p maven-tests test
