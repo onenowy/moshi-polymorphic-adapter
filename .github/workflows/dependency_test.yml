@@ -3,7 +3,7 @@ name: Dependency test
 on: [workflow_call, workflow_dispatch]
 
 jobs:
-  publish:
+  dependency_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,7 +27,7 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
-          check_name: "Unit Test Results"
-          files: build/test-result/*.xml
+          check_name: "Dependency Test Results"
+          files: '**/build/test-results/**/*.xml'
           report_individual_runs: "true"
           check_run_annotations: all tests, skipped tests
