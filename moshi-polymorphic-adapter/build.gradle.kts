@@ -5,7 +5,7 @@ plugins {
     id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
 }
 
-project.description = "PolymorphicAdapters for Moshi"
+project.description = "Polymorphic Adapter library for Moshi"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8

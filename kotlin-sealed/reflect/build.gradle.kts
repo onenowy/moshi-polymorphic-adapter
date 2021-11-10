@@ -5,7 +5,7 @@ plugins {
     id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
 }
 
-project.description = "Generate a PolymorphicAdapter for Moshi using reflection"
+project.description = "Generate Moshi Polymorphic Adapters for Kotlin sealed class using reflection"
 
 dependencies {
     implementation(project(":moshi-polymorphic-adapter"))
