@@ -43,8 +43,16 @@ jobs:
           check_name: "Unit Test Results"
           files: '**/build/test-results/**/*.xml'
           report_individual_runs: "true"
+          check_run_annotations: all tests, skipped tests
+
   publish:
     needs: [build_test]
     name: Publish artifacts
     if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, '[Release')
     uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@main
+
+  depency_test:
+    needs: [publish]
+    name: Dependency test
+    if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, '[Release Candidate]')
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/dependency_test.yml@main

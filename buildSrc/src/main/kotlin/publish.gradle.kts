@@ -17,7 +17,7 @@ publishing {
             from(components["java"])
             artifactId = project.path.replaceFirst(":", "").replace(":", "-")
             pom {
-                name.set("$groupId:$")
+                name.set("$groupId:$artifactId")
                 description.set(project.description)
                 url.set("https://github.com/onenowy/moshi-polymorphic-adapter")
                 licenses {
