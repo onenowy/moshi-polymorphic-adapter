@@ -1,40 +1,25 @@
-buildscript {
+plugins {
+    id(Dependencies.nexusPublish.nexusPublish) version Dependencies.nexusPublish.version
+}
+
+group = Dependencies.MoshiPolymorphicAdapter.group
+version = Dependencies.MoshiPolymorphicAdapter.version
+
+nexusPublishing {
     repositories {
-        google()
-        maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
-        mavenCentral()
-    }
-    dependencies {
-        classpath(Dependencies.Kotlin.plugin)
+        create("sonatype") {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username.set(findProperty("ossrhUsername") as? String)
+            password.set(findProperty("ossrhPassword") as? String)
+        }
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
-        mavenCentral()
-    }
-}
-
+val initializeSonatypeStagingRepository by tasks.existing
 subprojects {
-    pluginManager.withPlugin("java") {
-        configure<JavaPluginExtension> {
-            toolchain {
-                languageVersion.set(JavaLanguageVersion.of(11))
-            }
-        }
-        tasks.withType<JavaCompile>().configureEach {
-            options.release.set(8)
-        }
-    }
-
-    pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
+    initializeSonatypeStagingRepository {
+        shouldRunAfter(tasks.withType<Sign>())
     }
 }
 
