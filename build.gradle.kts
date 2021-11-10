@@ -2,6 +2,7 @@ buildscript {
     repositories {
         google()
         maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
+        mavenCentral()
     }
     dependencies {
         classpath(Dependencies.Kotlin.plugin)
@@ -12,6 +13,7 @@ allprojects {
     repositories {
         google()
         maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
+        mavenCentral()
     }
 }
 
