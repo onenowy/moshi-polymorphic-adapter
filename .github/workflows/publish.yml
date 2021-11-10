@@ -1,4 +1,4 @@
-name: Publish and dependency test
+name: Publish
 
 on: [workflow_call, workflow_dispatch]
 
