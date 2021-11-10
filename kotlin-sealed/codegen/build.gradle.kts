@@ -4,7 +4,7 @@ plugins {
     id("publish")
     id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
 }
-project.description = "Generate a PolymorphicAdapter for using annotation processor"
+project.description = "Generate a PolymorphicAdapter for Moshi using annotation processor"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {

@@ -5,7 +5,7 @@ plugins {
     id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
 }
 
-project.description = "Generate a PolymorphicAdapter for using reflection"
+project.description = "Generate a PolymorphicAdapter for Moshi using reflection"
 
 dependencies {
     implementation(project(":moshi-polymorphic-adapter"))
