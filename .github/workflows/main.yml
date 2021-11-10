@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   build_test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        module: [ 'moshi-polymorphic-adapter', 'kotlin-sealed:reflect', 'kotlin-sealed:codegen' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,17 +34,17 @@ jobs:
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: ./gradlew check --stacktrace -PexcludeTest='**/maventests/**'
+        run: ./gradlew :${{ matrix.module }}:check --stacktrace
 
       - name: Test report
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: always()
         with:
           check_name: "Unit Test Results"
-          files: build/test-result/*.xml
+          files: '**/build/test-results/**/*.xml'
           report_individual_runs: "true"
   publish:
     needs: [build_test]
     name: Publish artifacts
     if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, '[Release')
-    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@master
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@main
