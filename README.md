@@ -177,7 +177,7 @@ NamePolymorphicAdapterFactory<Parent> namePolymorphicAdapterFactory=NamePolymorp
 
 ### Set the default value or the fallback Adapter
 
-Moshi Polymorphic adapter sets the default value or the fallback adapter using the `withDefaultValue`
+Moshi Polymorphic adapter can set the default value or the fallback adapter using the `withDefaultValue`
 and `withFallbackJsonAdapter` methods, which are derived from the `PolymorphicJsonAdapterFactory`. Please refer to
 the [PolymorphicJsonAdapterFactory](https://github.com/square/moshi/blob/master/adapters/src/main/java/com/squareup/moshi/adapters/PolymorphicJsonAdapterFactory.java#L98)
 for more details.
@@ -235,6 +235,13 @@ data class FirstChild(@Json(name = "unique name") val uniqueName: Int, val commo
 
 @NameLabel("uniqueSecondName")
 data class SecondChild(val uniqueSecondName: Int, val commonData: Sting, val data: Int) : Parent()
+```
+It supports `null` as a default value using `@DefaultNull`.
+
+```kotlin
+@JsonClass(generateAdapter = true, generator = PolymorphicAdapterType.NAME_ADAPTER)
+@DefaultNull
+sealed class Parent()
 ```
 
 You can use this feature with reflection or codegen.
