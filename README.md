@@ -283,7 +283,6 @@ The codgen feature requires kapt plugin and the following additional dependency:
     <groupId>dev.onenowy.moshipolymorphicadapter</groupId>
     <artifactId>kotlin-sealed-codegen</artifactId>
     <version>{version}</version>
-    <scope>provided</scope>
 </dependency>
 ```
 
