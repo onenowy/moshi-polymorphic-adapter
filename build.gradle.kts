@@ -13,6 +13,13 @@ nexusPublishing {
     }
 }
 
+val initializeSonatypeStagingRepository by tasks.existing
+subprojects {
+    initializeSonatypeStagingRepository {
+        shouldRunAfter(tasks.withType<Sign>())
+    }
+}
+
 task("clean", Delete::class) {
     delete = setOf(rootProject.buildDir)
 }
