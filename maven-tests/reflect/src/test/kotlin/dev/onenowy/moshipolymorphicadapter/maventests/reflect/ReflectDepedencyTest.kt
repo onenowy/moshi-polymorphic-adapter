@@ -72,4 +72,19 @@ class ReflectDepedencyTest {
                 .isEqualTo("${NotSealedComputerValue::class.simpleName} is not a sealed class")
         }
     }
+
+    @Test
+    fun withMoshiReflect(){
+        val moshi = Moshi.Builder().add(KotlinSealedPolymorphicAdapterFactory()).add(KotlinJsonAdapterFactory()).build()
+        val computerAdapter = moshi.adapter(ComputerReflect::class.java)
+        val monitorReflect = MonitorReflect(1, "test")
+        val mouseReflect = MouseReflect("mouse", "test")
+        val keyboardReflect = KeyboardReflect(true, "test")
+        assertThat(computerAdapter.toJson(monitorReflect)).isEqualTo(monitorJson)
+        assertThat(computerAdapter.toJson(mouseReflect)).isEqualTo(mouseJson)
+        assertThat(computerAdapter.toJson(keyboardReflect)).isEqualTo(keyboardJson)
+        assertThat(computerAdapter.fromJson(monitorJson)).isEqualTo(monitorReflect)
+        assertThat(computerAdapter.fromJson(mouseJson)).isEqualTo(mouseReflect)
+        assertThat(computerAdapter.fromJson(keyboardJson)).isEqualTo(keyboardReflect)
+    }
 }
