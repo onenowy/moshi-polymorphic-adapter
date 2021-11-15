@@ -49,4 +49,4 @@ jobs:
     needs: [build_test]
     name: Publish artifacts
     if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, 'Release')
-    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@${{ github.ref_name }}
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@${{github.ref_name}}
