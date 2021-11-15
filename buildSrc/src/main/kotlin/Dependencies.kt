@@ -9,7 +9,7 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.5.31"
+        private const val version = "1.6.0"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
     }
@@ -28,7 +28,7 @@ object Dependencies {
     }
 
     object AutoService {
-        private const val version = "1.0"
+        private const val version = "1.0.1"
         const val processor = "com.google.auto.service:auto-service:$version"
         const val annotations = "com.google.auto.service:auto-service-annotations:$version"
     }
@@ -44,11 +44,6 @@ object Dependencies {
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
         const val metadata = "com.squareup:kotlinpoet-metadata:$version"
         const val ksp = "com.squareup:kotlinpoet-ksp:$version"
-    }
-
-    object VersionPlugin {
-        const val version = "0.39.0"
-        const val versionPlugin = "com.github.ben-manes.versions"
     }
 
     object KSP {

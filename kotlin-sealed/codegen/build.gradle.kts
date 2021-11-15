@@ -1,8 +1,5 @@
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
-    id("publish")
-    id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
+    id("common-with-publish")
 }
 project.description = "Generate Moshi Polymorphic Adapters for Kotlin sealed class using annotation processor"
 
@@ -16,7 +13,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 }
 
 dependencies {
-    implementation(Dependencies.Moshi.moshi)
     implementation(project(":moshi-polymorphic-adapter"))
     implementation(Dependencies.Kotlin.reflect)
     implementation(Dependencies.KotlinPoet.kotlinpoet)
@@ -26,6 +22,4 @@ dependencies {
     implementation(Dependencies.Incap.annotations)
     kapt(Dependencies.Incap.processor)
     testImplementation(Dependencies.KotlinCompileTest.test)
-    testImplementation(Dependencies.Test.junit)
-    testImplementation(Dependencies.Test.truth)
 }

@@ -48,11 +48,5 @@ jobs:
   publish:
     needs: [build_test]
     name: Publish artifacts
-    if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, '[Release')
+    if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, 'Release')
     uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@main
-
-  depency_test:
-    needs: [publish]
-    name: Dependency test
-    if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, '[Release Candidate]')
-    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/dependency_test.yml@main

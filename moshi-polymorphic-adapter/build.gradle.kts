@@ -1,17 +1,9 @@
 plugins {
-    kotlin("jvm")
-    kotlin("kapt")
-    id("publish")
-    id(Dependencies.VersionPlugin.versionPlugin) version Dependencies.VersionPlugin.version
+    id("common-with-publish")
 }
 
 project.description = "Polymorphic Adapter library for Moshi"
 
 dependencies {
-    implementation(Dependencies.Moshi.moshi)
     kaptTest(Dependencies.Moshi.codegen)
-    testImplementation(Dependencies.Test.junit)
-    testImplementation(Dependencies.Test.truth)
 }
-
-
