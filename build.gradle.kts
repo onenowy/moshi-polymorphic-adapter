@@ -2,6 +2,9 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 }
 
+group = Dependencies.MoshiPolymorphicAdapter.group
+version = Dependencies.MoshiPolymorphicAdapter.version
+
 nexusPublishing {
     repositories {
         create("sonatype") {
