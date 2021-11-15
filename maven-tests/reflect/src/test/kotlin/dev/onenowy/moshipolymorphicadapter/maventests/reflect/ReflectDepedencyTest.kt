@@ -3,6 +3,7 @@ package dev.onenowy.moshipolymorphicadapter.maventests.reflect
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.onenowy.moshipolymorphicadapter.sealed.reflect.KotlinSealedPolymorphicAdapterFactory
 import org.junit.Assert.fail
 import org.junit.Test
