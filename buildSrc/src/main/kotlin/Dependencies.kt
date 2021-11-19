@@ -9,7 +9,7 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.6.0"
+        private const val version = "1.5.31"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
     }
@@ -53,7 +53,7 @@ object Dependencies {
     }
 
     object KotlinCompileTest {
-        private const val version = "1.4.5"
+        private const val version = "1.4.6"
         const val test = "com.github.tschuchortdev:kotlin-compile-testing:$version"
     }
 }

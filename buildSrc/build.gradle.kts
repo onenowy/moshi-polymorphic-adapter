@@ -8,29 +8,16 @@ repositories {
     mavenCentral()
 }
 
-allprojects {
-    pluginManager.withPlugin("java") {
-        configure<JavaPluginExtension> {
-            toolchain {
-                languageVersion.set(JavaLanguageVersion.of(11))
-            }
-        }
-        tasks.withType<JavaCompile>().configureEach {
-            options.release.set(8)
-        }
-    }
-
-    pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
-        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-    }
+java{
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-object Version  {
-    const val kotlin = "1.6.0"
+val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+
+object Version {
+    const val kotlin = "1.5.31"
     const val version_plugin = "0.39.0"
 }
 

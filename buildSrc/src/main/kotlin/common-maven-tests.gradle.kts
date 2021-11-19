@@ -4,6 +4,14 @@ plugins {
     id("com.github.ben-manes.versions")
 }
 
+java{
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+
 repositories {
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
     google()
