@@ -47,9 +47,9 @@ object Dependencies {
         const val ksp = "com.squareup:kotlinpoet-ksp:$version"
     }
 
-    object KSP {
-        private const val version = "1.5.31-1.0.0"
-        const val ksp = "com.google.devtools.ksp:symbol-processing-api:$version"
+    object nexusPublish {
+        const val version = "1.1.0"
+        const val nexusPublish = "io.github.gradle-nexus.publish-plugin"
     }
 
     object KotlinCompileTest {

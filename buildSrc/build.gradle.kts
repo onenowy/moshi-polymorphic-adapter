@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    id("com.github.ben-manes.versions") version "0.39.0"
 }
 repositories {
     gradlePluginPortal()
@@ -7,14 +8,6 @@ repositories {
     maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
     mavenCentral()
 }
-
-java{
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-compileKotlin.kotlinOptions.jvmTarget = "1.8"
 
 object Version {
     const val kotlin = "1.5.31"

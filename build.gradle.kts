@@ -1,5 +1,5 @@
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id(Dependencies.nexusPublish.nexusPublish) version Dependencies.nexusPublish.version
 }
 
 group = Dependencies.MoshiPolymorphicAdapter.group
