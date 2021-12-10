@@ -1,7 +1,7 @@
 object Dependencies {
 
     object MoshiPolymorphicAdapter {
-        const val version = "0.1.1-SNAPSHOT"
+        const val version = "0.1.1"
         const val group = "dev.onenowy.moshipolymorphicadapter"
         const val moshi_polymorphic_adapter = "$group:moshi-polymorphic-adapter:$version"
         const val reflect = "$group:kotlin-sealed-reflect:$version"
