@@ -14,7 +14,6 @@ compileKotlin.kotlinOptions.jvmTarget = "1.8"
 
 repositories {
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
-    maven(url = "https://s01.oss.sonatype.org/service/local/")
     google()
     maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
     mavenCentral()
