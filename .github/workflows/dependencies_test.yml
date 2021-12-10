@@ -3,7 +3,7 @@ name: Dependecies Test
 on: [workflow_call, workflow_dispatch]
 
 jobs:
-  publish:
+  Dependencies_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
