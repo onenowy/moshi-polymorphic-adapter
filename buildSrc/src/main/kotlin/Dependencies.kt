@@ -9,7 +9,7 @@ object Dependencies {
     }
 
     object Kotlin {
-        private const val version = "1.5.31"
+        private const val version = "1.6.0"
         const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
     }
@@ -22,7 +22,7 @@ object Dependencies {
     }
 
     object Moshi {
-        private const val version = "1.12.0"
+        private const val version = "1.13.0"
         const val moshi = "com.squareup.moshi:moshi:$version"
         const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
         const val reflect = "com.squareup.moshi:moshi-kotlin:$version"
