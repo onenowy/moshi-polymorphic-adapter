@@ -10,7 +10,7 @@ repositories {
 }
 
 object Version {
-    const val kotlin = "1.6.0"
+    const val kotlin = "1.6.10"
     const val version_plugin = "0.39.0"
 }
 
