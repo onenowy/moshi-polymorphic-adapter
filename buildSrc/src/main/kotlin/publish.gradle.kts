@@ -46,7 +46,7 @@ publishing {
 }
 
 signing {
-    setRequired(!version.toString().endsWith("SNAPSHOT"))
+    isRequired = !version.toString().endsWith("SNAPSHOT")
     val signingKey: String? by project
     val signingPassword: String? by project
     useInMemoryPgpKeys(signingKey, signingPassword)

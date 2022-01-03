@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm")
     kotlin("kapt")
@@ -10,8 +12,11 @@ java{
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-compileKotlin.kotlinOptions.jvmTarget = "11"
+tasks.withType<KotlinCompile>{
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
 
 repositories {
     google()
