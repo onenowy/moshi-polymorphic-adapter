@@ -8,10 +8,8 @@ repositories {
     mavenCentral()
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+kotlinDslPluginOptions{
+    jvmTarget.set("11")
 }
 
 object Version {
