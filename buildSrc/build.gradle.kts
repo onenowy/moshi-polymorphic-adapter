@@ -8,6 +8,12 @@ repositories {
     mavenCentral()
 }
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
 object Version {
     const val kotlin = "1.6.10"
     const val version_plugin = "0.39.0"
