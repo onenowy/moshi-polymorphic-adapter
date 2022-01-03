@@ -5,9 +5,6 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build_test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: [ 'moshi-polymorphic-adapter', 'kotlin-sealed:reflect', 'kotlin-sealed:codegen' ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,7 +31,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Unit Tests
-        run: ./gradlew :${{ matrix.module }}:check --stacktrace
+        run: ./gradlew :moshi-polymorphic-adapter:check :kotlin-sealed:codegen:check :kotlin-sealed:reflect:check --stacktrace
 
       - name: Test report
         uses: EnricoMi/publish-unit-test-result-action@v1
