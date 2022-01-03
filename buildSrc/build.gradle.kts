@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    id("com.github.ben-manes.versions") version "0.40.0"
 }
 repositories {
     gradlePluginPortal()
@@ -14,7 +15,7 @@ kotlinDslPluginOptions{
 
 object Version {
     const val kotlin = "1.6.10"
-    const val version_plugin = "0.39.0"
+    const val version_plugin = "0.40.0"
 }
 
 dependencies {
