@@ -55,4 +55,4 @@ jobs:
     needs: [publish]
     name: Dependencies Test
     if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, 'Snapshot')
-    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/dependencies_test.yml@main
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/dependencies_test.yml@0.1.x

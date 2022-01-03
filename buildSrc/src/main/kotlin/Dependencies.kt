@@ -52,7 +52,7 @@ object Dependencies {
     }
 
     object KotlinCompileTest {
-        private const val version = "1.4.6"
+        private const val version = "1.4.7"
         const val test = "com.github.tschuchortdev:kotlin-compile-testing:$version"
     }
 }
