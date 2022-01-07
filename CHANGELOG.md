@@ -3,7 +3,7 @@ Change Log
 ## [0.1.2](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.2)
 
 * Update dependencies: Kotlin 1.6.10
-* Upgrade target Java version : 11
+* Upgrade target Java version to 11
 
 ## [0.1.1](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.1)
 
