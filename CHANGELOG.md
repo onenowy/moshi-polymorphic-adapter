@@ -1,20 +1,14 @@
 Change Log
 ==========
-## Version 0.1.2
-
-_2022-01-04_
+## [0.1.2](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.2)
 
 * Update Dependencies: Kotlin 1.6.10
 * Upgrade Target Java version : 11
 
-## Version 0.1.1
-
-_2021-12-10_
+## [0.1.1](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.1)
 
 * Update Dependencies: Kotlin 1.6.0, Moshi 1.13.0, AutoService 1.0.1
 
-## Version 0.1.0
-
-_2021-11-10_
+## [0.1.0](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.0)
 
 * Initial release.
