@@ -112,8 +112,7 @@ and the type is like:
 
 ```kotlin
 sealed class Parent
-data class FirstChild(@Json(name = "unique name") val uniqueName: Int, val commonData: Sting, val data: String) :
-    Parent()
+data class FirstChild(@Json(name = "unique name") val uniqueName: Int, val commonData: Sting, val data: String) : Parent()
 data class SecondChild(val uniqueSecondName: Int, val commonData: Sting, val data: Int) : Parent()
 ```
 
@@ -167,7 +166,7 @@ val moshi = Moshi.Builder().add(namePolymorphicAdapterFactory).build()
 <summary>Java</summary>
 
 ```java
-NamePolymorphicAdapterFactory<Parent> namePolymorphicAdapterFactory=NamePolymorphicAdapterFactory.of(Parent.class)
+NamePolymorphicAdapterFactory<Parent> namePolymorphicAdapterFactory = NamePolymorphicAdapterFactory.of(Parent.class)
         .withSubtype(FirstChild.class,"unique name")
         .withSubtype(SecondChild.class,"uniqueSecondName");
         Moshi moshi=new Moshi.Builder().add(namePolymorphicAdapterFactory).build();
@@ -179,7 +178,7 @@ NamePolymorphicAdapterFactory<Parent> namePolymorphicAdapterFactory=NamePolymorp
 
 Moshi Polymorphic adapter can set the default value or the fallback adapter using the `withDefaultValue`
 and `withFallbackJsonAdapter` methods, which are derived from the `PolymorphicJsonAdapterFactory`. Please refer to
-the [PolymorphicJsonAdapterFactory](https://github.com/square/moshi/blob/master/adapters/src/main/java/com/squareup/moshi/adapters/PolymorphicJsonAdapterFactory.java#L98)
+the [PolymorphicJsonAdapterFactory](https://github.com/square/moshi/blob/master/moshi-adapters/src/main/java/com/squareup/moshi/adapters/PolymorphicJsonAdapterFactory.kt#L129)
 for more details.
 
 ### Installation
