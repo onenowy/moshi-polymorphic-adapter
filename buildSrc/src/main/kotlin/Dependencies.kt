@@ -1,7 +1,7 @@
 object Dependencies {
 
     object MoshiPolymorphicAdapter {
-        const val version = "0.1.2"
+        const val version = "0.1.3-SNAPSHOT"
         const val group = "dev.onenowy.moshipolymorphicadapter"
         const val moshi_polymorphic_adapter = "$group:moshi-polymorphic-adapter:$version"
         const val reflect = "$group:kotlin-sealed-reflect:$version"
@@ -43,7 +43,6 @@ object Dependencies {
         private const val version = "1.10.2"
         const val kotlinpoet = "com.squareup:kotlinpoet:$version"
         const val metadata = "com.squareup:kotlinpoet-metadata:$version"
-        const val ksp = "com.squareup:kotlinpoet-ksp:$version"
     }
 
     object nexusPublish {

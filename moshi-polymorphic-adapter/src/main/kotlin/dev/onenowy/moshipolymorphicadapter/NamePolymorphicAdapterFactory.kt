@@ -7,7 +7,7 @@ import java.lang.reflect.Type
  * A polymorphic adapter factory creates an adapter that uses the unique JSON field name
  * to determine which type to decode to.
  */
-class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
+class NamePolymorphicAdapterFactory<T> @JvmOverloads internal constructor(
     private val baseType: Class<T>,
     private val subTypes: List<Type> = emptyList(),
     private val nameLabels: List<String> = emptyList(),
@@ -22,7 +22,7 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
             return null
         }
-        val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
+        val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map(moshi::adapter)
         return NamePolymorphicAdapter(subTypes, nameLabels, jsonAdapters, fallbackAdapter).nullSafe()
     }
 
@@ -41,10 +41,14 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
      */
     fun withSubtype(subType: Class<out T>, nameLabel: String): NamePolymorphicAdapterFactory<T> {
         require(!nameLabels.contains(nameLabel)) { "$nameLabel must be unique" }
-        val newSubTypes = subTypes.toMutableList()
-        newSubTypes.add(subType)
-        val newNameLabels = nameLabels.toMutableList()
-        newNameLabels.add(nameLabel)
+        val newSubTypes = buildList {
+            addAll(subTypes)
+            add(subType)
+        }
+        val newNameLabels = buildList {
+            addAll(nameLabels)
+            add(nameLabel)
+        }
         return NamePolymorphicAdapterFactory(baseType, newSubTypes, newNameLabels, fallbackAdapter)
     }
 
@@ -58,10 +62,14 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
     ): NamePolymorphicAdapterFactory<T> {
         require(nameLabels.size == nameLabels.distinct().size) { "The label name for ${baseType.simpleName} must be unique" }
         require(nameLabels.size == subTypes.size) { "The number of label names for ${baseType.simpleName} is different from subtypes" }
-        val newSubTypes = this.subTypes.toMutableList()
-        newSubTypes.addAll(subTypes)
-        val newNameLabels = this.nameLabels.toMutableList()
-        newNameLabels.addAll(nameLabels)
+        val newSubTypes = buildList {
+            addAll(this@NamePolymorphicAdapterFactory.subTypes)
+            addAll(subTypes)
+        }
+        val newNameLabels = buildList {
+            addAll(this@NamePolymorphicAdapterFactory.nameLabels)
+            addAll(nameLabels)
+        }
         return NamePolymorphicAdapterFactory(baseType, newSubTypes, newNameLabels, fallbackAdapter)
     }
 
@@ -69,18 +77,19 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         return NamePolymorphicAdapterFactory(baseType, subTypes, nameLabels, fallbackJsonAdapter)
     }
 
-    class NamePolymorphicAdapter @JvmOverloads constructor(
+    class NamePolymorphicAdapter(
         private val subTypes: List<Type>,
         private val nameLabels: List<String>,
         private val jsonAdapters: List<JsonAdapter<Any>>,
-        private val fallbackAdapter: JsonAdapter<Any>?,
-        private val nameOptions: JsonReader.Options = JsonReader.Options.of(*nameLabels.toTypedArray())
+        private val fallbackAdapter: JsonAdapter<Any>?
     ) : JsonAdapter<Any>() {
+
+        private val nameOptions: JsonReader.Options = JsonReader.Options.of(*nameLabels.toTypedArray())
 
         override fun fromJson(reader: JsonReader): Any? {
             val peeked = reader.peekJson()
             peeked.setFailOnUnknown(false)
-            val labelIndex = labelIndex(peeked)
+            val labelIndex = peeked.use(::labelIndex)
             return if (labelIndex == -1) {
                 if (fallbackAdapter != null) {
                     fallbackAdapter.fromJson(reader)
@@ -95,13 +104,13 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
         private fun labelIndex(reader: JsonReader): Int {
             reader.beginObject()
             while (reader.hasNext()) {
-                val index = reader.selectName(nameOptions)
-                if (index == -1) {
+                val labelIndex = reader.selectName(nameOptions)
+                if (labelIndex == -1) {
                     reader.skipName()
                     reader.skipValue()
                     continue
                 }
-                return index
+                return labelIndex
             }
             return -1
         }
@@ -115,7 +124,7 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads constructor(
             }
 
             val adapter = if (typeIndex == -1) {
-                require(fallbackAdapter != null) { "Expected one of $subTypes but found $value, a ${type}. Register this subtype." }
+                requireNotNull(fallbackAdapter) { "Expected one of $subTypes but found $value, a ${type}. Register this subtype." }
                 fallbackAdapter
             } else {
                 jsonAdapters[typeIndex]
