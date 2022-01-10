@@ -2,7 +2,6 @@ package dev.onenowy.moshipolymorphicadapter
 
 import com.squareup.moshi.*
 import java.lang.reflect.Type
-import javax.annotation.CheckReturnValue
 
 /**
  * A polymorphic adapter factory creates an adapter that uses the unique JSON field name
@@ -32,7 +31,6 @@ class NamePolymorphicAdapterFactory<T> @JvmOverloads internal constructor(
          * @param baseType The base type for which this factory will create adapters.
          */
         @JvmStatic
-        @CheckReturnValue
         fun <T> of(baseType: Class<T>): NamePolymorphicAdapterFactory<T> {
             return NamePolymorphicAdapterFactory(baseType)
         }

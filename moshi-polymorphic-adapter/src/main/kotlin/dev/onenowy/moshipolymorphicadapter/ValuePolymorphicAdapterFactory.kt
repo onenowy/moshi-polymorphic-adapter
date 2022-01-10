@@ -5,7 +5,6 @@ package dev.onenowy.moshipolymorphicadapter
 import com.squareup.moshi.*
 import java.io.IOException
 import java.lang.reflect.Type
-import javax.annotation.CheckReturnValue
 
 /**
  * A polymorphic adapter factory creates an adapter that uses the unique value to determine which type to decode to.
@@ -27,7 +26,6 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads internal construc
          * @param labelType The label value type.
          */
         @JvmStatic
-        @CheckReturnValue
         fun <T, V : Any> of(
             baseType: Class<T>,
             labelKey: String,
