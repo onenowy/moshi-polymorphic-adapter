@@ -3,13 +3,15 @@
 package dev.onenowy.moshipolymorphicadapter
 
 import com.squareup.moshi.*
+import java.io.IOException
 import java.lang.reflect.Type
+import javax.annotation.CheckReturnValue
 
 /**
  * A polymorphic adapter factory creates an adapter that uses the unique value to determine which type to decode to.
  * It's almost same as [PolymorphicJsonAdapterFactory] of moshi, but it supports [Int], [Long], [Double] and [Boolean], not only [String].
  */
-class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
+class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads internal constructor(
     private val baseType: Class<T>,
     private val labelType: Class<V>,
     private val labelKey: String,
@@ -25,6 +27,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
          * @param labelType The label value type.
          */
         @JvmStatic
+        @CheckReturnValue
         fun <T, V : Any> of(
             baseType: Class<T>,
             labelKey: String,
@@ -40,10 +43,14 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
      */
     fun withSubtype(subType: Class<out T>, valueLabel: V): ValuePolymorphicAdapterFactory<T, V> {
         require(!labels.contains(valueLabel)) { "The value label must be unique" }
-        val newSubTypes = subTypes.toMutableList()
-        newSubTypes.add(subType)
-        val newLabels = labels.toMutableList()
-        newLabels.add(valueLabel)
+        val newSubTypes = buildList {
+            addAll(subTypes)
+            add(subType)
+        }
+        val newLabels = buildList {
+            addAll(labels)
+            add(valueLabel)
+        }
         return ValuePolymorphicAdapterFactory(
             baseType,
             labelType,
@@ -60,10 +67,14 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
     fun withSubtypes(subTypes: List<Class<out T>>, valueLabels: List<V>): ValuePolymorphicAdapterFactory<T, V> {
         require(valueLabels.size == valueLabels.distinct().size) { "The value for ${baseType.simpleName} must be unique" }
         require(valueLabels.size == subTypes.size) { "The number of values for ${baseType.simpleName} is different from subtypes" }
-        val newSubTypes = this.subTypes.toMutableList()
-        newSubTypes.addAll(subTypes)
-        val newLabels = labels.toMutableList()
-        newLabels.addAll(valueLabels)
+        val newSubTypes = buildList {
+            addAll(this@ValuePolymorphicAdapterFactory.subTypes)
+            addAll(subTypes)
+        }
+        val newLabels = buildList {
+            addAll(labels)
+            addAll(valueLabels)
+        }
         return ValuePolymorphicAdapterFactory(
             baseType,
             labelType,
@@ -89,7 +100,7 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
         if (Types.getRawType(type) != baseType || annotations.isNotEmpty()) {
             return null
         }
-        val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map { moshi.adapter(it) }
+        val jsonAdapters: List<JsonAdapter<Any>> = subTypes.map(moshi::adapter)
         return ValuePolymorphicAdapter(
             labelKey,
             labelType,
@@ -97,32 +108,33 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
             labels,
             fallbackAdapter,
             jsonAdapters
-        )
+        ).nullSafe()
     }
 
-    class ValuePolymorphicAdapter<V> @JvmOverloads constructor(
+    class ValuePolymorphicAdapter<V>(
         private val labelKey: String,
         private val labelType: Class<V>,
         private val subTypes: List<Type>,
         private val labels: List<V>,
         private val fallbackAdapter: JsonAdapter<Any>?,
-        private val jsonAdapters: List<JsonAdapter<Any>>,
-        private val keyOption: JsonReader.Options = JsonReader.Options.of(labelKey)
+        private val jsonAdapters: List<JsonAdapter<Any>>
     ) : JsonAdapter<Any>() {
+
+        private val keyOption: JsonReader.Options = JsonReader.Options.of(labelKey)
 
         override fun fromJson(reader: JsonReader): Any? {
             val peeked = reader.peekJson()
             peeked.setFailOnUnknown(false)
-            val keyIndex = keyIndex(peeked)
-            return if (keyIndex == -1) {
+            val labelIndex = peeked.use(::labelIndex)
+            return if (labelIndex == -1) {
                 fallbackAdapter!!.fromJson(reader)
             } else {
-                jsonAdapters[keyIndex].fromJson(reader)
+                jsonAdapters[labelIndex].fromJson(reader)
             }
 
         }
 
-        private fun keyIndex(reader: JsonReader): Int {
+        private fun labelIndex(reader: JsonReader): Int {
             reader.beginObject()
             @Suppress("UNCHECKED_CAST")
             while (reader.hasNext()) {
@@ -139,13 +151,11 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
                     PolymorphicAdapterType.VALUE_POLYMORPHIC_ADAPTER_DOUBLE -> reader.nextDouble()
                     else -> null
                 }
-                val index = if (labelValue != null) labels.indexOf(labelValue as V) else -1
-                if (index == -1) {
-                    if (fallbackAdapter == null) {
-                        throw JsonDataException("Expected one of $labels for key '$labelKey' but found '${labelValue}'. Register a subtype for this label.")
-                    }
+                val labelIndex = if (labelValue != null) labels.indexOf(labelValue as V) else -1
+                if (labelIndex == -1 && fallbackAdapter == null) {
+                    throw JsonDataException("Expected one of $labels for key '$labelKey' but found '$labelValue'. Register a subtype for this label.")
                 }
-                return index
+                return labelIndex
             }
             if (fallbackAdapter == null) {
                 throw JsonDataException("Missing label for $labelKey")
@@ -154,22 +164,19 @@ class ValuePolymorphicAdapterFactory<T, V : Any> @JvmOverloads constructor(
             }
         }
 
+        @Throws(IOException::class)
         override fun toJson(writer: JsonWriter, value: Any?) {
-            val type = value?.javaClass
-            val typeIndex = if (type != null) {
-                subTypes.indexOf(type)
-            } else {
-                -1
-            }
-            val adapter = if (typeIndex == -1) {
-                require(fallbackAdapter != null) { "Expected one of $subTypes but found $value, a ${type}. Register this subtype." }
+            val type = value!!.javaClass
+            val index = subTypes.indexOf(type)
+            val adapter = if (index == -1) {
+                requireNotNull(fallbackAdapter) { "Expected one of $subTypes but found $value, a ${type}. Register this subtype." }
                 fallbackAdapter
             } else {
-                jsonAdapters[typeIndex]
+                jsonAdapters[index]
             }
             writer.beginObject()
             if (adapter != fallbackAdapter) {
-                writer.name(labelKey).jsonValue(labels[typeIndex])
+                writer.name(labelKey).jsonValue(labels[index])
             }
             val flattenToken = writer.beginFlatten()
             adapter.toJson(writer, value)

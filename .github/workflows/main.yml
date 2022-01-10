@@ -40,7 +40,7 @@ jobs:
     needs: [build_test]
     name: Publish artifacts
     if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, 'Release')
-    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@main
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@0.1.x
     secrets:
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_signingKey }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}
@@ -51,4 +51,4 @@ jobs:
     needs: [publish]
     name: Dependencies Test
     if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, 'Snapshot')
-    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/dependencies_test.yml@main
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/dependencies_test.yml@0.1.x
