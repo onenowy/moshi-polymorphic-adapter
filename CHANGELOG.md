@@ -1,5 +1,11 @@
 Change Log
 ==========
+
+## [0.1.3](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.3)
+
+* Change the constructor modifier of adapter factories to internal
+* Move KeyOption property from the constructor of adapters
+
 ## [0.1.2](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.2)
 
 * Update dependencies: Kotlin 1.6.10
