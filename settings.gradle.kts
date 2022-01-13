@@ -9,3 +9,12 @@ include(":maven-tests:reflect")
 includeBuild("build-logic")
 
 enableFeaturePreview("VERSION_CATALOGS")
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        google()
+        maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
+        mavenCentral()
+    }
+}

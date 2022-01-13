@@ -6,7 +6,6 @@ plugins {
     signing
 }
 
-
 java {
     withJavadocJar()
     withSourcesJar()

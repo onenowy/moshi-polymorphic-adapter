@@ -20,12 +20,6 @@ tasks.withType<KotlinCompile>{
     }
 }
 
-repositories {
-    google()
-    maven(url = "https://maven-central-asia.storage-download.googleapis.com/maven2/")
-    mavenCentral()
-}
-
 dependencies {
     implementation(libs.moshi.moshi)
     testImplementation(libs.test.junit)
