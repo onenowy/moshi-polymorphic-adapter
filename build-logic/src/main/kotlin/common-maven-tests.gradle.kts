@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation(libs.moshipolymorphic.adapter)
+    testImplementation(libs.moshiPolymorphic.adapter)
     kaptTest(libs.moshi.codegen)
     testImplementation(libs.moshi.moshi)
     testImplementation(libs.test.junit)

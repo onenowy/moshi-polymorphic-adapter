@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     testImplementation(libs.moshi.reflect)
-    testImplementation(libs.moshipolymorphic.reflect)
+    testImplementation(libs.moshiPolymorphic.reflect)
 }

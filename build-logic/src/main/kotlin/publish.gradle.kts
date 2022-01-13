@@ -13,7 +13,7 @@ java {
 }
 
 group = "dev.onenowy.moshipolymorphicadapter"
-version = libs.versions.moshipolymorphicadapter.get()
+version = libs.versions.moshiPolymorphicAdapter.get()
 
 publishing {
     publications {

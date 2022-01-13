@@ -1,7 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     `kotlin-dsl`
-    alias(libs.plugins.gradleversionplugin)
+    alias(libs.plugins.gradleVersionPlugin)
 }
 
 repositories {
@@ -17,6 +17,6 @@ kotlinDslPluginOptions{
 
 dependencies {
     implementation(libs.kotlin.gradle)
-    implementation(libs.gradleversionplugin)
+    implementation(libs.gradleVersionPlugin)
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

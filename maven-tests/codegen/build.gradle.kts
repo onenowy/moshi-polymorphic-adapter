@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    kaptTest(libs.moshipolymorphic.codegen)
+    kaptTest(libs.moshiPolymorphic.codegen)
 }
