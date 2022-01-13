@@ -1,10 +1,12 @@
-import Dependencies_versions_gradle.Libs.libs
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 
 plugins {
     `java-library`
     `maven-publish`
     signing
 }
+
+
 java {
     withJavadocJar()
     withSourcesJar()

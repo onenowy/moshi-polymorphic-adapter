@@ -9,7 +9,3 @@ tasks.withType<DependencyUpdatesTask> {
         listOf("ALPHA", "BETA").any { candidate.version.toUpperCase().contains(it) }
     }
 }
-
-object Libs {
-    val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
-}

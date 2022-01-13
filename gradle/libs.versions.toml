@@ -29,7 +29,7 @@ gradleversionplugin = { module = "com.github.ben-manes:gradle-versions-plugin", 
 
 [plugins]
 nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "1.1.0" }
-
+gradleversionplugin = {id = "com.github.ben-manes.versions", version.ref = "gradleversionplugin" }
 
 
 
