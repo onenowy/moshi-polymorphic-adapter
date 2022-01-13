@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    testImplementation(Dependencies.Moshi.reflect)
-    testImplementation(Dependencies.MoshiPolymorphicAdapter.reflect)
+    testImplementation(libs.moshi.reflect)
+    testImplementation(libs.moshipolymorphic.reflect)
 }

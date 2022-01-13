@@ -14,12 +14,12 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 
 dependencies {
     implementation(project(":moshi-polymorphic-adapter"))
-    implementation(Dependencies.Kotlin.reflect)
-    implementation(Dependencies.KotlinPoet.kotlinpoet)
-    implementation(Dependencies.KotlinPoet.metadata)
-    implementation(Dependencies.AutoService.annotations)
-    kapt(Dependencies.AutoService.processor)
-    implementation(Dependencies.Incap.annotations)
-    kapt(Dependencies.Incap.processor)
-    testImplementation(Dependencies.KotlinCompileTest.test)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinpoet.kotlinpoet)
+    implementation(libs.kotlinpoet.metadata)
+    implementation(libs.autoservice.annotation)
+    kapt(libs.autoservice.processor)
+    implementation(libs.incap.annotation)
+    kapt(libs.incap.processor)
+    testImplementation(libs.kotlincomplietest)
 }

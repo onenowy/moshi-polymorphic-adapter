@@ -1,13 +1,14 @@
+import Dependencies_versions_gradle.Libs.libs
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
     kotlin("kapt")
     id("publish")
-    id("com.github.ben-manes.versions")
+    id("dependencies-versions")
 }
 
-java{
+java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }
@@ -25,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    implementation(Dependencies.Moshi.moshi)
-    testImplementation(Dependencies.Test.junit)
-    testImplementation(Dependencies.Test.truth)
+    implementation(libs.moshi.moshi)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.truth)
 }

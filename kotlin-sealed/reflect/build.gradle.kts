@@ -6,7 +6,7 @@ project.description = "Generate Moshi Polymorphic Adapters for Kotlin sealed cla
 
 dependencies {
     implementation(project(":moshi-polymorphic-adapter"))
-    testImplementation(Dependencies.Moshi.reflect)
-    kaptTest(Dependencies.Moshi.codegen)
-    implementation(Dependencies.Kotlin.reflect)
+    testImplementation(libs.moshi.reflect)
+    kaptTest(libs.moshi.codegen)
+    implementation(libs.kotlin.reflect)
 }

@@ -1,3 +1,5 @@
+import Dependencies_versions_gradle.Libs.libs
+
 plugins {
     `java-library`
     `maven-publish`
@@ -8,8 +10,8 @@ java {
     withSourcesJar()
 }
 
-group = Dependencies.MoshiPolymorphicAdapter.group
-version = Dependencies.MoshiPolymorphicAdapter.version
+group = "dev.onenowy.moshipolymorphicadapter"
+version = libs.versions.moshipolymorphicadapter.get()
 
 publishing {
     publications {

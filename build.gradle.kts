@@ -1,10 +1,7 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id(Dependencies.nexusPublish.nexusPublish) version Dependencies.nexusPublish.version
+    alias(libs.plugins.nexus)
 }
-
-group = Dependencies.MoshiPolymorphicAdapter.group
-version = Dependencies.MoshiPolymorphicAdapter.version
-
 nexusPublishing {
     repositories {
         create("sonatype") {

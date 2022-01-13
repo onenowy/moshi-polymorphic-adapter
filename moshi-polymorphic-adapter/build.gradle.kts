@@ -5,5 +5,5 @@ plugins {
 project.description = "Polymorphic Adapter library for Moshi"
 
 dependencies {
-    kaptTest(Dependencies.Moshi.codegen)
+    kaptTest(libs.moshi.codegen)
 }
