@@ -20,3 +20,9 @@ dependencies {
     implementation(libs.gradleVersionPlugin)
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
+
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    rejectVersionIf {
+        listOf("ALPHA", "BETA").any { candidate.version.toUpperCase().contains(it) }
+    }
+}

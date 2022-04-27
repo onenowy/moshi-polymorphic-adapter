@@ -1,4 +1,4 @@
-enableFeaturePreview("VERSION_CATALOGS")
+@file:Suppress("UnstableApiUsage")
 
 dependencyResolutionManagement {
     versionCatalogs {
