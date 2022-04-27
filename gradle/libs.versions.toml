@@ -28,7 +28,6 @@ kotlinComplieTest = { module = "com.github.tschuchortdev:kotlin-compile-testing"
 gradleVersionPlugin = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "gradleVersionPlugin"}
 
 [plugins]
-nexus = { id = "io.github.gradle-nexus.publish-plugin", version = "1.1.0" }
 gradleVersionPlugin = {id = "com.github.ben-manes.versions", version.ref = "gradleVersionPlugin" }
 
 

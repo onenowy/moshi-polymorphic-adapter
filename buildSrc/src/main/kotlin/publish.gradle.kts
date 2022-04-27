@@ -13,12 +13,12 @@ java {
 
 group = "dev.onenowy.moshipolymorphicadapter"
 version = libs.versions.moshiPolymorphicAdapter.get()
+val isRelease = !version.toString().endsWith("SNAPSHOT")
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-            groupId = "dev.onenowy.moshipolymorphicadapter"
             artifactId = project.path.replaceFirst(":", "").replace(":", "-")
             afterEvaluate {
                 pom {
@@ -46,11 +46,23 @@ publishing {
                 }
             }
         }
+        repositories {
+            maven {
+                name = "sonatype"
+                val releaseUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                val snapshotUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url = uri(if (isRelease) releaseUrl else snapshotUrl)
+                credentials {
+                    username = findProperty("ossrhUsername") as? String
+                    password = findProperty("ossrhPassword") as? String
+                }
+            }
+        }
     }
 }
 
 signing {
-    isRequired = !version.toString().endsWith("SNAPSHOT")
+    isRequired = isRelease
     val signingKey: String? by project
     val signingPassword: String? by project
     useInMemoryPgpKeys(signingKey, signingPassword)
