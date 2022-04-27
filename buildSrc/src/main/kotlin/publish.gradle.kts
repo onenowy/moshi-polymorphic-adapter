@@ -11,7 +11,7 @@ java {
     withSourcesJar()
 }
 
-group = "dev.onenowy.moshipolymorphicadapter"
+project.group = "dev.onenowy.moshipolymorphicadapter"
 version = libs.versions.moshiPolymorphicAdapter.get()
 
 publishing {
