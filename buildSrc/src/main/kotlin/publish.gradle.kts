@@ -11,13 +11,14 @@ java {
     withSourcesJar()
 }
 
-project.group = "dev.onenowy.moshipolymorphicadapter"
+group = "dev.onenowy.moshipolymorphicadapter"
 version = libs.versions.moshiPolymorphicAdapter.get()
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
+            groupId = "dev.onenowy.moshipolymorphicadapter"
             artifactId = project.path.replaceFirst(":", "").replace(":", "-")
             afterEvaluate {
                 pom {
