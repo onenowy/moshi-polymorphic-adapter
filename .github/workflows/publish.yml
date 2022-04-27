@@ -28,7 +28,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Publish
-        run: ./gradlew publishAllPublicationsToMavenRepository
+        run: ./gradlew publishAllPublicationsToSonatypeRepository
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_signingKey }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}
