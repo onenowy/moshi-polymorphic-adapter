@@ -1,6 +1,6 @@
 [versions]
-moshiPolymorphicAdapter = "0.1.4"
-kotlin = "1.7.10"
+moshiPolymorphicAdapter = "0.1.5"
+kotlin = "1.7.20"
 moshi = "1.14.0"
 autoService = "1.0.1"
 incap = "0.3"
@@ -9,29 +9,30 @@ gradleVersionPlugin = "0.42.0"
 kotlinPowerAssert = "0.12.0"
 
 [libraries]
-moshiPolymorphic-adapter = {group = "dev.onenowy.moshipolymorphicadapter", name = "moshi-polymorphic-adapter", version.ref ="moshiPolymorphicAdapter"}
-moshiPolymorphic-reflect = { group = "dev.onenowy.moshipolymorphicadapter", name = "kotlin-sealed-reflect", version.ref ="moshiPolymorphicAdapter"}
-moshiPolymorphic-codegen = { group = "dev.onenowy.moshipolymorphicadapter", name = "kotlin-sealed-codegen", version.ref ="moshiPolymorphicAdapter"}
-kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref ="kotlin"}
-kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref ="kotlin"}
+moshiPolymorphic-adapter = { group = "dev.onenowy.moshipolymorphicadapter", name = "moshi-polymorphic-adapter", version.ref = "moshiPolymorphicAdapter" }
+moshiPolymorphic-reflect = { group = "dev.onenowy.moshipolymorphicadapter", name = "kotlin-sealed-reflect", version.ref = "moshiPolymorphicAdapter" }
+moshiPolymorphic-codegen = { group = "dev.onenowy.moshipolymorphicadapter", name = "kotlin-sealed-codegen", version.ref = "moshiPolymorphicAdapter" }
+kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-truth = { module = "com.google.truth:truth", version = "1.1.3" }
-moshi-moshi = { group = "com.squareup.moshi", name = "moshi", version.ref ="moshi"}
-moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref ="moshi"}
-moshi-reflect = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref ="moshi"}
-autoService-processor = { group = "com.google.auto.service", name = "auto-service", version.ref ="autoService"}
-autoService-annotation = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref ="autoService"}
-incap-annotation = { group = "net.ltgt.gradle.incap", name = "incap", version.ref ="incap"}
-incap-processor = { group = "net.ltgt.gradle.incap", name = "incap-processor", version.ref ="incap"}
-kotlinPoet-kotlinPoet = { group = "com.squareup", name = "kotlinpoet", version.ref ="kotlinPoet"}
-kotlinPoet-metadata = { group = "com.squareup", name = "kotlinpoet-metadata", version.ref ="kotlinPoet"}
-kotlinComplieTest = { module = "com.github.tschuchortdev:kotlin-compile-testing", version = "1.4.9"}
-gradleVersionPlugin = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "gradleVersionPlugin"}
-kotlinPowerAssert = {module = "gradle.plugin.com.bnorm.power:kotlin-power-assert-gradle", version.ref = "kotlinPowerAssert"}
+moshi-moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+moshi-reflect = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+autoService-processor = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
+autoService-annotation = { group = "com.google.auto.service", name = "auto-service-annotations", version.ref = "autoService" }
+incap-annotation = { group = "net.ltgt.gradle.incap", name = "incap", version.ref = "incap" }
+incap-processor = { group = "net.ltgt.gradle.incap", name = "incap-processor", version.ref = "incap" }
+kotlinPoet-kotlinPoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinPoet" }
+kotlinPoet-metadata = { group = "com.squareup", name = "kotlinpoet-metadata", version.ref = "kotlinPoet" }
+kotlinComplieTest = { module = "com.github.tschuchortdev:kotlin-compile-testing", version = "1.4.9" }
+gradleVersionPlugin = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "gradleVersionPlugin" }
+kotlinPowerAssert = { module = "gradle.plugin.com.bnorm.power:kotlin-power-assert-gradle", version.ref = "kotlinPowerAssert" }
+ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version = "1.7.10-1.0.6" }
 
 [plugins]
-gradleVersionPlugin = {id = "com.github.ben-manes.versions", version.ref = "gradleVersionPlugin" }
-kotlinPowerAssert = {id = "com.bnorm.power.kotlin-power-assert", version.ref = "kotlinPowerAssert"}
+gradleVersionPlugin = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionPlugin" }
+kotlinPowerAssert = { id = "com.bnorm.power.kotlin-power-assert", version.ref = "kotlinPowerAssert" }
 
 
 

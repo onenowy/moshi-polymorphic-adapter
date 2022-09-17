@@ -4,10 +4,17 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build_test:
+    if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, 'Release')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -40,7 +47,7 @@ jobs:
     needs: [build_test]
     name: Publish artifacts
     if: github.repository == 'onenowy/moshi-polymorphic-adapter' && contains(github.event.head_commit.message, 'Release')
-    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@main
+    uses: onenowy/moshi-polymorphic-adapter/.github/workflows/publish.yml@ksp
     secrets:
       ORG_GRADLE_PROJECT_signingKey: ${{ secrets.ORG_GRADLE_PROJECT_signingKey }}
       ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingPassword }}

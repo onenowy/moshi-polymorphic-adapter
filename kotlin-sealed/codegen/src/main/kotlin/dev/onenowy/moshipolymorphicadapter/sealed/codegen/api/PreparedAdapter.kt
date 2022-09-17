@@ -4,7 +4,7 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.DelicateKotlinPoetApi
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.asClassName
-import dev.onenowy.moshipolymorphicadapter.sealed.codegen.KotlinSealedCodegenProcessor
+import dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt.KotlinSealedCodegenProcessor
 import kotlinx.metadata.KmClass
 import javax.annotation.processing.Messager
 import javax.lang.model.element.TypeElement

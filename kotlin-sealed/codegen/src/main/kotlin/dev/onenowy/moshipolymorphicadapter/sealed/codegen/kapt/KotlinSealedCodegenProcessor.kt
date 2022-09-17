@@ -1,4 +1,4 @@
-package dev.onenowy.moshipolymorphicadapter.sealed.codegen
+package dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt
 
 import com.google.auto.service.AutoService
 import com.squareup.kotlinpoet.AnnotationSpec

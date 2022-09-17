@@ -7,10 +7,10 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import dev.onenowy.moshipolymorphicadapter.*
-import dev.onenowy.moshipolymorphicadapter.sealed.codegen.KotlinSealedCodegenProcessor
-import dev.onenowy.moshipolymorphicadapter.sealed.codegen.KotlinSealedCodegenProcessor.Companion.COMMON_SUPPRESS
-import dev.onenowy.moshipolymorphicadapter.sealed.codegen.KotlinSealedCodegenProcessor.Companion.defaultNullAnnotation
-import dev.onenowy.moshipolymorphicadapter.sealed.codegen.KotlinSealedCodegenProcessor.Companion.moshiClass
+import dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt.KotlinSealedCodegenProcessor
+import dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt.KotlinSealedCodegenProcessor.Companion.COMMON_SUPPRESS
+import dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt.KotlinSealedCodegenProcessor.Companion.defaultNullAnnotation
+import dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt.KotlinSealedCodegenProcessor.Companion.moshiClass
 import kotlinx.metadata.KmClass
 import javax.annotation.processing.Messager
 import javax.lang.model.element.TypeElement

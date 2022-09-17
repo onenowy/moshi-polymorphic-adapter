@@ -4,7 +4,8 @@ import com.google.common.truth.Truth.assertThat
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import com.tschuchort.compiletesting.SourceFile.Companion.kotlin
-import dev.onenowy.moshipolymorphicadapter.sealed.codegen.KotlinSealedCodegenProcessor.Companion.OPTION_GENERATE_PROGUARD_RULES
+import dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt.KotlinSealedCodegenProcessor
+import dev.onenowy.moshipolymorphicadapter.sealed.codegen.kapt.KotlinSealedCodegenProcessor.Companion.OPTION_GENERATE_PROGUARD_RULES
 import org.junit.Test
 import kotlin.reflect.full.declaredFunctions
 import kotlin.reflect.full.declaredMemberProperties
