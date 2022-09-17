@@ -6,8 +6,8 @@ project.description = "Generate Moshi Polymorphic Adapters for Kotlin sealed cla
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
         freeCompilerArgs = listOf(
-            "-Xopt-in=com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview",
-            "-Xopt-in=kotlin.RequiresOptIn"
+            "-opt-in=com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview",
+            "-opt-in=kotlin.RequiresOptIn"
         )
     }
 }

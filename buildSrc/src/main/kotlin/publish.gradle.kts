@@ -1,5 +1,3 @@
-val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
-
 plugins {
     `java-library`
     `maven-publish`

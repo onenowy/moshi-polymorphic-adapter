@@ -1,11 +1,12 @@
 [versions]
 moshiPolymorphicAdapter = "0.1.4"
-kotlin = "1.6.21"
-moshi = "1.13.0"
+kotlin = "1.7.10"
+moshi = "1.14.0"
 autoService = "1.0.1"
 incap = "0.3"
-kotlinPoet = "1.11.0"
+kotlinPoet = "1.12.0"
 gradleVersionPlugin = "0.42.0"
+kotlinPowerAssert = "0.12.0"
 
 [libraries]
 moshiPolymorphic-adapter = {group = "dev.onenowy.moshipolymorphicadapter", name = "moshi-polymorphic-adapter", version.ref ="moshiPolymorphicAdapter"}
@@ -24,11 +25,12 @@ incap-annotation = { group = "net.ltgt.gradle.incap", name = "incap", version.re
 incap-processor = { group = "net.ltgt.gradle.incap", name = "incap-processor", version.ref ="incap"}
 kotlinPoet-kotlinPoet = { group = "com.squareup", name = "kotlinpoet", version.ref ="kotlinPoet"}
 kotlinPoet-metadata = { group = "com.squareup", name = "kotlinpoet-metadata", version.ref ="kotlinPoet"}
-kotlinComplieTest = { module = "com.github.tschuchortdev:kotlin-compile-testing", version = "1.4.8"}
+kotlinComplieTest = { module = "com.github.tschuchortdev:kotlin-compile-testing", version = "1.4.9"}
 gradleVersionPlugin = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "gradleVersionPlugin"}
 
 [plugins]
 gradleVersionPlugin = {id = "com.github.ben-manes.versions", version.ref = "gradleVersionPlugin" }
+kotlinPowerAssert = {id = "com.bnorm.power.kotlin-power-assert", version.ref = "kotlinPowerAssert"}
 
 
 

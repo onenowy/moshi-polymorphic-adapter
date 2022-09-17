@@ -1,7 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
-
 plugins {
     kotlin("jvm")
     kotlin("kapt")
