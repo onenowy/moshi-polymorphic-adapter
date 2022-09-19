@@ -27,6 +27,7 @@ kotlinPoet-kotlinPoet = { group = "com.squareup", name = "kotlinpoet", version.r
 kotlinPoet-metadata = { group = "com.squareup", name = "kotlinpoet-metadata", version.ref ="kotlinPoet"}
 kotlinComplieTest = { module = "com.github.tschuchortdev:kotlin-compile-testing", version = "1.4.9"}
 gradleVersionPlugin = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "gradleVersionPlugin"}
+kotlinPowerAssert = {module = "gradle.plugin.com.bnorm.power:kotlin-power-assert-gradle", version.ref = "kotlinPowerAssert"}
 
 [plugins]
 gradleVersionPlugin = {id = "com.github.ben-manes.versions", version.ref = "gradleVersionPlugin" }

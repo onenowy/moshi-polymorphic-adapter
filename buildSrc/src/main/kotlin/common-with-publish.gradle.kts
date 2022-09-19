@@ -1,21 +1,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+apply{
+    plugin(libs.plugins.kotlinPowerAssert.get().pluginId)
+}
+
 plugins {
     kotlin("jvm")
     kotlin("kapt")
     id("publish")
     id("dependencies-versions")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
-tasks.withType<KotlinCompile>{
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+    id("common-settings")
 }
 
 dependencies {

@@ -13,13 +13,14 @@ repositories {
 }
 
 kotlinDslPluginOptions{
-    jvmTarget.set("11")
+    jvmTarget.set("17")
 }
 
 dependencies {
     implementation(libs.kotlin.gradle)
     implementation(libs.gradleVersionPlugin)
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+    implementation(libs.kotlinPowerAssert)
 }
 
 tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
