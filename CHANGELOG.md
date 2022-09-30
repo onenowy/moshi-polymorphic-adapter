@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+## [0.1.5](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.5)
+
+* Update dependencies: Kotlin 1.7.20, KotlinPoet 1.12.0, Target JDK 17
+
 ## [0.1.4](https://github.com/onenowy/moshi-polymorphic-adapter/releases/tag/v0.1.4)
 
 * Update dependencies: Kotlin 1.6.21, KotlinPoet 1.11.0
