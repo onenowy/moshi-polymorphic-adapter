@@ -1,5 +1,5 @@
 [versions]
-moshiPolymorphicAdapter = "0.1.5-SNAPSHOT"
+moshiPolymorphicAdapter = "0.1.5"
 kotlin = "1.7.20"
 moshi = "1.14.0"
 autoService = "1.0.1"
